@@ -1,7 +1,5 @@
 <?php
 
-$version = get_latest_api_version_with_prefix();
-
 Route::namespace("App\Http\Controllers\Api\\$version\\Backend")
     ->prefix('admin')
     ->name('admin.')
