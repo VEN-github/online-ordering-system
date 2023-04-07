@@ -11,8 +11,8 @@ if (! function_exists('include_files_in_directory')) {
 }
 
 if (! function_exists('get_latest_api_version_with_prefix')) {
-    function get_latest_api_version_with_prefix(): string
+    function get_latest_api_version_with_prefix($isUppercase = true): string
     {
-        return 'V' . config('api.version.latest');
+        return $isUppercase ? 'V' : 'v' . config('api.version.latest');
     }
 }
