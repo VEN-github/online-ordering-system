@@ -1,0 +1,7 @@
+.form-input {
+  @apply text-gray-900 ring-gray-300 placeholder:text-gray-400 focus:ring-slate-600;
+}
+
+.form-invalid {
+  @apply text-red-900 ring-red-300 placeholder:text-red-300 focus:ring-red-500;
+}
