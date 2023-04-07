@@ -1,0 +1,52 @@
+<template>
+  <RouterLink v-if="isLink" :to="link" :class="[`btn-${mode}`, `btn--${size}`]">
+    <slot></slot>
+  </RouterLink>
+  <button v-else :type="type" :class="[`btn-${mode}`, `btn--${size}`, { 'w-full': isFull }]">
+    <slot></slot>
+  </button>
+</template>
+
+<script setup>
+import { RouterLink } from 'vue-router'
+
+defineProps({
+  isLink: {
+    type: Boolean,
+    default() {
+      return false
+    }
+  },
+  link: {
+    type: String,
+    default() {
+      return '/'
+    }
+  },
+  type: {
+    type: String,
+    default() {
+      return 'button'
+    }
+  },
+  mode: {
+    type: String,
+    default() {
+      return 'primary'
+    }
+  },
+  size: {
+    type: String,
+    default() {
+      return 'md'
+    },
+    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(value)
+  },
+  isFull: {
+    type: Boolean,
+    default() {
+      return false
+    }
+  }
+})
+</script>
