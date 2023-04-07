@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1\Backend;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\V1\Backend\AuthLoginRequest;
 use App\Models\Admin\Admin;
-use Exception;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
 
@@ -15,33 +15,24 @@ class AuthController extends BaseController
     {
         try {
             if(! Auth::guard('web_admins')->attempt($request->only(['email', 'password']))) {
-                $this->message = 'Email & Password does not match with our record.';
-                $this->statusCode = $this->httpStatus::NOT_FOUND;
+                $message = 'Email & Password does not match with our record.';
 
-                throw new Exception($this->message);
+                return $this->error($message, JsonResponse::HTTP_NOT_FOUND);
             }
 
             $admin = Admin::where('email', $request->email)->first();
-
-            $this->status = true;
-            $this->message = 'Successfully Logged In';
-            $this->statusCode = $this->httpStatus::OK;
+            $message = 'Successfully Logged In';
 
             Log::info([
-                'message' => $this->message,
+                'message' => $message,
                 'admin' => $admin->email
             ]);
+
+            return $this->success($message);
         } catch (\Exception $e) {
             Log::error($e);
 
-            $this->status = false;
-            $this->message = 'Unable to login the user.';
-            $this->statusCode = $this->httpStatus::INTERNAL_SERVER_ERROR;
+            return $this->error('Unable to login the user.');
         }
-
-        return response()->json([
-            'status' => $this->status,
-            'message' => $this->message
-        ], $this->statusCode);
     }
 }

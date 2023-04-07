@@ -2,18 +2,10 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Helpers\HttpStatus;
+use App\Http\Controllers\Api\Traits\SendsResponses;
 use Illuminate\Routing\Controller;
 
 class BaseController extends Controller
 {
-    protected HttpStatus $httpStatus;
-    protected bool $status = false;
-    protected string $message = '';
-    protected int $statusCode;
-
-    public function __construct()
-    {
-        $this->httpStatus = new HttpStatus;
-    }
+    use SendsResponses;
 }
