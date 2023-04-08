@@ -1,7 +1,7 @@
 <?php
 
-use App\Helpers\HttpStatus;
 use App\Models\Admin\Admin;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Hash;
 
 it('works', function () {
@@ -21,5 +21,5 @@ it('works', function () {
         'password' => $password,
     ]);
 
-    $response->assertStatus(HttpStatus::OK);
+    $response->assertStatus(JsonResponse::HTTP_OK);
 });
