@@ -1,24 +1,20 @@
 <?php
 
 use App\Models\Admin\Admin;
+use App\Models\Image\Image;
+use Database\Factories\AdminFactory;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Support\Facades\Hash;
 
 it('works', function () {
-    $password = 'admin';
-
-    $admin =  Admin::create([
-        'first_name' => 'Admin',
-        'last_name' => 'Test',
-        'email' => 'admin@admin.com',
-        'password' => Hash::make($password)
-    ]);
+    $admin = Admin::factory()
+        ->has(Image::factory())
+        ->create();
 
     expect(! is_null($admin))->toBeTrue();
 
     $response = $this->post('/api/admin/login', [
         'email' => $admin->email,
-        'password' => $password,
+        'password' => AdminFactory::PASSWORD
     ]);
 
     $response->assertStatus(JsonResponse::HTTP_OK);

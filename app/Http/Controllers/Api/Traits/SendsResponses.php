@@ -8,25 +8,22 @@ trait SendsResponses
 {
     protected function success(
         string $message = 'Request was successful.',
-        int $code = JsonResponse::HTTP_OK,
-        bool $status = true,
         mixed $data = null
     ) {
         return response()->json([
-            'status' => $status,
+            'status' => true,
             'message' => $message,
             'data' => $data
-        ], $code);
+        ], JsonResponse::HTTP_OK);
     }
 
     protected function error(
         string $message = 'Request was unsuccessful.',
         int $code = JsonResponse::HTTP_INTERNAL_SERVER_ERROR,
-        bool $status = false,
         mixed $data = null
     ) {
         return response()->json([
-            'status' => $status,
+            'status' => false,
             'message' => $message,
             'data' => $data
         ], $code);
