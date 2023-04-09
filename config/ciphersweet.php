@@ -1,6 +1,8 @@
 <?php
 
 return [
+    'enabled' => env('CIPHERSWEET', false),
+
     /**
      * This controls which cryptographic backend will be used by CipherSweet.
      * Unless you have specific compliance requirements, you should choose

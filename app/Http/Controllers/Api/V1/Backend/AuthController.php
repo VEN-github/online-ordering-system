@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\V1\Backend\AuthLoginRequest;
+use App\Http\Resources\AdminResource;
 use App\Models\Admin\Admin;
 use App\Models\Image\Image;
 use Illuminate\Http\JsonResponse;
@@ -15,7 +16,14 @@ class AuthController extends BaseController
     public function login(AuthLoginRequest $request)
     {
         try {
-            if(! Auth::guard('web_admins')->attempt($request->only(['email', 'password']))) {
+            $email = $request->email;
+            $admin = Admin::findByEmail($email);
+
+            if (! Auth::guard('web_admins')->attempt([
+                    'email' => $admin?->email,
+                    'password' => $request->password
+                ])) {
+
                 $message = 'Email & Password does not match with our record.';
 
                 return $this->error(
@@ -24,20 +32,20 @@ class AuthController extends BaseController
                 );
             }
 
-            $admin = Admin::where('email', $request->email)->first();
-            $admin['avatar'] = $admin->image?->url;
             $message = 'Successfully Logged In';
 
             Log::info([
                 'message' => $message,
-                'admin' => $admin,
+                'admin' => $admin->email,
             ]);
 
             return $this->success(
                 $message,
                 [
-                    'admin' => $admin,
-                    'token' => $admin->createToken(Admin::ACCESS_TOKEN)->plainTextToken
+                    'admin' => new AdminResource($admin),
+                    'token' => $admin
+                        ->createToken(Admin::ACCESS_TOKEN)
+                        ->plainTextToken
                 ]
             );
         } catch (\Exception $e) {

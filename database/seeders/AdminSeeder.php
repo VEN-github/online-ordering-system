@@ -4,10 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Admin\Admin;
 use App\Models\Image\Image;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Log;
 
 class AdminSeeder extends Seeder
 {

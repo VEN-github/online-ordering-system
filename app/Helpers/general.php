@@ -16,3 +16,12 @@ if (! function_exists('get_latest_api_version_with_prefix')) {
         return ($isUppercase ? 'V' : 'v') . config('api.version.latest');
     }
 }
+
+if (! function_exists('get_fully_qualified_class_name')) {
+    function get_fully_qualified_class_name(string $class): string
+    {
+        $reflectionClass = new ReflectionClass($class);
+
+        return $reflectionClass->getName();
+    }
+}
