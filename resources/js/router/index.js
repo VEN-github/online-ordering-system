@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { useAuthStore } from '@/store/auth'
 import HomeView from '../views/HomeView.vue'
 
 const router = createRouter({
@@ -11,12 +12,30 @@ const router = createRouter({
       meta: {
         title: 'Admin',
         hideHomeNavbar: true
+      },
+      beforeEnter: (_, _2, next) => {
+        const store = useAuthStore()
+        if (!store.isAdminAuthenticated) {
+          next()
+        } else {
+          next('/dashboard')
+        }
       }
     },
     {
       path: '/admin/login',
       name: 'admin-login',
       redirect: '/admin'
+    },
+    {
+      path: '/dashboard',
+      name: 'dashboard',
+      component: () => import('../views/admin/DashboardView.vue'),
+      meta: {
+        title: 'Dashboard',
+        hideHomeNavbar: true,
+        requiresAuth: true
+      }
     },
     {
       path: '/',
@@ -33,8 +52,13 @@ const router = createRouter({
 
 const DEFAULT_TITLE = 'Online Ordering System'
 router.beforeEach((to, _, next) => {
-  next()
   document.title = to.meta.title || DEFAULT_TITLE
+  const store = useAuthStore()
+  if (to.meta.requiresAuth && !store.isAdminAuthenticated) {
+    next('/admin')
+  } else {
+    next()
+  }
 })
 
 export default router

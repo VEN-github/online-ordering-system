@@ -1,8 +1,18 @@
 <template>
-  <RouterLink v-if="isLink" :to="link" :class="[`btn-${mode}`, `btn--${size}`]">
+  <RouterLink
+    v-if="isLink"
+    :to="link"
+    :class="[`btn-${mode}`, `btn--${size}`, { 'link--disabled': disabled }]"
+    :disabled="disabled"
+  >
     <slot></slot>
   </RouterLink>
-  <button v-else :type="type" :class="[`btn-${mode}`, `btn--${size}`, { 'w-full': isFull }]">
+  <button
+    v-else
+    :type="type"
+    :class="[`btn-${mode}`, `btn--${size}`, { 'w-full': isFull }, { 'btn--disabled': disabled }]"
+    :disabled="disabled"
+  >
     <slot></slot>
   </button>
 </template>
@@ -43,6 +53,12 @@ defineProps({
     validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl'].includes(value)
   },
   isFull: {
+    type: Boolean,
+    default() {
+      return false
+    }
+  },
+  disabled: {
     type: Boolean,
     default() {
       return false
