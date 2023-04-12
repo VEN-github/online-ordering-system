@@ -16,4 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 $version = get_latest_api_version_with_prefix();
 
-include_once('api/index.php');
+include('api/index.php');

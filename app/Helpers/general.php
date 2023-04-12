@@ -5,7 +5,7 @@ if (! function_exists('include_files_in_directory')) {
     {
         foreach (glob("$directory/*.php") as $filename)
         {
-            include_once $filename;
+            include $filename;
         }
     }
 }
