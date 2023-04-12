@@ -2,10 +2,9 @@
 
 namespace Database\Seeders;
 
-use App\Models\Admin;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Admin\Admin;
+use App\Models\Image\Image;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 
 class AdminSeeder extends Seeder
 {
@@ -14,11 +13,23 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
-        Admin::factory()->create([
-            'first_name' => 'Admin',
-            'last_name' => 'Test',
-            'email' => 'admin@admin.com',
-            'password' => Hash::make('admin')
-        ]);
+        Admin::truncate();
+        Image::truncate();
+
+        Admin::factory()
+            ->state(function () {
+                return [
+                    'email' => 'admin@admin.com',
+                    'first_name' => 'Admin'
+                ];
+            })
+            ->has(
+                Image::factory()
+                    ->count(1)
+                    ->state(function () {
+                        return ['url' => 'https://img.freepik.com/free-vector/businessman-character-avatar-isolated_24877-60111.jpg?w=740&t=st=1680946201~exp=1680946801~hmac=a73319d74122b147c353a26455a68076e80e6ee574b1aa8d20ba8bc0a7383542'];
+                    })
+            )
+            ->create();
     }
 }

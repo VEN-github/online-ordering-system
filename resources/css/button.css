@@ -1,0 +1,31 @@
+.btn-primary {
+  @apply inline-flex items-center justify-center gap-x-2 bg-emerald-600 font-semibold text-white shadow-sm transition-colors duration-300 ease-in-out hover:bg-emerald-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-600;
+}
+
+.btn--xs {
+  @apply rounded px-2 py-1 text-xs;
+}
+
+.btn--sm {
+  @apply rounded px-2 py-1 text-sm;
+}
+
+.btn--md {
+  @apply rounded-md px-2.5 py-1.5 text-sm;
+}
+
+.btn--lg {
+  @apply rounded-md px-3 py-2 text-sm;
+}
+
+.btn--xl {
+  @apply rounded-md px-3.5 py-2.5 text-sm;
+}
+
+.btn--disabled {
+  @apply disabled:pointer-events-none disabled:select-none disabled:opacity-60;
+}
+
+.link--disabled {
+  @apply pointer-events-none select-none opacity-60;
+}

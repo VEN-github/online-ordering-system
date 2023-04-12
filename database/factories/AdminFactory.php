@@ -2,14 +2,18 @@
 
 namespace Database\Factories;
 
+use App\Models\Admin\Admin;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Facades\Hash;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Admin\Admin>
  */
 class AdminFactory extends Factory
 {
+    protected $model = Admin::class;
+    public const PASSWORD = 'admin';
+
     /**
      * Define the model's default state.
      *
@@ -18,10 +22,10 @@ class AdminFactory extends Factory
     public function definition(): array
     {
         return [
+            'email' => fake()->unique()->safeEmail(),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
-            'email' => fake()->unique()->safeEmail(),
-            'password' => Hash::make('password')
+            'password' => Hash::make(self::PASSWORD)
         ];
     }
 }
