@@ -28,3 +28,17 @@ it('logged_in_the_admin_encrypted', function (bool $enabled) {
 
     $response->assertStatus(JsonResponse::HTTP_OK);
 })->with($encryptionModes);
+
+it('can_logout_the_authenticated_admin', function () {
+    $admin = Admin::factory()
+        ->state(fn () => ['email' =>  'sample@sample.com'])
+        ->create();
+
+    $token = $admin->createToken(Admin::ACCESS_TOKEN);
+
+    $response = $this->withHeaders([
+        'Authorization' => 'Bearer '.$token->plainTextToken,
+    ])->delete(route('admin.logout'));
+
+    $response->assertStatus(JsonResponse::HTTP_OK);
+});
