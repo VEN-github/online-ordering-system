@@ -3,10 +3,9 @@
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\V1\Backend\AuthLoginRequest;
+use App\Http\Requests\Api\Backend\AuthLoginRequest;
 use App\Http\Resources\AdminResource;
 use App\Models\Admin\Admin;
-use App\Models\Image\Image;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Log;
@@ -52,6 +51,17 @@ class AuthController extends BaseController
             Log::error($e);
 
             return $this->error('Unable to login the user.');
+        }
+    }
+
+    public function logout()
+    {
+        try {
+            auth('sanctum')->user()->currentAccessToken()->delete();
+
+            return $this->success();
+        } catch (\Exception $e) {
+            return $this->error('Unable to logout the user.');
         }
     }
 }

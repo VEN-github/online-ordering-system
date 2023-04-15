@@ -43,7 +43,6 @@ class Admin extends Authenticatable implements CipherSweetEncrypted
 
     public static function configureCipherSweet(EncryptedRow $encryptedRow): void
     {
-
         if (config('ciphersweet.enabled')) {
             $encryptedRow
                 ->addField('email')
