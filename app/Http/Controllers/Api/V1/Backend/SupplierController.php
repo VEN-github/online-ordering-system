@@ -8,7 +8,6 @@ use App\Http\Requests\Api\Backend\Supplier\SupplierStoreRequest;
 use App\Http\Requests\Api\Backend\Supplier\SupplierUpdateRequest;
 use App\Http\Resources\SupplierResource;
 use App\Models\Supplier\Supplier;
-use Illuminate\Http\Request;
 
 class SupplierController extends BaseController
 {
