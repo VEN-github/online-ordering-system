@@ -17,21 +17,36 @@ class SupplierController extends BaseController
 
     public function index()
     {
-        $suppliers = Supplier::paginate($this->paginate);
+        try {
+            $suppliers = Supplier::paginate($this->paginate);
+        } catch (\Exception $e) {
+            return $this->error();
+        }
 
         return SupplierResource::collection($suppliers);
     }
 
     public function store(SupplierStoreRequest $request)
     {
-        Supplier::create($request->validated());
+        try {
+            $supplier = Supplier::create($request->validated());
+        } catch (\Exception $e) {
+            return $this->error();
+        }
 
-        return $this->success();
+        return $this->success(
+            config('general.messages.model.created'),
+            $supplier
+        );
     }
 
     public function show(string $id)
     {
-        $supplier = Supplier::find($id);
+        try {
+            $supplier = Supplier::find($id);
+        } catch (\Exception $e) {
+            return $this->error();
+        }
 
         return $supplier
             ? new SupplierResource($supplier)
@@ -40,27 +55,38 @@ class SupplierController extends BaseController
 
     public function update(SupplierUpdateRequest $request, string $id)
     {
-        $supplier = Supplier::find($id);
+        try {
+            $supplier = Supplier::find($id);
 
-        if (is_null($supplier)) {
-            return $this->error(config('general.messages.model.not_found'));
+            if (is_null($supplier)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
+
+            $supplier->update($request->validated());
+        } catch (\Exception $e) {
+            return $this->error();
         }
 
-        $supplier->update($request->validated());
-
-        return $this->success();
+        return $this->success(
+            config('general.messages.model.updated'),
+            $supplier
+        );
     }
 
     public function destroy(string $id)
     {
-        $supplier = Supplier::find($id);
+        try {
+            $supplier = Supplier::find($id);
 
-        if (is_null($supplier)) {
-            return $this->error(config('general.messages.model.not_found'));
+            if (is_null($supplier)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
+
+            $supplier->delete();
+        } catch (\Exception $e) {
+            return $this->error();
         }
 
-        $supplier->delete();
-
-        return $this->success();
+        return $this->success(config('general.messages.model.deleted'));
     }
 }

@@ -26,7 +26,7 @@ class PasswordController extends BaseController
                 'password' => Hash::make($validated['password']),
             ]);
 
-            return $this->success();
+            return $this->success(config('general.messages.model.updated'));
         } catch (\Exception $e) {
             return $this->error();
         }

@@ -21,7 +21,7 @@ class AvatarController extends BaseController
                 ->addMediaFromRequest('avatar')
                 ->toMediaCollection(Admin::AVATAR_MEDIA_ATTRIBUTE);
 
-            return $this->success();
+            return $this->success(config('general.messages.model.updated'));
         } catch (\Exception $e) {
             return $this->error($e);
         }

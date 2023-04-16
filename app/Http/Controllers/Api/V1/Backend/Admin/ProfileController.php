@@ -17,10 +17,10 @@ class ProfileController extends BaseController
             $admin = Admin::find($id);
 
             return $admin
-                ? new AdminResource($admin)
-                : $this->error(config('general.messages.model.not_found'));
+            ? new AdminResource($admin)
+            : $this->error(config('general.messages.model.not_found'));
         } catch (\Exception $e) {
-            $this->error();
+            return $this->error();
         }
     }
 
@@ -35,9 +35,9 @@ class ProfileController extends BaseController
 
             $admin->update($request->validated());
 
-            return $this->success();
+            return $this->success(config('general.messages.model.updated'));
         } catch (\Exception $e) {
-            $this->error();
+            return $this->error();
         }
     }
 }
