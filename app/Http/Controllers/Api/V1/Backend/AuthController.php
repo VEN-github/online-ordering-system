@@ -18,7 +18,7 @@ class AuthController extends BaseController
             $email = $request->email;
             $admin = Admin::findByEmail($email);
 
-            if (! Auth::guard('web_admins')->attempt([
+            if (! Auth::guard('web_admins')->once([
                     'email' => $admin?->email,
                     'password' => $request->password
                 ])) {

@@ -1,6 +1,6 @@
 <?php
 
-Route::middleware(['auth:sanctum'])
+Route::middleware(['auth:api_admins'])
     ->prefix('suppliers')
     ->name('supplier.')
     ->group(function() {
