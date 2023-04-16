@@ -43,6 +43,10 @@ return [
         'web_admins' => [
             'driver' => 'session',
             'provider' => 'admins',
+        ],
+        'api_admins' => [
+            'driver' => 'sanctum',
+            'provider' => 'admins',
         ]
     ],
 
