@@ -3,13 +3,14 @@
 use App\Models\Supplier\Supplier;
 
 beforeEach(function () {
-    $this->actingAsAdmin();
+    $this->token = $this->actingAsAdmin();
 });
 
 it('can_get_the_records', function () {
     Supplier::factory()->count(rand(1, 100))->create();
 
-    $response = $this->get(route('admin.supplier.index'));
+    $response = $this->withHeaders($this->token)
+        ->get(route('admin.supplier.index'));
 
     $response->assertOk();
 });
@@ -17,11 +18,12 @@ it('can_get_the_records', function () {
 it('can_create_a_record', function () {
     $supplier = Supplier::factory()->make();
 
-    $response = $this->post(route('admin.supplier.index'), [
-        'name' => $supplier->name,
-        'city' => $supplier->city,
-        'country' => $supplier->country
-    ]);
+    $response = $this->withHeaders($this->token)
+        ->post(route('admin.supplier.index'), [
+            'name' => $supplier->name,
+            'city' => $supplier->city,
+            'country' => $supplier->country
+        ]);
 
     $response->assertOk();
 });
@@ -29,7 +31,8 @@ it('can_create_a_record', function () {
 it('can_show_a_record', function () {
     $supplier = Supplier::factory()->create();
 
-    $response = $this->get(route('admin.supplier.show', $supplier->id));
+    $response = $this->withHeaders($this->token)
+        ->get(route('admin.supplier.show', $supplier->id));
 
     $response->assertOk();
 });
@@ -38,11 +41,12 @@ it('can_update_a_record', function () {
     $supplier = Supplier::factory()->create();
     $newName = 'test';
 
-    $response = $this->put(route('admin.supplier.update', $supplier->id), [
-        'name' => $newName,
-        'city' => $supplier->city,
-        'country' => $supplier->country
-    ]);
+    $response = $this->withHeaders($this->token)
+        ->put(route('admin.supplier.update', $supplier->id), [
+            'name' => $newName,
+            'city' => $supplier->city,
+            'country' => $supplier->country
+        ]);
 
     $response->assertOk();
 
@@ -54,7 +58,8 @@ it('can_update_a_record', function () {
 it('can_delete_a_record', function () {
     $supplier = Supplier::factory()->create();
 
-    $response = $this->delete(route('admin.supplier.destroy', $supplier->id));
+    $response = $this->withHeaders($this->token)
+        ->delete(route('admin.supplier.destroy', $supplier->id));
 
     $response->assertOk();
 

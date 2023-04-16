@@ -11,11 +11,14 @@ class TestCase extends BaseTestCase
 {
     use CreatesApplication;
 
-    public function actingAsAdmin(): void
+    public function actingAsAdmin(): array
     {
-        Sanctum::actingAs(
-            Admin::factory()->create(),
-            ['*']
-        );
+        $admin = Admin::factory()->create();
+        $token = $admin->createToken(Admin::ACCESS_TOKEN)
+            ->plainTextToken;
+
+        return [
+            'Authorization' => 'Bearer ' . $token,
+        ];
     }
 }
