@@ -3,9 +3,12 @@
 if (! function_exists('include_files_in_directory')) {
     function include_files_in_directory(string $directory = '')
     {
-        foreach (glob("$directory/*.php") as $filename)
-        {
-            include $filename;
+        $iterator = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+
+        foreach ($iterator as $file) {
+            if ($file->isFile() && $file->getExtension() === 'php') {
+                include $file->getPathname();
+            }
         }
     }
 }
