@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Tests\CreatesApplication;
@@ -14,7 +16,7 @@ use Tests\CreatesApplication;
 | need to change it using the "uses()" function to bind a different classes or traits.
 |
 */
- 
+
 uses(
     CreatesApplication::class,
     TestCase::class,

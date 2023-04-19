@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Admin;
 
 use App\Models\Admin\Traits\AdminMethod;
@@ -14,18 +16,17 @@ use ParagonIE\CipherSweet\EncryptedRow;
 use ParagonIE\CipherSweet\BlindIndex;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
-use Illuminate\Database\Eloquent\Builder;
 
 class Admin extends Authenticatable implements CipherSweetEncrypted
 {
-    use AdminMethod,
-        AdminRelationship,
-        AdminScope,
-        HasApiTokens,
-        HasFactory,
-        UsesCipherSweet;
+    use AdminMethod;
+    use AdminRelationship;
+    use AdminScope;
+    use HasApiTokens;
+    use HasFactory;
+    use UsesCipherSweet;
 
-    const ACCESS_TOKEN = 'api-admin';
+    public const ACCESS_TOKEN = 'api-admin';
 
     protected $fillable = [
         'first_name',
@@ -52,7 +53,7 @@ class Admin extends Authenticatable implements CipherSweetEncrypted
 
     public function decryptRow(): void
     {
-        if (! self::$isDecryptRowDisabled) {
+        if ( ! self::$isDecryptRowDisabled) {
             $this->setRawAttributes(
                 static::$cipherSweetEncryptedRow->decryptRow($this->getAttributes()),
                 true

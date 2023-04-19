@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Admin\Admin;
@@ -25,7 +27,7 @@ class AdminFactory extends Factory
             'email' => fake()->unique()->safeEmail(),
             'first_name' => fake()->name(),
             'last_name' => fake()->name(),
-            'password' => Hash::make(self::PASSWORD)
+            'password' => Hash::make(self::PASSWORD),
         ];
     }
 }

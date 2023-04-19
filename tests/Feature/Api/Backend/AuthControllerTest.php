@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Admin\Admin;
 use App\Models\Image\Image;
 use Database\Factories\AdminFactory;
@@ -19,11 +21,11 @@ it('logged_in_the_admin_encrypted', function (bool $enabled) {
         ->has(Image::factory())
         ->create();
 
-    expect(! is_null($admin))->toBeTrue();
+    expect( ! is_null($admin))->toBeTrue();
 
     $response = $this->post(route('admin.login'), [
         'email' => $email,
-        'password' => AdminFactory::PASSWORD
+        'password' => AdminFactory::PASSWORD,
     ]);
 
     $response->assertStatus(JsonResponse::HTTP_OK);
@@ -31,7 +33,7 @@ it('logged_in_the_admin_encrypted', function (bool $enabled) {
 
 it('can_logout_the_authenticated_admin', function () {
     $admin = Admin::factory()
-        ->state(fn () => ['email' =>  'sample@sample.com'])
+        ->state(fn () => ['email' => 'sample@sample.com'])
         ->create();
 
     $token = $admin->createToken(Admin::ACCESS_TOKEN);
