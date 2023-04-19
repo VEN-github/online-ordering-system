@@ -1,7 +1,6 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
+declare(strict_types=1);
 
 /*
 |--------------------------------------------------------------------------
@@ -16,4 +15,4 @@ use Illuminate\Support\Facades\Route;
 
 $version = get_latest_api_version_with_prefix();
 
-include('api/index.php');
+include 'api/index.php';

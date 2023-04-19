@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Image;
 
 use App\Models\Image\Traits\ImageRelationship;
@@ -10,10 +12,11 @@ use Illuminate\Database\Eloquent\Model;
 
 class Image extends Model
 {
-    use ImageRelationship, HasFactory;
+    use ImageRelationship;
+    use HasFactory;
 
     protected $fillable = [
-        'url'
+        'url',
     ];
 
     protected static function newFactory(): Factory

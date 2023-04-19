@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Image\Image;
@@ -20,7 +22,7 @@ class ImageFactory extends Factory
     public function definition(): array
     {
         return [
-            'url' => fake()->imageUrl(360, 360, 'sample-image', true)
+            'url' => fake()->imageUrl(360, 360, 'sample-image', true),
         ];
     }
 }
