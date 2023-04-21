@@ -14,18 +14,21 @@ use ParagonIE\CipherSweet\EncryptedRow;
 use ParagonIE\CipherSweet\BlindIndex;
 use Spatie\LaravelCipherSweet\Contracts\CipherSweetEncrypted;
 use Spatie\LaravelCipherSweet\Concerns\UsesCipherSweet;
-use Illuminate\Database\Eloquent\Builder;
+use Spatie\MediaLibrary\HasMedia;
+use Spatie\MediaLibrary\InteractsWithMedia;
 
-class Admin extends Authenticatable implements CipherSweetEncrypted
+class Admin extends Authenticatable implements CipherSweetEncrypted, HasMedia
 {
     use AdminMethod,
         AdminRelationship,
         AdminScope,
         HasApiTokens,
         HasFactory,
+        InteractsWithMedia,
         UsesCipherSweet;
 
     const ACCESS_TOKEN = 'api-admin';
+    const AVATAR_MEDIA_ATTRIBUTE = 'avatar';
 
     protected $fillable = [
         'first_name',
@@ -58,6 +61,13 @@ class Admin extends Authenticatable implements CipherSweetEncrypted
                 true
             );
         }
+    }
+
+    public function registerMediaCollections(): void
+    {
+        $this->addMediaCollection(self::AVATAR_MEDIA_ATTRIBUTE)
+            ->singleFile()
+            ->useDisk('public-avatars');
     }
 
     protected static function newFactory(): Factory

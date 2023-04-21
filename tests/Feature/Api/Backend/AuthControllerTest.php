@@ -16,7 +16,6 @@ it('logged_in_the_admin_encrypted', function (bool $enabled) {
     $email = 'sample@sample.com';
     $admin = Admin::factory()
         ->state(fn () => ['email' => $email])
-        ->has(Image::factory())
         ->create();
 
     expect(! is_null($admin))->toBeTrue();
