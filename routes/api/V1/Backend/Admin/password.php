@@ -7,5 +7,5 @@ Route::namespace('Admin')
     ->prefix('password')
     ->name('password.')
     ->group(function () {
-        Route::patch('/{id}', 'PasswordController@patch')->name('patch');
+        Route::patch('/{id}', 'PasswordController@update')->name('update');
     });

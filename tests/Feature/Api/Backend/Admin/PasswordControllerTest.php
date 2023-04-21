@@ -14,7 +14,7 @@ it('can_patch_a_record', function () {
     $newPassword = fake()->password();
 
     $response = $this->withHeaders($this->token)
-        ->patch(route('admin.password.patch', $admin->id), [
+        ->patch(route('admin.password.update', $admin->id), [
             'current_password' => AdminFactory::PASSWORD,
             'password' => $newPassword,
             'password_confirmation' => $newPassword,

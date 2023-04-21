@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 
 class PasswordController extends BaseController
 {
-    public function patch(PasswordRequest $request, string $id)
+    public function update(PasswordRequest $request, string $id)
     {
         $admin = Admin::find($id);
 

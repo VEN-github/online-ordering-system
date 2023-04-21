@@ -8,5 +8,5 @@ Route::namespace('Admin')
     ->name('profile.')
     ->group(function () {
         Route::get('/{id}', 'ProfileController@show')->name('show');
-        Route::patch('/{id}', 'ProfileController@patch')->name('patch');
+        Route::patch('/{id}', 'ProfileController@update')->name('update');
     });

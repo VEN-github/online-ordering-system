@@ -20,7 +20,7 @@ class ProfileController extends BaseController
             : $this->error(config('general.messages.model.not_found'));
     }
 
-    public function patch(ProfileRequest $request, string $id)
+    public function update(ProfileRequest $request, string $id)
     {
         $admin = Admin::find($id);
 

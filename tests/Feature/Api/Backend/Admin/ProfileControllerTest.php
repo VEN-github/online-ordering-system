@@ -23,7 +23,7 @@ it('can_update_a_record', function () {
     $newLastName = fake()->lastName();
 
     $response = $this->withHeaders($this->token)
-        ->patch(route('admin.profile.patch', $admin->id), [
+        ->patch(route('admin.profile.update', $admin->id), [
             'first_name' => $newFirstName,
             'last_name' => $newLastName,
         ]);
