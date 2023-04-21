@@ -13,18 +13,22 @@ class PasswordController extends BaseController
 {
     public function update(PasswordRequest $request, string $id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (is_null($admin)) {
-            return $this->error(config('general.messages.model.not_found'));
+            if (is_null($admin)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
+
+            $validated = $request->validated();
+
+            $admin->update([
+                'password' => Hash::make($validated['password']),
+            ]);
+
+            return $this->success();
+        } catch (\Exception $e) {
+            return $this->error();
         }
-
-        $validated = $request->validated();
-
-        $admin->update([
-            'password' => Hash::make($validated['password']),
-        ]);
-
-        return $this->success();
     }
 }

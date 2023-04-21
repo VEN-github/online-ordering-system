@@ -13,23 +13,31 @@ class ProfileController extends BaseController
 {
     public function show(string $id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        return $admin
-            ? new AdminResource($admin)
-            : $this->error(config('general.messages.model.not_found'));
+            return $admin
+                ? new AdminResource($admin)
+                : $this->error(config('general.messages.model.not_found'));
+        } catch (\Exception $e) {
+            $this->error();
+        }
     }
 
     public function update(ProfileRequest $request, string $id)
     {
-        $admin = Admin::find($id);
+        try {
+            $admin = Admin::find($id);
 
-        if (is_null($admin)) {
-            return $this->error(config('general.messages.model.not_found'));
+            if (is_null($admin)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
+
+            $admin->update($request->validated());
+
+            return $this->success();
+        } catch (\Exception $e) {
+            $this->error();
         }
-
-        $admin->update($request->validated());
-
-        return $this->success();
     }
 }
