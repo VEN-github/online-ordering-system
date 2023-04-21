@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace App\Models\Admin\Traits;
 
 use App\Models\Admin\Admin;
-use App\Models\Image\Image;
-use Illuminate\Database\Eloquent\Relations\MorphOne;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait AdminRelationship
