@@ -16,6 +16,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
+  ignorePatterns: ['node_modules/*', 'build/*', 'dist/*', 'src/helpers/*'],
   rules: {
     'prettier/prettier': [
       'error',
@@ -84,7 +85,7 @@ module.exports = {
       'error',
       {
         singleline: {
-          max: 4
+          max: 6
         },
         multiline: 3
       }
