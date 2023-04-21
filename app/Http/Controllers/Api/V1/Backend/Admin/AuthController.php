@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Controllers\Api\V1\Backend;
+namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Backend\AuthLoginRequest;
+use App\Http\Requests\Api\Backend\Admin\AuthLoginRequest;
 use App\Http\Resources\AdminResource;
 use App\Models\Admin\Admin;
 use Illuminate\Http\JsonResponse;

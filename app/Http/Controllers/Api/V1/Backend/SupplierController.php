@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
@@ -40,7 +42,9 @@ class SupplierController extends BaseController
     {
         $supplier = Supplier::find($id);
 
-        if (is_null($supplier)) return $this->error(config('general.messages.model.not_found'));
+        if (is_null($supplier)) {
+            return $this->error(config('general.messages.model.not_found'));
+        }
 
         $supplier->update($request->validated());
 
@@ -51,7 +55,9 @@ class SupplierController extends BaseController
     {
         $supplier = Supplier::find($id);
 
-        if (is_null($supplier)) return $this->error(config('general.messages.model.not_found'));
+        if (is_null($supplier)) {
+            return $this->error(config('general.messages.model.not_found'));
+        }
 
         $supplier->delete();
 

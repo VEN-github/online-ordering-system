@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Backend\Supplier;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class SupplierStoreRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
     {
         return true;
@@ -24,7 +24,7 @@ class SupplierStoreRequest extends FormRequest
         return [
             'name' => 'required',
             'city' => 'required',
-            'country' => 'required'
+            'country' => 'required',
         ];
     }
 }
