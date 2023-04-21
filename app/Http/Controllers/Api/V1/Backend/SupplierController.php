@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Api\Traits\HasPagination;
-use App\Http\Requests\Api\Backend\Supplier\SupplierStoreRequest;
-use App\Http\Requests\Api\Backend\Supplier\SupplierUpdateRequest;
+use App\Http\Requests\Api\Backend\SupplierRequest;
 use App\Http\Resources\SupplierResource;
 use App\Models\Supplier\Supplier;
 
@@ -24,7 +23,7 @@ class SupplierController extends BaseController
         return SupplierResource::collection($suppliers);
     }
 
-    public function store(SupplierStoreRequest $request)
+    public function store(SupplierRequest $request)
     {
         try {
             $supplier = Supplier::create($request->validated());
@@ -51,7 +50,7 @@ class SupplierController extends BaseController
             : $this->error(config('general.messages.model.not_found'));
     }
 
-    public function update(SupplierUpdateRequest $request, string $id)
+    public function update(SupplierRequest $request, string $id)
     {
         try {
             $supplier = Supplier::find($id);
