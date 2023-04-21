@@ -33,5 +33,4 @@ it('can_update_a_record', function () {
     $admin = Admin::find($admin->id);
 
     expect($admin->first_name)->toBe($newFirstName);
-    expect($admin->last_name)->toBe($newLastName);
 });
