@@ -14,6 +14,7 @@
         "spatie/laravel-medialibrary": "^10.0.0"
     },
     "require-dev": {
+        "driftingly/rector-laravel": "^0.17.0",
         "fakerphp/faker": "^1.9.1",
         "laravel/pint": "^1.0",
         "laravel/sail": "^1.18",
@@ -21,6 +22,7 @@
         "nunomaduro/collision": "^7.0",
         "pestphp/pest": "^2.3",
         "phpunit/phpunit": "^10.0",
+        "rector/rector": "^0.15.25",
         "spatie/laravel-ignition": "^2.0"
     },
     "autoload": {
@@ -51,6 +53,18 @@
         ],
         "post-create-project-cmd": [
             "@php artisan key:generate --ansi"
+        ],
+        "refactor": "vendor/bin/rector",
+        "lint": "vendor/bin/pint",
+        "test:refactor": "@refactor --dry-run",
+        "test:lint": "@lint --test",
+        "test:types": "vendor/bin/phpstan analyse --ansi",
+        "test:unit": "vendor/bin/pest --colors=always",
+        "test": [
+            "@test:refactor",
+            "@test:lint",
+            "@test:types",
+            "@test:unit"
         ]
     },
     "extra": {
