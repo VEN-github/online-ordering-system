@@ -12,9 +12,12 @@ class SupplierController extends BaseController
     public function index()
     {
         try {
-            $suppliers = Supplier::all();
+            $suppliers = Supplier::query()->latest()->get();
 
-            return SupplierResource::collection($suppliers);
+            return $this->success(
+                config('general.messages.request.success'),
+                SupplierResource::collection($suppliers)
+            );
         } catch (\Exception $e) {
             return $this->error();
         }
