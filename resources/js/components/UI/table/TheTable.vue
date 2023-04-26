@@ -1,16 +1,25 @@
 <template>
-  <table ref="table">
-    <slot></slot>
-  </table>
-  <div ref="tableWrapper"></div>
+  <div ref="table"></div>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, onMounted } from 'vue'
 import { Grid } from 'gridjs'
 import 'gridjs/dist/theme/mermaid.css'
 
 const props = defineProps({
+  columns: {
+    type: Array,
+    default() {
+      return []
+    }
+  },
+  server: {
+    type: Object,
+    default() {
+      return {}
+    }
+  },
   search: {
     type: Boolean,
     default() {
@@ -44,21 +53,17 @@ const props = defineProps({
 })
 
 const table = ref(null)
-const tableWrapper = ref(null)
 
-watch(
-  tableWrapper,
-  (value) => {
-    const grid = new Grid({
-      from: table.value,
-      search: props.search,
-      sort: props.sort,
-      pagination: props.pagination,
-      resizable: props.resizable,
-      autoWidth: props.autoWidth
-    })
-    grid.render(value)
-  },
-  { deep: true }
-)
+onMounted(() => {
+  const grid = new Grid({
+    columns: props.columns,
+    server: props.server,
+    search: props.search,
+    sort: props.sort,
+    pagination: props.pagination,
+    resizable: props.resizable,
+    autoWidth: props.autoWidth
+  })
+  grid.render(table.value)
+})
 </script>
