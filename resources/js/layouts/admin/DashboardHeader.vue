@@ -19,10 +19,14 @@
           >
             <span class="sr-only">Open user menu</span>
             <img
+              v-if="loggedAdmin?.admin?.avatar"
               class="h-8 w-8 rounded-full bg-gray-50"
               :src="loggedAdmin?.admin?.avatar"
               alt="Admin Avatar"
             />
+            <div v-else class="h-8 w-8 rounded-full bg-gray-200 p-1.5 text-sm">
+              <span>{{ initialsAvatar }}</span>
+            </div>
             <span class="hidden lg:flex lg:items-center">
               <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
                 {{ loggedAdmin?.admin?.first_name }} {{ loggedAdmin?.admin?.last_name }}
@@ -77,6 +81,12 @@ const toggleMenu = ref(false)
 
 const loggedAdmin = computed(() => {
   return store.getLoggedAdmin
+})
+
+const initialsAvatar = computed(() => {
+  return `${store.getLoggedAdmin.admin?.first_name.charAt(
+    0
+  )}${store.getLoggedAdmin.admin?.last_name.charAt(0)}`
 })
 
 function toggleSidebar() {

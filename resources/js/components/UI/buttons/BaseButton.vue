@@ -2,7 +2,7 @@
   <RouterLink
     v-if="isLink"
     :to="link"
-    :class="[`btn-${mode}`, `btn--${size}`, { 'link--disabled': disabled }]"
+    :class="[`btn btn-${mode}`, `btn--${size}`, { 'link--disabled': disabled }]"
     :disabled="disabled"
   >
     <slot></slot>
@@ -10,7 +10,12 @@
   <button
     v-else
     :type="type"
-    :class="[`btn-${mode}`, `btn--${size}`, { 'w-full': isFull }, { 'btn--disabled': disabled }]"
+    :class="[
+      `btn btn-${mode}`,
+      `btn--${size}`,
+      { 'w-full': isFull },
+      { 'btn--disabled': disabled }
+    ]"
     :disabled="disabled"
   >
     <slot></slot>
@@ -42,7 +47,7 @@ defineProps({
   mode: {
     type: String,
     default() {
-      return 'primary'
+      return 'default'
     }
   },
   size: {
