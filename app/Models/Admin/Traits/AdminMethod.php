@@ -31,7 +31,7 @@ trait AdminMethod
 
     public function decryptRow(): void
     {
-        if (! self::$isDecryptRowDisabled) {
+        if (! static::$isDecryptRowDisabled) {
             $this->setRawAttributes(
                 static::$cipherSweetEncryptedRow->decryptRow($this->getAttributes()),
                 true
@@ -46,7 +46,7 @@ trait AdminMethod
 
     public function registerMediaCollections(): void
     {
-        $this->addMediaCollection(self::AVATAR_MEDIA_ATTRIBUTE)
+        $this->addMediaCollection(static::AVATAR_MEDIA_ATTRIBUTE)
             ->singleFile()
             ->useDisk('public-avatars');
     }

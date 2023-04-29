@@ -18,4 +18,9 @@ return new class () extends Migration {
             $table->unique(['indexable_type', 'indexable_id', 'name']);
         });
     }
+
+    public function down(): void
+    {
+        Schema::drop('blind_indexes');
+    }
 };

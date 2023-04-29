@@ -9,18 +9,19 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait AdminScope
 {
-    public function scopeDecrypt(Builder $query, bool $enable = true)
+    public function scopeDecrypt(Builder $query, bool $enable = true): Builder
     {
-        self::$isDecryptRowDisabled = $enable ? false : true;
+        static::$isDecryptRowDisabled = $enable ? false : true;
+
+        return $query;
     }
 
-    public static function scopeFindByEmail(Builder $query, string $email): ?Admin
+    public static function scopeFilterByEmail(Builder $query, string $email): Builder
     {
         return config('ciphersweet.enabled')
-            ? self::whereBlind('email', 'email_index', $email)
+            ? $query
+                ->whereBlind('email', 'email_index', $email)
                 ->decrypt(false)
-                ->first()
-            : self::where('email', $email)
-                ->first();
+            : $query->where('email', $email);
     }
 }

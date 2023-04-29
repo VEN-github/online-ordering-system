@@ -19,7 +19,9 @@ class AuthController extends BaseController
     {
         try {
             $email = $request->email;
-            $admin = Admin::with('avatar')->findByEmail($email);
+            $admin = Admin::with('avatar')
+                ->filterByEmail($email)
+                ->first();
 
             if ( ! Auth::guard('web_admins')->once([
                 'email' => $admin?->email,

@@ -9,13 +9,13 @@ use Illuminate\Http\JsonResponse;
 trait SendsResponses
 {
     protected function success(
-        string $message = 'Request was successful.',
+        string $message = '',
         mixed $data = null
     ) {
         return response()->json([
             'status' => true,
-            'message' => $message,
-            'data' => $data,
+            'message' => $message ?? config('general.messages.request.success'),
+            'data' => $data
         ], JsonResponse::HTTP_OK);
     }
 

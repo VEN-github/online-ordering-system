@@ -12,7 +12,7 @@ trait AdminRelationship
     public function avatar()
     {
         return $this->hasOne(Media::class, 'model_id')
-            ->where('collection_name', self::AVATAR_MEDIA_ATTRIBUTE)
+            ->where('collection_name', static::AVATAR_MEDIA_ATTRIBUTE)
             ->where('model_type', Admin::class);
     }
 }

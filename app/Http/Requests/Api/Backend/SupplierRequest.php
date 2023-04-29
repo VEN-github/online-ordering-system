@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Http\Requests\Api\Backend\Supplier;
+namespace App\Http\Requests\Api\Backend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplierUpdateRequest extends FormRequest
+class SupplierRequest extends FormRequest
 {
     /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
@@ -22,9 +20,9 @@ class SupplierUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required',
-            'city' => 'required',
-            'country' => 'required',
+            'name' => ['required', 'max:100'],
+            'city' => ['required', 'max:90'],
+            'country' => ['required', 'max:60']
         ];
     }
 }
