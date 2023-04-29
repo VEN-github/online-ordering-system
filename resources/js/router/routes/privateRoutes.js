@@ -13,6 +13,13 @@ const routes = [
         }
       },
       {
+        path: '/profile',
+        component: () => import('@/views/admin/ProfileView.vue'),
+        meta: {
+          title: 'Profile'
+        }
+      },
+      {
         path: '/supplier',
         component: () => import('@/views/admin/SupplierView.vue'),
         meta: {

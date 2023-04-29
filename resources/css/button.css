@@ -22,6 +22,10 @@
   @apply border border-emerald-600 text-emerald-600 hover:bg-emerald-600 hover:text-white focus:bg-emerald-600 focus:text-white;
 }
 
+.btn-flat-default {
+  @apply text-slate-700 hover:bg-slate-300/20 active:bg-slate-300/25
+}
+
 .btn--xs {
   @apply rounded px-2 py-1 text-xs;
 }
