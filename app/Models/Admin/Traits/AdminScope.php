@@ -7,9 +7,11 @@ use Illuminate\Database\Eloquent\Builder;
 
 trait AdminScope
 {
-    public function scopeDecrypt(Builder $query, bool $enable = true): void
+    public function scopeDecrypt(Builder $query, bool $enable = true): Builder
     {
-        self::$isDecryptRowDisabled = $enable ? false : true;
+        static::$isDecryptRowDisabled = $enable ? false : true;
+
+        return $query;
     }
 
     public static function scopeFilterByEmail(Builder $query, string $email): Builder
