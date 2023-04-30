@@ -13,15 +13,14 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->boolean('is_featured')->default(0);
-            $table->boolean('is_active')->default(0);
             $table->string('name');
             $table->string('slug');
+            $table->boolean('is_featured')->default(0);
+            $table->boolean('is_active')->default(0);
             $table->longText('description')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->bigInteger('price')->nullable();
             $table->bigInteger('discounted_price')->nullable();
-            $table->boolean('has_variation')->default(0);
             // $table->string('highlighted_image')->nullable();
             $table->bigInteger('standard_shipping_price')->nullable();
             $table->bigInteger('express_shipping_price')->nullable();
