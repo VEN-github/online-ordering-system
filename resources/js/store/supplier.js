@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import axios from 'axios'
 
 export const useSupplierStore = defineStore('supplier', {
   actions: {

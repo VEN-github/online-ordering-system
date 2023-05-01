@@ -1,7 +1,7 @@
 <template>
   <div class="flex grow flex-col gap-y-5 overflow-y-auto border-r border-gray-200 bg-white px-6">
     <div class="flex h-16 shrink-0 items-center">
-      <img class="h-8 w-auto" src="../../assets/images/logo.svg" alt="Logo" />
+      <img class="h-8 w-auto" src="../../../assets/images/logo.svg" alt="Logo" />
     </div>
     <nav class="flex flex-1 flex-col">
       <ul role="list" class="flex flex-1 flex-col gap-y-7">

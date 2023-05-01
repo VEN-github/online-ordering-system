@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use App\Models\Supplier\Supplier;
 
 beforeEach(function () {
@@ -22,7 +24,7 @@ it('can_create_a_record', function () {
         ->post(route('admin.supplier.index'), [
             'name' => $supplier->name,
             'city' => $supplier->city,
-            'country' => $supplier->country
+            'country' => $supplier->country,
         ]);
 
     $response->assertOk();
@@ -45,7 +47,7 @@ it('can_update_a_record', function () {
         ->put(route('admin.supplier.update', $supplier->id), [
             'name' => $newName,
             'city' => $supplier->city,
-            'country' => $supplier->country
+            'country' => $supplier->country,
         ]);
 
     $response->assertOk();

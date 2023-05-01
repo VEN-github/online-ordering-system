@@ -57,7 +57,7 @@
             </div>
           </div> -->
           <div>
-            <BaseButton type="submit" size="lg" is-full :disabled="isLoading">
+            <BaseButton type="submit" mode="primary" size="lg" is-full :disabled="isLoading">
               <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
               {{ isLoading ? 'Loading...' : 'Sign in' }}
             </BaseButton>

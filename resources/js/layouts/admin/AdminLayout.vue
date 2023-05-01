@@ -1,10 +1,10 @@
 <template>
-  <div v-if="isOpen" class="relative z-50 lg:hidden" role="dialog" aria-modal="true">
+  <div v-if="isOpen" class="relative z-50 lg:hidden">
     <div class="fixed inset-0 bg-gray-900/80"></div>
-    <div class="fixed inset-0 flex">
+    <div class="side-bar fixed inset-0 flex">
       <div class="relative mr-16 flex w-full max-w-xs flex-1">
         <div class="absolute left-full top-0 flex w-16 justify-center pt-5">
-          <button type="button" class="-m-2.5 p-2.5" @click="toggleSidebar">
+          <button type="button" class="side-bar -m-2.5 p-2.5" @click="toggleSidebar">
             <span class="sr-only">Close sidebar</span>
             <Icon icon="ph:x-circle-duotone" class="h-8 w-8 text-white hover:text-slate-200" />
           </button>
@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { RouterView } from 'vue-router'
 
 import TheSidebar from './TheSidebar.vue'
@@ -33,7 +33,15 @@ import DashboardHeader from './DashboardHeader.vue'
 
 const isOpen = ref(false)
 
+watch(isOpen, (value) => {
+  if (value) document.addEventListener('click', detectClickOutside)
+})
+
 function toggleSidebar() {
   isOpen.value = !isOpen.value
+}
+
+function detectClickOutside(event) {
+  if (event.target.closest('.side-bar')) isOpen.value = false
 }
 </script>
