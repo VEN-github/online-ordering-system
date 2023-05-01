@@ -4,7 +4,12 @@
     v-model="value"
     :type="isShow ? 'text' : type"
     class="block w-full rounded-md border-0 py-1.5 shadow-sm ring-1 ring-inset focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6"
-    :class="[isInvalid ? 'form-invalid' : 'form-input', type === 'password' ? 'peer pr-10' : '']"
+    :class="[
+      isInvalid ? 'form-invalid' : 'form-input',
+      type === 'password' ? 'peer pr-10' : '',
+      { 'form--disabled': disabled }
+    ]"
+    :disabled="disabled"
     :placeholder="placeholder"
   />
   <div
@@ -46,6 +51,12 @@ const props = defineProps({
     }
   },
   isInvalid: {
+    type: Boolean,
+    default() {
+      return false
+    }
+  },
+  disabled: {
     type: Boolean,
     default() {
       return false

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Seeders;
 
 use App\Models\Admin\Admin;
@@ -8,9 +10,7 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 class AdminSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     */
+    /** Run the database seeds. */
     public function run(): void
     {
         Admin::truncate();
@@ -20,7 +20,7 @@ class AdminSeeder extends Seeder
             ->state(function () {
                 return [
                     'email' => 'admin@admin.com',
-                    'first_name' => 'Admin'
+                    'first_name' => 'Admin',
                 ];
             })
             ->create();

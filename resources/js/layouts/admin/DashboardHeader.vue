@@ -10,19 +10,20 @@
       <div class="flex items-center gap-x-4 lg:gap-x-6">
         <div class="relative">
           <button
-            id="user-menu-button"
             type="button"
-            class="-m-1.5 flex items-center p-1.5"
-            aria-expanded="false"
-            aria-haspopup="true"
+            class="profile-menu -m-1.5 flex items-center p-1.5"
             @click="toggleMenu = !toggleMenu"
           >
             <span class="sr-only">Open user menu</span>
             <img
+              v-if="loggedAdmin?.admin?.avatar"
               class="h-8 w-8 rounded-full bg-gray-50"
               :src="loggedAdmin?.admin?.avatar"
               alt="Admin Avatar"
             />
+            <div v-else class="h-8 w-8 rounded-full bg-gray-200 p-1.5 text-sm uppercase">
+              <span>{{ initialsAvatar }}</span>
+            </div>
             <span class="hidden lg:flex lg:items-center">
               <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
                 {{ loggedAdmin?.admin?.first_name }} {{ loggedAdmin?.admin?.last_name }}
@@ -32,31 +33,20 @@
           </button>
           <div
             v-if="toggleMenu"
-            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right rounded-md bg-white py-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
-            role="menu"
-            aria-orientation="vertical"
-            aria-labelledby="user-menu-button"
-            tabindex="-1"
+            class="absolute right-0 z-10 mt-2.5 w-full origin-top-right space-y-3 rounded-md bg-white p-4 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
           >
-            <a
-              id="user-menu-item-0"
-              href="#"
-              class="block px-3 py-1 text-sm leading-6 text-gray-900"
-              role="menuitem"
-              tabindex="-1"
+            <RouterLink
+              to="/profile"
+              class="inline-flex w-full items-center gap-x-2 rounded-md p-2 font-semibold leading-6 text-gray-700 hover:bg-gray-50"
             >
-              Your profile
-            </a>
-            <a
-              id="user-menu-item-1"
-              href="#"
-              class="block px-3 py-1 text-sm leading-6 text-gray-900"
-              role="menuitem"
-              tabindex="-1"
-              @click="logout"
-            >
+              <Icon icon="ph:user-bold" />
+              Profile
+            </RouterLink>
+            <div class="my-4 h-px bg-slate-200"></div>
+            <BaseButton is-full @click="logout">
+              <Icon icon="material-symbols:logout-rounded" />
               Logout
-            </a>
+            </BaseButton>
           </div>
         </div>
       </div>
@@ -65,9 +55,11 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
-import { useRouter } from 'vue-router'
+import { ref, computed, watch } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth'
+
+import BaseButton from '@/components/UI/buttons/BaseButton.vue'
 
 const emit = defineEmits(['toggleSidebar'])
 
@@ -78,6 +70,20 @@ const toggleMenu = ref(false)
 const loggedAdmin = computed(() => {
   return store.getLoggedAdmin
 })
+
+const initialsAvatar = computed(() => {
+  return `${store.getLoggedAdmin?.admin?.first_name.charAt(
+    0
+  )}${store.getLoggedAdmin?.admin?.last_name.charAt(0)}`
+})
+
+watch(toggleMenu, (value) => {
+  if (value) document.addEventListener('click', detectClickOutside)
+})
+
+function detectClickOutside(event) {
+  if (!event.target.closest('.profile-menu')) toggleMenu.value = false
+}
 
 function toggleSidebar() {
   emit('toggleSidebar')

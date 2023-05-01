@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Tests;
 
 use App\Models\Admin\Admin;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
-use Laravel\Sanctum\Sanctum;
-use Tests\CreatesApplication;
 
 class TestCase extends BaseTestCase
 {

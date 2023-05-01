@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { AES, enc } from 'crypto-js'
-import axios from 'axios'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {
@@ -23,6 +22,24 @@ export const useAuthStore = defineStore('auth', {
     }
   },
   actions: {
+    async getAdmin(id, token) {
+      try {
+        const {
+          data: { data },
+          status
+        } = await axios.get(`/api/admin/profile/${id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        })
+        if (status === 200) {
+          this.loggedAdmin = AES.encrypt(
+            JSON.stringify({ token: token, admin: data }),
+            this.ENCRYPTION_KEY
+          ).toString()
+        }
+      } catch (error) {
+        throw new Error('Something went wrong. Please try again.')
+      }
+    },
     async adminLogin({ email, password }) {
       try {
         const {

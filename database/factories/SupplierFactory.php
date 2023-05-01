@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Models\Supplier\Supplier;
@@ -22,7 +24,7 @@ class SupplierFactory extends Factory
         return [
             'name' => fake()->name(),
             'city' => fake()->city(),
-            'country' => fake()->country()
+            'country' => fake()->country(),
         ];
     }
 }
