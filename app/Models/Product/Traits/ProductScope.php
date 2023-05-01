@@ -8,11 +8,6 @@ trait ProductScope
 {
     public function scopeEagerLoadRelationships(Builder $query): Builder
     {
-        return $query->with([
-                'attributes',
-                'category',
-                'supplier',
-                'variations',
-            ]);
+        return $query->with(get_class_methods(ProductRelationship::class));
     }
 }

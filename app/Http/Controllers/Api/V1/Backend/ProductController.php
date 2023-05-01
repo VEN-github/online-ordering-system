@@ -9,7 +9,6 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\ProductRequest;
 use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Product\Product;
-use Illuminate\Http\Request;
 
 class ProductController extends BaseController
 {
@@ -54,12 +53,14 @@ class ProductController extends BaseController
                 $request->get('variations')
             );
 
+            $product = $product->loadMissingRelationships();
+
             return $this->success(
                     config('general.messages.model.created'),
                     ProductResource::make($product)
                 );
         } catch (\Exception $e) {
-            return $this->error();
+            return $this->error($e);
         }
     }
 
@@ -98,30 +99,31 @@ class ProductController extends BaseController
 
             $collection = Product::getImageCollection();
 
-            StoreImages::runIf(
-                $request->hasFile($collection),
+            StoreImages::run(
                 $product,
                 $collection
             );
 
-            StoreAttributes::runIf(
-                $request->has('attributes'),
+            StoreAttributes::run(
                 $product,
-                $request->get('attributes')
+                $request->get('attributes') ?? []
             );
 
-            StoreVariations::runIf(
-                $request->has('variations'),
+            StoreVariations::run(
                 $product,
-                $request->get('variations')
+                $request->get('variations') ?? []
             );
+
+            $product = $product
+                ->fresh()
+                ->loadMissingRelationships();
 
             return $this->success(
                     config('general.messages.model.updated'),
                     ProductResource::make($product)
                 );
         } catch (\Exception $e) {
-            return $this->error();
+            return $this->error($e);
         }
     }
 

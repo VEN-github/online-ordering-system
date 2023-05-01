@@ -4,6 +4,7 @@ namespace App\Models\Product\Traits;
 
 use App\Models\Attribute\Attribute;
 use App\Models\Category\Category;
+use App\Models\Product\Product;
 use App\Models\Supplier\Supplier;
 use App\Models\Variation\Variation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
