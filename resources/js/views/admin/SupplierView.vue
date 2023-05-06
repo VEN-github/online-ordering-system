@@ -97,8 +97,18 @@
     <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Suppliers</h2>
     <BaseButton mode="primary" size="lg" @click="toggleForm('add')">Add Supplier</BaseButton>
   </div>
-  <div class="mt-10">
-    <TheTable :columns="columns" :server="server" search sort pagination />
+  <div class="mt-5 flow-root">
+    <DataTable :config="config">
+      <template #table-head>
+        <tr>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">id</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Address</th>
+          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
+        </tr>
+      </template>
+    </DataTable>
+    <!-- <TheTable :columns="columns" :server="server" search sort pagination /> -->
   </div>
   <Transition name="slide-fade">
     <div v-if="isError" class="fixed top-4 right-4 z-50">
@@ -113,9 +123,10 @@ import { useAuthStore } from '@/store/auth'
 import { useSupplierStore } from '@/store/supplier'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-import { h } from 'gridjs'
+// import { h } from 'gridjs'
 
-import TheTable from '@/components/UI/table/TheTable.vue'
+// import TheTable from '@/components/UI/table/TheTable.vue'
+import DataTable from '@/components/UI/table/DataTable.vue'
 import BaseButton from '@/components/UI/buttons/BaseButton.vue'
 import BaseModal from '@/components/UI/modal/BaseModal.vue'
 import BaseCard from '@/components/UI/cards/BaseCard.vue'
@@ -142,59 +153,45 @@ const token = computed(() => {
   return authStore?.getLoggedAdmin?.token
 })
 
-const columns = computed(() => {
-  return [
-    {
-      name: 'ID',
-      hidden: true
-    },
-    'Name',
-    'Address',
-    {
-      name: 'Actions',
-      formatter: (_, row) => {
-        return h('div', { className: 'flex' }, [
-          h(
-            'button',
-            {
-              className: 'text-sky-500 hover:underline hover:text-sky-800',
-              onClick: () => editSupplier(row, 'edit')
-            },
-            'Edit'
-          ),
-          h(
-            'div',
-            {
-              className: 'mx-4 my-1 w-px bg-slate-200'
-            },
-            {}
-          ),
-          h(
-            'button',
-            {
-              className: 'text-red-500 hover:underline hover:text-red-800',
-              onClick: () => deleteSupplier(row, 'delete')
-            },
-            'Delete'
-          )
-        ])
-      }
-    }
-  ]
-})
-
-const server = computed(() => {
+const config = computed(() => {
   return {
-    url: '/api/admin/suppliers',
-    headers: {
-      Authorization: `Bearer ${token.value}`
+    serverSide: true,
+    processing: true,
+    ajax: {
+      url: '/api/admin/suppliers',
+      headers: {
+        Authorization: `Bearer ${token.value}`
+      },
+      dataSrc: 'data'
     },
-    then: (data) =>
-      data.data.map((supplier) => [
-        supplier.id,
-        supplier.name,
-        supplier.city + ', ' + supplier.country
-      ])
+    columnDefs: [
+      { target: 0, visible: false },
+      {
+        target: 2,
+        render: function (_, _2, row) {
+          return `${row.city}, ${row.country}`
+        }
+      },
+      {
+        target: 3,
+        createdCell: function (cell, _, rowData) {
+          cell.onclick = (event) => {
+            if (event.target.id === 'edit') {
+              editSupplier(rowData, 'edit')
+              return
+            }
+            if (event.target.id === 'delete') {
+              deleteSupplier(rowData, 'delete')
+              return
+            }
+          }
+        },
+        render: function () {
+          return `<div class="flex"><button id="edit" type="button" class="text-sky-500 hover:underline hover:text-sky-800">Edit</button><div class="mx-4 my-1 w-px bg-slate-200"></div><button id="delete" type="button"class="text-red-500 hover:underline hover:text-red-800">Delete</button></div>`
+        }
+      }
+    ],
+    columns: [{ data: 'id' }, { data: 'name' }, { data: null }, { data: null }]
   }
 })
 
@@ -278,19 +275,18 @@ async function submitForm() {
   }
 }
 
-function editSupplier(row, mode) {
+function editSupplier({ id, name, city, country }, mode) {
   currentMode.value = mode
-  const address = row.cells[2].data.split(',')
-  models.id = row.cells[0].data
-  models.name = row.cells[1].data
-  models.city = address[0]
-  models.country = address[1]
+  models.id = id
+  models.name = name
+  models.city = city
+  models.country = country
   isOpen.value = true
 }
 
-function deleteSupplier(row, mode) {
+function deleteSupplier({ id }, mode) {
   currentMode.value = mode
-  models.id = row.cells[0].data
+  models.id = id
   isOpen.value = true
 }
 

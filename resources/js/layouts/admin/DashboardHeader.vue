@@ -33,7 +33,7 @@
           </button>
           <div
             v-if="toggleMenu"
-            class="absolute right-0 z-10 mt-2.5 w-full origin-top-right space-y-3 rounded-md bg-white p-4 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
+            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right space-y-1.5 rounded-md bg-white p-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
           >
             <RouterLink
               to="/profile"
