@@ -14,11 +14,13 @@ class SupplierController extends BaseController
     public function index()
     {
         try {
-            $suppliers = Supplier::query()->latest()->get();
+            $suppliers = Supplier::query()
+                ->latest()
+                ->paginate($this->paginate);
 
             return $this->success(
                 config('general.messages.request.success'),
-                SupplierResource::collection($suppliers)
+                $suppliers
             );
         } catch (\Exception $e) {
             return $this->error();

@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\Traits;
 
-use Illuminate\Http\Request;
-
 trait HasPagination
 {
-    protected int $paginate;
+    protected int $paginate = 0;
 
-    public function __construct(Request $request)
+    protected function bootHasPaginate(int $paginate): void
     {
         $paginationDefault = config('pagination.default');
         $paginationMaximum = config('pagination.maximum');
 
-        $this->paginate = $request->paginate ?? $paginationDefault;
-        $this->paginate = ($this->paginate > $paginationMaximum)
+        $paginate = $paginate ?? $paginationDefault;
+
+        $this->paginate = $paginate > $paginationMaximum
             ? $paginationMaximum
-            : $this->paginate;
+            : $paginate;
     }
 }
