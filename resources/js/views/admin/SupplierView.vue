@@ -108,7 +108,6 @@
         </tr>
       </template>
     </DataTable>
-    <!-- <TheTable :columns="columns" :server="server" search sort pagination /> -->
   </div>
   <Transition name="slide-fade">
     <div v-if="isError" class="fixed top-4 right-4 z-50">
@@ -123,9 +122,7 @@ import { useAuthStore } from '@/store/auth'
 import { useSupplierStore } from '@/store/supplier'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
-// import { h } from 'gridjs'
 
-// import TheTable from '@/components/UI/table/TheTable.vue'
 import DataTable from '@/components/UI/table/DataTable.vue'
 import BaseButton from '@/components/UI/buttons/BaseButton.vue'
 import BaseModal from '@/components/UI/modal/BaseModal.vue'
@@ -162,7 +159,20 @@ const config = computed(() => {
       headers: {
         Authorization: `Bearer ${token.value}`
       },
-      dataSrc: 'data'
+      dataFilter: function (d) {
+        const json = JSON.parse(d)
+        const { data } = json
+        json.recordsTotal = data.total
+        json.recordsFiltered = data.total
+        json.data = data
+
+        return JSON.stringify(json)
+      },
+      data: function (d) {
+        d.page = Math.ceil((d.start + 1) / d.length)
+        d.per_page = d.length
+      },
+      dataSrc: 'data.data'
     },
     columnDefs: [
       { target: 0, visible: false },
