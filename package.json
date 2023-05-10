@@ -29,7 +29,7 @@
     "@vuelidate/core": "^2.0.2",
     "@vuelidate/validators": "^2.0.2",
     "crypto-js": "^4.1.1",
-    "gridjs": "^6.0.6",
+    "datatables.net-dt": "^1.13.4",
     "pinia": "^2.0.33",
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^3.2.36",
