@@ -47,7 +47,10 @@ class FaqController extends BaseController
                 ->first();
 
             return $faq
-                ? FaqResource::make($faq)
+                ? $this->success(
+                        config('general.messages.request.success'),
+                        FaqResource::make($faq)
+                    )
                 : $this->error(config('general.messages.model.not_found'));
         } catch (\Exception $e) {
             return $this->error();
