@@ -47,7 +47,10 @@ class CategoryController extends BaseController
                 ->first();
 
             return $category
-                ? CategoryResource::make($category)
+                ? $this->success(
+                        config('general.messages.request.success'),
+                        CategoryResource::make($category)
+                    )
                 : $this->error(config('general.messages.model.not_found'));
         } catch (\Exception $e) {
             return $this->error();
