@@ -11,7 +11,7 @@ trait GeneratesUniqueSlug
     protected static function bootGeneratesUniqueSlug(): void
     {
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->slug);
+            $model->slug = $model->generateUniqueSlug($model->slug ?? '');
         });
     }
 
