@@ -98,6 +98,11 @@ const lists = ref([
     icon: 'mdi:monitor-dashboard'
   },
   {
+    name: 'Categories',
+    link: '/categories',
+    icon: 'fluent-mdl2:product-variant'
+  },
+  {
     name: 'Supplier',
     link: '/supplier',
     icon: 'mdi:truck-outline'
