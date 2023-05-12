@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 use App\Models\Admin\Admin;
-use App\Models\Image\Image;
 use Database\Factories\AdminFactory;
 use Illuminate\Http\JsonResponse;
 

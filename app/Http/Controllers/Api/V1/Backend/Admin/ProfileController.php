@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\Admin\ProfileRequest;
 use App\Http\Resources\AdminResource;
 use App\Models\Admin\Admin;
+use Exception;
 
 class ProfileController extends BaseController
 {
@@ -19,7 +20,7 @@ class ProfileController extends BaseController
             return $admin
             ? new AdminResource($admin)
             : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -36,7 +37,7 @@ class ProfileController extends BaseController
             $admin->update($request->validated());
 
             return $this->success(config('general.messages.model.updated'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

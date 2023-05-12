@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\CategoryRequest;
 use App\Http\Resources\CategoryResource;
 use App\Models\Category\Category;
+use Exception;
 
 class CategoryController extends BaseController
 {
@@ -20,7 +23,7 @@ class CategoryController extends BaseController
                 config('general.messages.request.success'),
                 $categories
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -34,7 +37,7 @@ class CategoryController extends BaseController
                 config('general.messages.model.created'),
                 CategoryResource::make($category)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -48,11 +51,11 @@ class CategoryController extends BaseController
 
             return $category
                 ? $this->success(
-                        config('general.messages.request.success'),
-                        CategoryResource::make($category)
-                    )
+                    config('general.messages.request.success'),
+                    CategoryResource::make($category)
+                )
                 : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -74,7 +77,7 @@ class CategoryController extends BaseController
                 config('general.messages.model.updated'),
                 CategoryResource::make($category)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -93,7 +96,7 @@ class CategoryController extends BaseController
             $category->delete();
 
             return $this->success(config('general.messages.model.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

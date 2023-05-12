@@ -19,8 +19,8 @@ class Admin extends Authenticatable implements CipherSweetEncrypted, HasMedia
     use AdminScope;
     use HasApiTokens;
 
-    const ACCESS_TOKEN = 'api-admin';
-    const AVATAR_MEDIA_ATTRIBUTE = 'avatar';
+    public const ACCESS_TOKEN = 'api-admin';
+    public const AVATAR_MEDIA_ATTRIBUTE = 'avatar';
 
     protected $fillable = [
         'first_name',

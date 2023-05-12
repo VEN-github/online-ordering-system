@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\Admin\PasswordRequest;
 use App\Models\Admin\Admin;
 use Illuminate\Support\Facades\Hash;
+use Exception;
 
 class PasswordController extends BaseController
 {
@@ -27,7 +28,7 @@ class PasswordController extends BaseController
             ]);
 
             return $this->success(config('general.messages.model.updated'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

@@ -31,7 +31,7 @@ trait AdminMethod
 
     public function decryptRow(): void
     {
-        if (! static::$isDecryptRowDisabled) {
+        if ( ! static::$isDecryptRowDisabled) {
             $this->setRawAttributes(
                 static::$cipherSweetEncryptedRow->decryptRow($this->getAttributes()),
                 true

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Backend;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -22,7 +24,7 @@ class SupplierRequest extends FormRequest
         return [
             'name' => ['required', 'max:100'],
             'city' => ['required', 'max:90'],
-            'country' => ['required', 'max:60']
+            'country' => ['required', 'max:60'],
         ];
     }
 }

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\FaqRequest;
 use App\Http\Resources\FaqResource;
 use App\Models\Faq\Faq;
+use Exception;
 
 class FaqController extends BaseController
 {
@@ -20,7 +23,7 @@ class FaqController extends BaseController
                 config('general.messages.request.success'),
                 $faqs
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -34,7 +37,7 @@ class FaqController extends BaseController
                 config('general.messages.model.created'),
                 FaqResource::make($faq)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -48,11 +51,11 @@ class FaqController extends BaseController
 
             return $faq
                 ? $this->success(
-                        config('general.messages.request.success'),
-                        FaqResource::make($faq)
-                    )
+                    config('general.messages.request.success'),
+                    FaqResource::make($faq)
+                )
                 : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -74,7 +77,7 @@ class FaqController extends BaseController
                 config('general.messages.model.updated'),
                 FaqResource::make($faq)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -93,7 +96,7 @@ class FaqController extends BaseController
             $faq->delete();
 
             return $this->success(config('general.messages.model.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

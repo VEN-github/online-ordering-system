@@ -8,6 +8,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\SupplierRequest;
 use App\Http\Resources\SupplierResource;
 use App\Models\Supplier\Supplier;
+use Exception;
 
 class SupplierController extends BaseController
 {
@@ -22,7 +23,7 @@ class SupplierController extends BaseController
                 config('general.messages.request.success'),
                 $suppliers
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -36,7 +37,7 @@ class SupplierController extends BaseController
                 config('general.messages.model.created'),
                 $supplier
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -47,9 +48,9 @@ class SupplierController extends BaseController
             $supplier = Supplier::find($id);
 
             return $supplier
-            ? new SupplierResource($supplier)
-            : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+                ? new SupplierResource($supplier)
+                : $this->error(config('general.messages.model.not_found'));
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -59,7 +60,9 @@ class SupplierController extends BaseController
         try {
             $supplier = Supplier::find($id);
 
-            if (is_null($supplier)) return $this->error(config('general.messages.model.not_found'));
+            if (is_null($supplier)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
 
             $supplier->update($request->validated());
 
@@ -67,7 +70,7 @@ class SupplierController extends BaseController
                 config('general.messages.model.updated'),
                 $supplier
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -77,12 +80,14 @@ class SupplierController extends BaseController
         try {
             $supplier = Supplier::find($id);
 
-            if (is_null($supplier)) return $this->error(config('general.messages.model.not_found'));
+            if (is_null($supplier)) {
+                return $this->error(config('general.messages.model.not_found'));
+            }
 
             $supplier->delete();
 
             return $this->success(config('general.messages.model.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

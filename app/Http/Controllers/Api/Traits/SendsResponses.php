@@ -15,7 +15,7 @@ trait SendsResponses
         return response()->json([
             'status' => true,
             'message' => $message ?? config('general.messages.request.success'),
-            'data' => $data
+            'data' => $data,
         ], JsonResponse::HTTP_OK);
     }
 

@@ -13,7 +13,7 @@ trait HasPagination
         $paginationDefault = config('pagination.default');
         $paginationMaximum = config('pagination.maximum');
 
-        $paginate = $paginate ?? $paginationDefault;
+        $paginate ??= $paginationDefault;
 
         $this->paginate = $paginate > $paginationMaximum
             ? $paginationMaximum

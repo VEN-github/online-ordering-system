@@ -18,9 +18,9 @@ class BaseController extends Controller
     {
         $this->bootHasPaginate(
             (int) $request->input(
-                    'paginate',
-                    config('pagination.default')
-                )
+                'paginate',
+                config('pagination.default')
+            )
         );
     }
 }

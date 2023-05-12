@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Traits;
 
 use Illuminate\Support\Str;
@@ -28,7 +30,7 @@ trait GeneratesUniqueSlug
 
         if ($count > 0) {
             $randomString = Str::random(30);
-            $slug .= '-' . substr($randomString,0,4) . ($count + 1);
+            $slug .= '-' . substr($randomString, 0, 4) . ($count + 1);
         }
 
         return $slug;

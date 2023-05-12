@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Faq;
 
 use App\Models\Faq\Traits\FaqMethod;
