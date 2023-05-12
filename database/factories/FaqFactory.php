@@ -24,7 +24,7 @@ class FaqFactory extends Factory
         return [
             'question' => $this->faker->sentence,
             'slug' => $this->faker->slug,
-            'answer' => $this->faker->paragraph,
+            'answer' => $this->faker->sentence,
             'active' => $this->faker->boolean,
         ];
     }
