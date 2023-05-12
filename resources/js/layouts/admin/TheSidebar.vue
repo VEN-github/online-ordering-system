@@ -106,6 +106,11 @@ const lists = ref([
     name: 'Supplier',
     link: '/supplier',
     icon: 'mdi:truck-outline'
+  },
+  {
+    name: 'FAQs',
+    link: '/faqs',
+    icon: 'wpf:faq'
   }
 ])
 </script>
