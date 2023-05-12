@@ -12,8 +12,8 @@ return new class () extends Migration {
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->unique();
+            $table->string('name')->index();
+            $table->string('slug')->unique()->index();
             $table->timestamps();
             $table->softDeletes();
         });

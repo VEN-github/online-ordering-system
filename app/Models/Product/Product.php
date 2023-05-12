@@ -7,6 +7,7 @@ use App\Models\Product\Traits\ProductRelationship;
 use App\Models\Product\Traits\ProductScope;
 use App\Models\Traits\GeneratesUniqueSlug;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Spatie\MediaLibrary\HasMedia;
 
 class Product extends Model implements HasMedia
@@ -15,6 +16,7 @@ class Product extends Model implements HasMedia
     use ProductMethod;
     use ProductRelationship;
     use ProductScope;
+    use SoftDeletes;
 
     protected $fillable = [
         'name',

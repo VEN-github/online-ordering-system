@@ -5,86 +5,95 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Backend\SupplierRequest;
-use App\Http\Resources\Api\Backend\SupplierResource;
-use App\Models\Supplier\Supplier;
+use App\Http\Requests\Api\Backend\CategoryRequest;
+use App\Http\Resources\CategoryResource;
+use App\Models\Category\Category;
 use Exception;
 
-class SupplierController extends BaseController
+class CategoryController extends BaseController
 {
     public function index()
     {
         try {
-            $suppliers = Supplier::query()
+            $categories = Category::query()
                 ->latest()
                 ->paginate($this->paginate);
 
             return $this->success(
                 config('general.messages.request.success'),
-                $suppliers
+                $categories
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function store(SupplierRequest $request)
+    public function store(CategoryRequest $request)
     {
         try {
-            $supplier = Supplier::create($request->validated());
+            $category = Category::create($request->validated());
 
             return $this->success(
                 config('general.messages.model.created'),
-                $supplier
+                CategoryResource::make($category)
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function show(string $id)
+    public function show(string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $category = Category::query()
+                ->whereSlug($slug)
+                ->first();
 
-            return $supplier
-                ? new SupplierResource($supplier)
+            return $category
+                ? $this->success(
+                    config('general.messages.request.success'),
+                    CategoryResource::make($category)
+                )
                 : $this->error(config('general.messages.model.not_found'));
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function update(SupplierRequest $request, string $id)
+    public function update(CategoryRequest $request, string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $category = Category::query()
+                ->whereSlug($slug)
+                ->first();
 
-            if (is_null($supplier)) {
+            if (is_null($category)) {
                 return $this->error(config('general.messages.model.not_found'));
             }
 
-            $supplier->update($request->validated());
+            $category->update($request->validated());
 
             return $this->success(
                 config('general.messages.model.updated'),
-                $supplier
+                CategoryResource::make($category)
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $category = Category::query()
+                ->whereSlug($slug)
+                ->first();
 
-            if (is_null($supplier)) {
+            if (is_null($category)) {
                 return $this->error(config('general.messages.model.not_found'));
             }
 
-            $supplier->delete();
+            $category->delete();
 
             return $this->success(config('general.messages.model.deleted'));
         } catch (Exception $e) {

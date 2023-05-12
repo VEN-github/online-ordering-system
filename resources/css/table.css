@@ -1,0 +1,44 @@
+#data-table tbody tr td {
+  @apply whitespace-nowrap px-3 py-4 text-base text-gray-600;
+}
+
+.table-top,
+.table-bottom {
+  @apply flex flex-col justify-between space-y-4 py-4 sm:flex-row sm:items-center sm:space-y-0;
+}
+
+.dataTables_filter {
+  @apply ml-auto;
+}
+
+.dataTables_filter input[type='search'] {
+  @apply ml-0.5 appearance-none rounded-lg border border-slate-300 px-3 py-2 font-medium outline-none sm:ml-3;
+}
+
+.table-wrapper {
+  @apply min-w-full overflow-x-auto rounded-lg shadow ring-1 ring-black ring-opacity-5 2xl:overflow-x-hidden;
+}
+
+.dataTables_paginate {
+  @apply flex flex-wrap space-x-1 text-slate-600;
+}
+
+.dataTables_paginate span {
+  @apply flex items-center space-x-1;
+}
+
+.paginate_button {
+  @apply flex h-8 min-w-[2rem] cursor-pointer items-center justify-center rounded-full bg-slate-200 px-3 leading-tight transition-colors hover:bg-slate-300 focus:bg-slate-300;
+}
+
+.paginate_button.current {
+  @apply bg-emerald-500 text-white;
+}
+
+.paginate_button.disabled {
+  @apply pointer-events-none opacity-60;
+}
+
+.dataTables_empty {
+  @apply whitespace-nowrap px-4 py-3 text-center text-base sm:px-5;
+}

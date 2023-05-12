@@ -2,6 +2,8 @@
 @import 'tailwindcss/components';
 @import './button.css';
 @import './form.css';
+@import './table.css';
+@import './badge.css';
 @import 'tailwindcss/utilities';
 
 .sidebar-link.active {

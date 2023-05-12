@@ -5,86 +5,95 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Backend\SupplierRequest;
-use App\Http\Resources\Api\Backend\SupplierResource;
-use App\Models\Supplier\Supplier;
+use App\Http\Requests\Api\Backend\FaqRequest;
+use App\Http\Resources\FaqResource;
+use App\Models\Faq\Faq;
 use Exception;
 
-class SupplierController extends BaseController
+class FaqController extends BaseController
 {
     public function index()
     {
         try {
-            $suppliers = Supplier::query()
+            $faqs = Faq::query()
                 ->latest()
                 ->paginate($this->paginate);
 
             return $this->success(
                 config('general.messages.request.success'),
-                $suppliers
+                $faqs
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function store(SupplierRequest $request)
+    public function store(FaqRequest $request)
     {
         try {
-            $supplier = Supplier::create($request->validated());
+            $faq = Faq::create($request->validated());
 
             return $this->success(
                 config('general.messages.model.created'),
-                $supplier
+                FaqResource::make($faq)
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function show(string $id)
+    public function show(string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $faq = Faq::query()
+                ->whereSlug($slug)
+                ->first();
 
-            return $supplier
-                ? new SupplierResource($supplier)
+            return $faq
+                ? $this->success(
+                    config('general.messages.request.success'),
+                    FaqResource::make($faq)
+                )
                 : $this->error(config('general.messages.model.not_found'));
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function update(SupplierRequest $request, string $id)
+    public function update(FaqRequest $request, string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $faq = Faq::query()
+                ->whereSlug($slug)
+                ->first();
 
-            if (is_null($supplier)) {
+            if (is_null($faq)) {
                 return $this->error(config('general.messages.model.not_found'));
             }
 
-            $supplier->update($request->validated());
+            $faq->update($request->validated());
 
             return $this->success(
                 config('general.messages.model.updated'),
-                $supplier
+                FaqResource::make($faq)
             );
         } catch (Exception $e) {
             return $this->error();
         }
     }
 
-    public function destroy(string $id)
+    public function destroy(string $slug)
     {
         try {
-            $supplier = Supplier::find($id);
+            $faq = Faq::query()
+                ->whereSlug($slug)
+                ->first();
 
-            if (is_null($supplier)) {
+            if (is_null($faq)) {
                 return $this->error(config('general.messages.model.not_found'));
             }
 
-            $supplier->delete();
+            $faq->delete();
 
             return $this->success(config('general.messages.model.deleted'));
         } catch (Exception $e) {

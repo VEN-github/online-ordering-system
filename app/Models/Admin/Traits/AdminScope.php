@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models\Admin\Traits;
 
-use App\Models\Admin\Admin;
 use Illuminate\Database\Eloquent\Builder;
 
 trait AdminScope

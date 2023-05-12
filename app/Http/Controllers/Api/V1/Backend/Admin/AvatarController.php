@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\Admin\AvatarRequest;
 use App\Models\Admin\Admin;
+use Exception;
 
 class AvatarController extends BaseController
 {
@@ -22,7 +25,7 @@ class AvatarController extends BaseController
                 ->toMediaCollection(Admin::AVATAR_MEDIA_ATTRIBUTE);
 
             return $this->success(config('general.messages.model.updated'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e);
         }
     }
@@ -39,7 +42,7 @@ class AvatarController extends BaseController
             $admin->avatar()->delete();
 
             return $this->success();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

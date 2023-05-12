@@ -6,7 +6,7 @@ namespace App\Http\Requests\Api\Backend;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class SupplierRequest extends FormRequest
+class CategoryRequest extends FormRequest
 {
     /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
@@ -22,9 +22,8 @@ class SupplierRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => ['required', 'max:100'],
-            'city' => ['required', 'max:90'],
-            'country' => ['required', 'max:60'],
+            'name' => ['required', 'string', 'max:255'],
+            'slug' => ['nullable'],
         ];
     }
 }

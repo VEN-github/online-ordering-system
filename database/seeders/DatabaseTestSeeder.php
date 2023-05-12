@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Category\Category;
+use App\Models\Faq\Faq;
 use App\Models\Supplier\Supplier;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -14,15 +15,16 @@ class DatabaseTestSeeder extends Seeder
     /** Run the database seeds. */
     public function run(): void
     {
-        Artisan::call('migrate:fresh', ['--force' => true]);
-
-        $this->call([
-            AdminSeeder::class,
-            CipherSweetSeeder::class
-        ]);
-
+        $this->command->info('Running Supplier Seeder...');
         Supplier::factory()->count(100)->create();
+        $this->command->info('Supplier Seeded Successfully.' . "\n");
 
-        Category::factory()->count(1)->create();
+        $this->command->info('Running Category Seeder...');
+        Category::factory()->count(100)->create();
+        $this->command->info('Category Seeded Successfully.' . "\n");
+
+        $this->command->info('Running Faq Seeder...');
+        Faq::factory()->count(100)->create();
+        $this->command->info('Faq Seeded Successfully.');
     }
 }
