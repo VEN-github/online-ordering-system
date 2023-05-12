@@ -11,13 +11,13 @@ trait GeneratesUniqueSlug
     protected static function bootGeneratesUniqueSlug(): void
     {
         static::creating(function ($model) {
-            $model->slug = $model->generateUniqueSlug($model->slug ?? '');
+            $model->slug = $model->generateUniqueSlug($model->slug);
         });
     }
 
     protected function generateUniqueSlug(?string $slug = null): string
     {
-        if (empty(trim($slug))) {
+        if (is_null($slug) || empty(trim($slug))) {
             $slug = Str::random(4);
         }
 
