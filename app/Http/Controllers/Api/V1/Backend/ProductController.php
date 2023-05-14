@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers\Api\V1\Backend;
 
-use App\Actions\Product\StoreAttributes;
 use App\Actions\StoreImages;
 use App\Actions\Product\StoreVariations;
 use App\Http\Controllers\Api\BaseController;
@@ -105,11 +104,6 @@ class ProductController extends BaseController
                 $collection
             );
 
-            StoreAttributes::run(
-                $product,
-                $request->get('attributes') ?? []
-            );
-
             StoreVariations::run(
                 $product,
                 $request->get('variations') ?? []
@@ -144,8 +138,6 @@ class ProductController extends BaseController
                 $product,
                 Product::getImageCollection()
             );
-
-            StoreAttributes::run($product, []);
 
             StoreVariations::run($product, []);
 
