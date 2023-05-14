@@ -13,9 +13,9 @@ trait ProductMethod
     use HasFactory;
     use InteractsWithMedia;
 
-    protected static function newFactory(): Factory
+    protected static function getHighlightImageCollection(): string
     {
-        return ProductFactory::new();
+        return static::HIGHLIGHT_IMAGE_COLLECTION ?? '';
     }
 
     protected static function getImageCollection(): string
@@ -28,10 +28,22 @@ trait ProductMethod
         return static::loadMissing(get_class_methods(ProductRelationship::class));
     }
 
+    protected static function newFactory(): Factory
+    {
+        return ProductFactory::new();
+    }
+
     public function registerMediaCollections(): void
     {
+        $acceptedImageMimeTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+        $disk = 'public-product-photos';
+
         $this->addMediaCollection(static::getImageCollection())
-            ->acceptsMimeTypes(['image/jpeg'])
-            ->useDisk('public-product-photos');
+            ->acceptsMimeTypes($acceptedImageMimeTypes)
+            ->useDisk($disk);
+
+        $this->addMediaCollection(static::getHighlightImageCollection())
+            ->acceptsMimeTypes($acceptedImageMimeTypes)
+            ->useDisk($disk);
     }
 }

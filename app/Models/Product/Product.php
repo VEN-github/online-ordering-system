@@ -21,16 +21,19 @@ class Product extends Model implements HasMedia
     protected $fillable = [
         'name',
         'slug',
+        'sku',
         'is_featured',
         'is_active',
         'description',
         'category_id',
-        'price',
+        'orig_price',
         'discounted_price',
         'standard_shipping_price',
         'express_shipping_price',
         'supplier_id',
+        'stocks',
     ];
 
     protected const IMAGE_COLLECTION = 'images';
+    protected const HIGHLIGHT_IMAGE_COLLECTION = 'highlight_image';
 }

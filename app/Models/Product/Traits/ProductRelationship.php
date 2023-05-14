@@ -23,6 +23,13 @@ trait ProductRelationship
         return $this->belongsTo(Category::class);
     }
 
+    public function highlightImages(): HasMany
+    {
+        return $this->hasMany(Media::class, 'model_id')
+            ->where('collection_name', static::getHighlightImageCollection())
+            ->where('model_type', static::class);
+    }
+
     public function images(): HasMany
     {
         return $this->hasMany(Media::class, 'model_id')

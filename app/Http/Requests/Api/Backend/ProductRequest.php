@@ -24,14 +24,16 @@ class ProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'max:255'],
+            'sku' => ['required', 'max:255'],
             'is_featured' => ['required', 'boolean'],
             'is_active' => ['required', 'boolean'],
             'description' => ['nullable', 'max:255'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
-            'price' => ['required', 'numeric'],
+            'orig_price' => ['required', 'numeric'],
             'discounted_price' => ['required', 'numeric'],
             'standard_shipping_price' => ['required', 'numeric'],
             'express_shipping_price' => ['required', 'numeric'],
+            'stocks' => ['nullable'],
             'supplier_id' => ['required', 'integer', 'exists:suppliers,id'],
         ];
     }

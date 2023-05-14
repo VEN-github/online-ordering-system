@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Actions\Product\StoreAttributes;
-use App\Actions\Product\StoreImages;
+use App\Actions\StoreImages;
 use App\Actions\Product\StoreVariations;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\ProductRequest;
@@ -33,18 +33,19 @@ class ProductController extends BaseController
     {
         try {
             $product = Product::create($request->validated());
+            $highlight = Product::getHighlightImageCollection();
             $collection = Product::getImageCollection();
+
+            StoreImages::runIf(
+                $request->hasFile($highlight),
+                $product,
+                $highlight
+            );
 
             StoreImages::runIf(
                 $request->hasFile($collection),
                 $product,
                 $collection
-            );
-
-            StoreAttributes::runIf(
-                $request->has('attributes'),
-                $product,
-                $request->get('attributes')
             );
 
             StoreVariations::runIf(
