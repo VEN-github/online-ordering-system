@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->string('code');
-            $table->json('attributes');
-            $table->unsignedBigInteger('price');
+            $table->string('name');
+            $table->string('slug')->unique()->index();
+            $table->json('options');
             $table->unsignedMediumInteger('stock');
             $table->unsignedMediumInteger('order');
             $table->unsignedBigInteger('product_id');

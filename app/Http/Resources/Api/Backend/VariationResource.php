@@ -15,11 +15,11 @@ class VariationResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
-            'code' => $this->code,
-            'attributes' => $this->attributes,
-            'price' => $this->price,
+            'id' => $this->id,
+            'name' => $this->name,
+            'slug' => $this->slug,
+            'options' => $this->options,
             'stock' => $this->stock,
-            'order' => $this->order,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

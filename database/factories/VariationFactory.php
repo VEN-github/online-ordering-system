@@ -20,7 +20,15 @@ class VariationFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => $this->faker->name,
+            'slug' => $this->faker->slug,
+            'options' => [
+                'option_1' => $this->faker->name,
+                'option_2' => $this->faker->name,
+            ],
+            'stock' => $this->faker->numberBetween(1, 100),
+            'order' => $this->faker->numberBetween(1, 100),
+            'product_id' => 1,
         ];
     }
 }

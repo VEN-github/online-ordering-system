@@ -12,27 +12,12 @@ class StoreVariations
     public function handle(Product $product, array $values): void
     {
         $variations = [];
-        $originalKeys = ['price', 'stock', 'code'];
 
         $product->variations()->delete();
 
         foreach ($values as $index => $variation) {
-            $originalAttributes = array_intersect_key(
-                $variation,
-                array_flip($originalKeys)
-            );
-
-            $originalAttributes['order'] = $index;
-
-            $extraAttributes = array_diff_key(
-                $variation,
-                array_flip($originalKeys)
-            );
-
-            $variations[] = array_merge(
-                ['attributes' => $extraAttributes],
-                $originalAttributes
-            );
+            $variation['order'] = $index;
+            $variations[] = $variation;
         }
 
         if ($variations) {
