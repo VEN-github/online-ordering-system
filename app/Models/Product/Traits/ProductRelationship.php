@@ -13,11 +13,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait ProductRelationship
 {
-    public function attributes(): HasMany
-    {
-        return $this->hasMany(Attribute::class);
-    }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
