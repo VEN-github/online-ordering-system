@@ -27,11 +27,7 @@ class ProductResource extends JsonResource
             'standard_shipping_price' => $this->standard_shipping_price,
             'express_shipping_price' => $this->express_shipping_price,
             'supplier' => SupplierResource::make($this->whenLoaded('supplier')),
-            'variations' => $this->whenLoaded('variations')
-                ? VariationCollection::make(
-                        VariationResource::collection($this->whenLoaded('variations'))
-                    )
-                : [],
+            'variations' => VariationResource::collection($this->whenLoaded('variations')),
             'highlight_image' => $this->whenLoaded('highlightImages')
                 ->map(
                     fn ($image) => $image->getUrl()

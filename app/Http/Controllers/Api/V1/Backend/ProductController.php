@@ -90,6 +90,8 @@ class ProductController extends BaseController
                 ->eagerLoadRelationships()
                 ->whereSlug($slug)
                 ->first();
+            $highlight = Product::getHighlightImageCollection();
+            $collection = Product::getImageCollection();
 
             if (is_null($product)) {
                 return $this->error(config('general.messages.model.not_found'));
@@ -97,7 +99,10 @@ class ProductController extends BaseController
 
             $product->update($request->validated());
 
-            $collection = Product::getImageCollection();
+            StoreImages::run(
+                $product,
+                $highlight
+            );
 
             StoreImages::run(
                 $product,
@@ -137,6 +142,11 @@ class ProductController extends BaseController
             StoreImages::run(
                 $product,
                 Product::getImageCollection()
+            );
+
+            StoreImages::run(
+                $product,
+                Product::getHighlightImageCollection()
             );
 
             StoreVariations::run($product, []);
