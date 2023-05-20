@@ -41,7 +41,7 @@ export const useProductStore = defineStore('product', {
     async addProduct(models, token) {
       try {
         const res = await axios.post('/api/admin/products', models, {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'multipart/form-data' }
         })
         console.log(res)
       } catch (error) {

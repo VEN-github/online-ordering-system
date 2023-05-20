@@ -431,12 +431,12 @@ async function getSuppliers() {
 
 function handleHighlightImage(fileItems) {
   const file = fileItems.map((fileItem) => fileItem.file)
-  models.highlightImage = file[0].name
+  models.highlightImage = file[0]
 }
 
 function handleImages(fileItems) {
   const files = fileItems.map((fileItem) => fileItem.file)
-  models.images = files.map((file) => file.name)
+  models.images = files.map((file) => file)
 }
 
 function toggleVariation() {
@@ -487,6 +487,10 @@ async function addProduct() {
     sku: models.sku
     // variations: models.variation
   }
+
+  let file = new FormData()
+  file.append('file', formData.highlight_image)
+  file.append('file', formData.images)
 
   try {
     await productStore.addProduct(formData, token.value)
