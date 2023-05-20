@@ -80,8 +80,10 @@
     </BaseModal>
   </Teleport>
   <div class="flex items-center justify-between space-x-4 py-5 lg:py-6">
-    <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Categories</h2>
-    <BaseButton mode="primary" size="lg" @click="toggleForm('add')">Add Category</BaseButton>
+    <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Products</h2>
+    <BaseButton mode="primary" size="lg" link="/products/create" is-link>
+      Add New Product
+    </BaseButton>
   </div>
   <div class="mt-5 flow-root">
     <DataTable :config="config">
@@ -269,11 +271,11 @@ function closeAlert() {
   isError.value = false
 }
 
-function toggleForm(mode) {
-  resetForm()
-  currentMode.value = mode
-  isOpen.value = !isOpen.value
-}
+// function toggleForm(mode) {
+//   resetForm()
+//   currentMode.value = mode
+//   isOpen.value = !isOpen.value
+// }
 
 function detectClickOutside(event) {
   if (event.target.classList.contains('modal-overlay')) {
