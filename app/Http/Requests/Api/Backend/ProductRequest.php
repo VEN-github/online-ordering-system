@@ -30,7 +30,7 @@ class ProductRequest extends FormRequest
             'description' => ['nullable', 'max:255'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
             'orig_price' => ['required', 'numeric'],
-            'discounted_price' => ['required', 'numeric'],
+            'discounted_price' => ['nullable'],
             'standard_shipping_price' => ['required', 'numeric'],
             'express_shipping_price' => ['required', 'numeric'],
             'stocks' => ['nullable'],
