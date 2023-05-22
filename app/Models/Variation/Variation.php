@@ -19,7 +19,9 @@ class Variation extends Model
     protected $fillable = [
         'name',
         'slug',
-        'options',
+        // 'options',
+        'size',
+        'color',
         'stock',
         'sku',
         'order',
