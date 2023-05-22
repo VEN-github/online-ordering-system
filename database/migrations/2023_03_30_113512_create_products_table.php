@@ -14,7 +14,7 @@ return new class () extends Migration {
             $table->id();
             $table->string('name');
             $table->string('slug');
-            $table->string('sku');
+            $table->string('sku')->nullable();
             $table->boolean('is_featured')->default(0);
             $table->boolean('is_active')->default(0);
             $table->longText('description')->nullable();
