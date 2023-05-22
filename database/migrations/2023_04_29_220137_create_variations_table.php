@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('slug')->unique()->index();
             $table->json('options');
             $table->unsignedMediumInteger('stock');
+            $table->string('sku');
             $table->unsignedMediumInteger('order');
             $table->unsignedBigInteger('product_id');
             $table->timestamps();

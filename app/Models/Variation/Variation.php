@@ -21,6 +21,7 @@ class Variation extends Model
         'slug',
         'options',
         'stock',
+        'sku',
         'order',
         'product_id',
     ];

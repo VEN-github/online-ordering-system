@@ -27,6 +27,7 @@ class VariationFactory extends Factory
                 'option_2' => $this->faker->name,
             ],
             'stock' => $this->faker->numberBetween(1, 100),
+            'sku' => $this->faker->slug,
             'order' => $this->faker->numberBetween(1, 100),
             'product_id' => 1,
         ];
