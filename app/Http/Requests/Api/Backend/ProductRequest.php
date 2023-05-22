@@ -24,7 +24,7 @@ class ProductRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'slug' => ['nullable', 'max:255'],
-            'sku' => ['required', 'max:255'],
+            'sku' => ['nullable'],
             'is_featured' => ['required', 'boolean'],
             'is_active' => ['required', 'boolean'],
             'description' => ['nullable', 'max:255'],
