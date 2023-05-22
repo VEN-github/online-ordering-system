@@ -9,8 +9,12 @@ class StoreVariations
 {
     use AsAction;
 
-    public function handle(Product $product, array $values): void
+    public function handle(Product $product, mixed $values): void
     {
+        if (!is_array($values)) {
+            return;
+        }
+
         $variations = [];
 
         $product->variations()->delete();
