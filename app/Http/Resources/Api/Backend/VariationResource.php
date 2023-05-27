@@ -16,10 +16,10 @@ class VariationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'options' => $this->options,
+            'size' => $this->size,
+            'color' => $this->color,
             'stock' => $this->stock,
+            'sku' => $this->sku,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

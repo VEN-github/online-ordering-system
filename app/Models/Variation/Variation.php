@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Variation extends Model
 {
-    use GeneratesUniqueSlug;
+    // use GeneratesUniqueSlug;
     use VariationMethod;
     use VariationRelationship;
     use VariationScope;
