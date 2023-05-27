@@ -17,7 +17,7 @@ class Variation extends Model
     use VariationScope;
 
     protected $fillable = [
-        'slug',
+        // 'slug',
         // 'options',
         'size',
         'color',
