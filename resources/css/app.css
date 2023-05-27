@@ -1,10 +1,8 @@
 @import 'tailwindcss/base';
 @import 'tailwindcss/components';
-@import './button.css';
-@import './form.css';
-@import './table.css';
-@import './badge.css';
+@import './components/components.css';
 @import 'tailwindcss/utilities';
+@import './transition.css';
 
 .sidebar-link.active {
   @apply bg-gray-50;
@@ -14,7 +12,7 @@
   Enter and leave animations can use different
   durations and timing functions.
 */
-.slide-fade-enter-active {
+/* .slide-fade-enter-active {
   transition: all 0.3s ease-out;
 }
 
@@ -26,4 +24,4 @@
 .slide-fade-leave-to {
   transform: translateX(20px);
   opacity: 0;
-}
+} */
