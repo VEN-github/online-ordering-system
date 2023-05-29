@@ -1,7 +1,5 @@
 import { useAuthStore } from '@/store/auth/auth'
 
-import HomeView from '@/views/client/HomeView.vue'
-
 const routes = [
   {
     path: '/admin/login',
@@ -15,16 +13,6 @@ const routes = [
         next('/admin')
       }
     }
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('@/views/client/AboutView.vue')
   }
 ]
 
