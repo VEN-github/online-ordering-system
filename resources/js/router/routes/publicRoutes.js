@@ -1,4 +1,4 @@
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '@/store/auth/auth'
 
 import HomeView from '@/views/client/HomeView.vue'
 

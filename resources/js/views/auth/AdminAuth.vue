@@ -8,7 +8,7 @@
     </div>
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <Transition name="fade">
-        <BaseAlert v-if="isError" mode="error" class="mb-5">{{ errorMsg }}</BaseAlert>
+        <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">{{ errorMsg }}</BaseAlert>
       </Transition>
       <BaseCard>
         <form class="space-y-6" @submit.prevent="login">
@@ -45,7 +45,10 @@
                 class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-300 peer-focus:text-slate-600"
                 @click="togglePassword"
               >
-                <Icon :icon="isShowPassword ? 'ic:baseline-remove-red-eye' : 'mdi:eye-off'" class="text-lg" />
+                <Icon
+                  :icon="isShowPassword ? 'ic:baseline-remove-red-eye' : 'mdi:eye-off'"
+                  class="text-lg"
+                />
               </div>
             </div>
             <FormValidation v-if="v$.password.$error"> Password is required. </FormValidation>
@@ -65,7 +68,7 @@
 <script setup>
 import { ref, reactive, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '@/store/auth/auth'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
 
