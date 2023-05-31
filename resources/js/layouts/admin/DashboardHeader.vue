@@ -57,9 +57,9 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '@/store/auth/auth'
 
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
 
 const emit = defineEmits(['toggleSidebar'])
 

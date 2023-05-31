@@ -5,3 +5,39 @@
 .fade-enter-from, .fade-leave-to {
   @apply opacity-0;
 }
+
+.fade-menu-enter-active, .fade-menu-leave-active {
+  @apply transition-opacity ease-linear duration-300
+}
+
+.fade-menu-enter-to, .fade-menu-leave-from {
+  @apply opacity-100
+}
+
+.fade-menu-enter-from, .fade-menu-leave-to {
+  @apply opacity-0
+}
+
+.slide-menu-enter-active, .slide-menu-leave-active {
+  @apply transition ease-in-out duration-300 transform
+}
+
+.slide-menu-enter-from, .slide-menu-leave-to {
+  @apply -translate-x-full
+}
+
+.slide-menu-enter-to, .slide-menu-leave-from {
+  @apply translate-x-0
+}
+
+.menu-close-enter-active, .menu-close-leave-active {
+  @apply ease-in-out duration-300
+}
+
+.menu-close-enter-to, .menu-close-leave-from {
+  @apply opacity-100
+}
+
+.menu-close-enter-from, .menu-close-leave-to {
+  @apply opacity-0
+}
