@@ -6,9 +6,9 @@
         Sign in to your account
       </h2>
     </div>
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="mx-auto mt-8 w-full max-w-md">
       <Transition name="fade">
-        <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">{{ errorMsg }}</BaseAlert>
+        <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">{{ errorMessage }}</BaseAlert>
       </Transition>
       <BaseCard>
         <form class="space-y-6" @submit.prevent="login">
@@ -88,7 +88,7 @@ const models = reactive({
 const isShowPassword = ref(false)
 const isLoading = ref(false)
 const isError = ref(false)
-const errorMsg = ref('')
+const errorMessage = ref('')
 let timeout
 
 const rules = computed(() => {
@@ -119,7 +119,7 @@ async function login() {
   } catch ({ message }) {
     isLoading.value = false
     isError.value = true
-    errorMsg.value = message
+    errorMessage.value = message
     clearErrorMessage()
   }
 }
@@ -127,7 +127,7 @@ async function login() {
 function clearErrorMessage() {
   timeout = setTimeout(() => {
     isError.value = false
-    errorMsg.value = ''
+    errorMessage.value = ''
   }, 5000)
 }
 </script>

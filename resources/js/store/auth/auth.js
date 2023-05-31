@@ -45,12 +45,9 @@ export const useAuthStore = defineStore('auth', {
     async adminLogin({ email, password }) {
       try {
         const {
-          data: { data },
-          status
+          data: { data }
         } = await api.post('/api/admin/login', { email, password })
-        if (status === 200) {
-          this.loggedAdmin = AES.encrypt(JSON.stringify(data), this.ENCRYPTION_KEY).toString()
-        }
+        this.loggedAdmin = AES.encrypt(JSON.stringify(data), this.ENCRYPTION_KEY).toString()
       } catch ({ response }) {
         handleError(response)
       }

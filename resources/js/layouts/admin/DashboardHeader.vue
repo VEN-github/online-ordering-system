@@ -31,23 +31,25 @@
               <Icon icon="tabler:chevron-down" class="ml-2 h-5 w-5 text-gray-400" />
             </span>
           </button>
-          <div
-            v-if="toggleMenu"
-            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right space-y-1.5 rounded-md bg-white p-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
-          >
-            <RouterLink
-              to="/profile"
-              class="inline-flex w-full items-center gap-x-2 rounded-md p-2 font-semibold leading-6 text-gray-700 hover:bg-gray-50"
+          <Transition name="dropdown">
+            <div
+              v-if="toggleMenu"
+              class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right space-y-1.5 rounded-md bg-white p-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
             >
-              <Icon icon="ph:user-bold" />
-              Profile
-            </RouterLink>
-            <div class="my-4 h-px bg-slate-200"></div>
-            <BaseButton is-full @click="logout">
-              <Icon icon="material-symbols:logout-rounded" />
-              Logout
-            </BaseButton>
-          </div>
+              <RouterLink
+                to="/profile"
+                class="inline-flex w-full items-center gap-x-2 rounded-md p-2 font-semibold leading-6 text-gray-700 hover:bg-gray-50"
+              >
+                <Icon icon="ph:user-bold" />
+                Profile
+              </RouterLink>
+              <div class="my-4 h-px bg-slate-200"></div>
+              <BaseButton is-full @click="logout">
+                <Icon icon="material-symbols:logout-rounded" />
+                Logout
+              </BaseButton>
+            </div>
+          </Transition>
         </div>
       </div>
     </div>
