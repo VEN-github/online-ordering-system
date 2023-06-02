@@ -80,7 +80,7 @@ import BaseButton from '@/components/UI/button/BaseButton.vue'
 import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
 
 const router = useRouter()
-const store = useAuthStore()
+const authStore = useAuthStore()
 const models = reactive({
   email: '',
   password: ''
@@ -113,7 +113,7 @@ async function login() {
     clearTimeout(timeout)
     isError.value = false
     isLoading.value = true
-    await store.adminLogin(models)
+    await authStore.adminLogin(models)
     isLoading.value = false
     router.replace('/dashboard')
   } catch ({ message }) {
