@@ -7,7 +7,7 @@ const api = axios.create({
 
 api.interceptors.request.use(function (config) {
   const store = useAuthStore()
-  const token = store.getLoggedAdmin?.token
+  const token = store.getAccessToken
   config.headers.Authorization = token ? `Bearer ${token}` : ''
   return config
 })
