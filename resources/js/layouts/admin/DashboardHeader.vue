@@ -19,15 +19,13 @@
             @click="toggleMenu = !toggleMenu"
           >
             <span class="sr-only">Open user menu</span>
-            <img
+            <BaseAvatar
               v-if="loggedAdmin?.avatar"
-              class="h-8 w-8 rounded-full bg-gray-50"
-              :src="loggedAdmin?.avatar"
-              alt="Admin Avatar"
+              :avatar="loggedAdmin?.avatar"
+              size="sm"
+              rounded
             />
-            <div v-else class="h-8 w-8 rounded-full bg-gray-200 p-1.5 text-sm uppercase">
-              <span>{{ initialsAvatar }}</span>
-            </div>
+            <AvatarInitials v-else :initials="loggedAdmin" size="sm" rounded />
             <span class="hidden lg:flex lg:items-center">
               <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
                 {{ loggedAdmin?.first_name }} {{ loggedAdmin?.last_name }}
@@ -64,7 +62,11 @@
 import { ref, computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
+import BaseAvatar from '@/components/UI/avatar/BaseAvatar.vue'
+import AvatarInitials from '@/components/UI/avatar/AvatarInitials.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 
 const emit = defineEmits(['toggleSidebar'])
@@ -75,10 +77,6 @@ const toggleMenu = ref(false)
 
 const loggedAdmin = computed(() => {
   return authStore.getLoggedAdmin
-})
-
-const initialsAvatar = computed(() => {
-  return `${loggedAdmin.value?.first_name.charAt(0)}${loggedAdmin.value?.last_name.charAt(0)}`
 })
 
 watch(toggleMenu, (value) => {
@@ -94,8 +92,17 @@ async function logout() {
     await authStore.adminLogout()
     router.replace('/admin/login')
     authStore.$reset()
-  } catch (error) {
-    console.error(error)
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 </script>

@@ -10,22 +10,16 @@
         </p>
       </div>
       <form class="md:col-span-2" @submit.prevent="changeProfile">
+        <Transition name="fade">
+          <BaseAlert v-if="avatar.error" mode="error" class="mb-5">
+            {{ avatar.errorMessage }}
+          </BaseAlert>
+        </Transition>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
-          <div class="col-span-full sm:flex sm:items-center sm:justify-between">
+          <div class="col-span-full">
             <div class="flex items-center gap-x-8">
-              <img
-                v-if="loggedAdmin?.admin?.avatar"
-                :src="loggedAdmin?.admin?.avatar"
-                alt="Avatar"
-                class="h-24 w-24 flex-none rounded-lg bg-gray-800 object-cover"
-              />
-              <div v-else class="flex-none rounded-lg bg-gray-200">
-                <span
-                  class="flex h-24 w-24 items-center justify-center text-3xl font-medium uppercase"
-                >
-                  {{ initialsAvatar }}
-                </span>
-              </div>
+              <BaseAvatar v-if="loggedAdmin?.avatar" :avatar="loggedAdmin?.avatar" />
+              <AvatarInitials v-else :initials="loggedAdmin" />
               <div>
                 <label class="btn btn-default btn--md mr-3 cursor-pointer">
                   <input
@@ -38,51 +32,67 @@
                     <Icon icon="mdi:library-edit" class="h-5 w-5" />
                   </div>
                 </label>
-                <BaseButton v-if="models.avatar" mode="danger" @click="deleteAvatar">
+                <BaseButton v-if="loggedAdmin?.avatar" mode="danger" @click="deleteAvatar">
                   <Icon icon="material-symbols:delete-outline" class="h-5 w-5" />
                 </BaseButton>
                 <p class="mt-2 text-xs leading-5 text-gray-600">JPG, GIF or PNG. 2MB max.</p>
               </div>
             </div>
-            <BaseButton v-if="isChange" mode="primary" class="mt-2 sm:mt-0" @click="saveAvatar">
-              Save
-            </BaseButton>
+          </div>
+          <div v-if="profile.error" class="col-span-full">
+            <Transition name="fade">
+              <BaseAlert mode="error">{{ profile.errorMessage }}</BaseAlert>
+            </Transition>
+          </div>
+          <div v-if="profile.success" class="col-span-full">
+            <Transition name="fade">
+              <BaseAlert mode="success">{{ profile.successMessage }}</BaseAlert>
+            </Transition>
           </div>
           <div class="sm:col-span-3">
-            <FormLabel label-id="first-name" :is-invalid="v$.firstName.$error">
+            <FormLabel label-id="first-name" :is-invalid="profileValidate.firstName.$error">
               First Name
             </FormLabel>
             <div class="mt-2">
               <FormInput
                 id="first-name"
-                v-model="models.firstName"
+                v-model="profileModels.firstName"
                 placeholder="Enter your first name"
-                :is-invalid="v$.firstName.$error"
+                :is-invalid="profileValidate.firstName.$error"
               />
             </div>
-            <FormValidation v-if="v$.firstName.$error"> First name is required. </FormValidation>
+            <FormValidation v-if="profileValidate.firstName.$error">
+              First name is required.
+            </FormValidation>
           </div>
           <div class="sm:col-span-3">
-            <FormLabel label-id="last-name" :is-invalid="v$.lastName.$error">Last Name</FormLabel>
+            <FormLabel label-id="last-name" :is-invalid="profileValidate.lastName.$error">
+              Last Name
+            </FormLabel>
             <div class="mt-2">
               <FormInput
                 id="last-name"
-                v-model="models.lastName"
+                v-model="profileModels.lastName"
                 placeholder="Enter your last name"
-                :is-invalid="v$.lastName.$error"
+                :is-invalid="profileValidate.lastName.$error"
               />
             </div>
-            <FormValidation v-if="v$.lastName.$error"> Last name is required. </FormValidation>
+            <FormValidation v-if="profileValidate.lastName.$error">
+              Last name is required.
+            </FormValidation>
           </div>
           <div class="col-span-full">
             <FormLabel label-id="email">Email Address</FormLabel>
             <div class="mt-2">
-              <FormInput id="email" v-model="models.email" type="email" disabled />
+              <FormInput id="email" v-model="profileModels.email" type="email" disabled />
             </div>
           </div>
         </div>
         <div class="mt-8 flex">
-          <BaseButton type="submit" mode="primary">Save Changes</BaseButton>
+          <BaseButton type="submit" mode="primary" :disabled="profile.loading">
+            <Icon v-if="profile.loading" icon="gg:spinner" class="animate-spin text-base" />
+            {{ profile.loading ? 'Saving...' : 'Save Changes' }}
+          </BaseButton>
         </div>
       </form>
     </div>
@@ -96,127 +106,147 @@
         </p>
       </div>
       <form class="md:col-span-2" @submit.prevent="changePassword">
+        <Transition name="fade">
+          <BaseAlert v-if="password.error" mode="error" class="mb-5">
+            {{ password.errorMessage }}
+          </BaseAlert>
+        </Transition>
+        <Transition name="fade">
+          <BaseAlert v-if="password.success" mode="success" class="mb-5">
+            {{ password.successMessage }}
+          </BaseAlert>
+        </Transition>
         <div class="grid grid-cols-1 gap-x-6 gap-y-8 sm:max-w-xl sm:grid-cols-6">
           <div class="col-span-full">
-            <FormLabel label-id="current-password" :is-invalid="vv$.password.current.$error">
+            <FormLabel label-id="current-password" :is-invalid="passwordValidate.current.$error">
               Current Password
             </FormLabel>
-            <div class="relative mt-2">
-              <FormInput
+            <div class="mt-2">
+              <FormPassword
                 id="current-password"
-                v-model="models.password.current"
-                type="password"
+                v-model="passwordModels.current"
                 placeholder="Enter your current password"
-                :is-invalid="vv$.password.current.$error"
+                :is-invalid="passwordValidate.current.$error"
               />
             </div>
-            <FormValidation v-if="vv$.password.current.$error">
+            <FormValidation v-if="passwordValidate.current.$error">
               Current password is required.
             </FormValidation>
           </div>
           <div class="col-span-full">
-            <FormLabel label-id="new-password" :is-invalid="vv$.password.new.$error">
+            <FormLabel label-id="new-password" :is-invalid="passwordValidate.new.$error">
               New Password
             </FormLabel>
-            <div class="relative mt-2">
-              <FormInput
+            <div class="mt-2">
+              <FormPassword
                 id="new-password"
-                v-model="models.password.new"
-                type="password"
+                v-model="passwordModels.new"
                 placeholder="Enter your new password"
-                :is-invalid="vv$.password.new.$error"
+                :is-invalid="passwordValidate.new.$error"
               />
             </div>
-            <FormValidation v-if="vv$.password.new.$error && vv$.password.new.required.$invalid">
+            <FormValidation
+              v-if="passwordValidate.new.$error && passwordValidate.new.required.$invalid"
+            >
               New password is required.
             </FormValidation>
-            <FormValidation v-if="vv$.password.new.$error && vv$.password.new.minLength.$invalid">
+            <FormValidation
+              v-if="passwordValidate.new.$error && passwordValidate.new.minLength.$invalid"
+            >
               New password must be at least 8 characters.
             </FormValidation>
           </div>
           <div class="col-span-full">
-            <FormLabel label-id="confirm-password" :is-invalid="vv$.password.confirm.$error">
+            <FormLabel label-id="confirm-password" :is-invalid="passwordValidate.confirm.$error">
               Confirm Password
             </FormLabel>
-            <div class="relative mt-2">
-              <FormInput
+            <div class="mt-2">
+              <FormPassword
                 id="confirm-password"
-                v-model="models.password.confirm"
-                type="password"
+                v-model="passwordModels.confirm"
                 placeholder="Re-type your new password"
-                :is-invalid="vv$.password.confirm.$error"
+                :is-invalid="passwordValidate.confirm.$error"
               />
             </div>
             <FormValidation
-              v-if="vv$.password.confirm.$error && vv$.password.confirm.required.$invalid"
+              v-if="passwordValidate.confirm.$error && passwordValidate.confirm.required.$invalid"
             >
               Confirm password is required.
             </FormValidation>
             <FormValidation
-              v-if="vv$.password.confirm.$error && vv$.password.confirm.sameAs.$invalid"
+              v-if="passwordValidate.confirm.$error && passwordValidate.confirm.sameAs.$invalid"
             >
               Password does not match.
             </FormValidation>
           </div>
         </div>
         <div class="mt-8 flex">
-          <BaseButton type="submit" mode="primary">Save Changes</BaseButton>
+          <BaseButton type="submit" mode="primary" :disabled="password.loading">
+            <Icon v-if="password.loading" icon="gg:spinner" class="animate-spin text-base" />
+            {{ password.loading ? 'Saving...' : 'Save Changes' }}
+          </BaseButton>
         </div>
       </form>
     </div>
   </div>
-  <Transition name="slide-fade">
-    <div v-if="isError" class="fixed top-4 right-4 z-50">
-      <AlertError :message="errorMsg" @close-alert="closeAlert" />
-    </div>
-  </Transition>
 </template>
 
 <script setup>
-import { ref, reactive, computed, onMounted } from 'vue'
+import { reactive, computed, onMounted } from 'vue'
+import { useAuthStore } from '@/store/auth/auth'
+import { useProfileStore } from '@/store/admin/profile'
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, sameAs } from '@vuelidate/validators'
-import { useAuthStore } from '@/store/auth'
-import { useProfileStore } from '@/store/adminProfile'
 
+import BaseAvatar from '@/components/UI/avatar/BaseAvatar.vue'
+import AvatarInitials from '@/components/UI/avatar/AvatarInitials.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
+import FormPassword from '@/components/UI/forms/FormPassword.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
-import AlertError from '@/components/UI/errors/AlertError.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
+import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
 
-const store = useAuthStore()
+const authStore = useAuthStore()
 const profileStore = useProfileStore()
-const models = reactive({
-  avatar: '',
+const avatar = reactive({
+  loading: false,
+  error: false,
+  errorMessage: '',
+  timeout: undefined
+})
+const profileModels = reactive({
   firstName: '',
   lastName: '',
-  email: '',
-  password: {
-    current: '',
-    new: '',
-    confirm: ''
-  }
+  email: ''
 })
-const isChange = ref(false)
-const isError = ref(false)
-const errorMsg = ref('')
-
-const token = computed(() => {
-  return store?.getLoggedAdmin?.token
+const profile = reactive({
+  loading: false,
+  error: false,
+  errorMessage: '',
+  success: false,
+  successMessage: '',
+  timeout: undefined
+})
+const passwordModels = reactive({
+  current: '',
+  new: '',
+  confirm: ''
+})
+const password = reactive({
+  loading: false,
+  error: false,
+  errorMessage: '',
+  success: false,
+  successMessage: '',
+  timeout: undefined
 })
 
 const loggedAdmin = computed(() => {
-  return store.getLoggedAdmin
+  return authStore.getLoggedAdmin
 })
 
-const initialsAvatar = computed(() => {
-  return `${store.getLoggedAdmin?.admin?.first_name.charAt(
-    0
-  )}${store.getLoggedAdmin?.admin?.last_name.charAt(0)}`
-})
-
-const rules = computed(() => {
+const profileRules = computed(() => {
   return {
     firstName: { required },
     lastName: { required }
@@ -225,99 +255,131 @@ const rules = computed(() => {
 
 const passwordRules = computed(() => {
   return {
-    password: {
-      current: { required },
-      new: { required, minLength: minLength(8) },
-      confirm: { required, sameAs: sameAs(models.password.new) }
-    }
+    current: { required },
+    new: { required, minLength: minLength(8) },
+    confirm: { required, sameAs: sameAs(passwordModels.new) }
   }
 })
 
-const v$ = useVuelidate(rules, models)
-const vv$ = useVuelidate(passwordRules, models)
+const profileValidate = useVuelidate(profileRules, profileModels)
+const passwordValidate = useVuelidate(passwordRules, passwordModels)
 
 onMounted(() => {
-  models.avatar = loggedAdmin.value.admin.avatar
-  models.firstName = loggedAdmin.value.admin.first_name
-  models.lastName = loggedAdmin.value.admin.last_name
-  models.email = loggedAdmin.value.admin.email
+  profileModels.firstName = loggedAdmin.value.first_name
+  profileModels.lastName = loggedAdmin.value.last_name
+  profileModels.email = loggedAdmin.value.email
 })
 
-function changeAvatar(event) {
-  models.avatar = event.target.files[0]
-  isChange.value = true
-}
-
-async function saveAvatar() {
+async function changeAvatar(event) {
   try {
-    await profileStore.changeAvatar(loggedAdmin.value.admin.id, models.avatar, token.value)
-    await store.getAdmin(loggedAdmin.value.admin.id, token.value)
+    const avatar = event.target.files[0]
+    let formData = new FormData()
+    formData.append('file', avatar)
+    await profileStore.changeAvatar(loggedAdmin.value.id, avatar)
+    await profileStore.getAdmin(loggedAdmin.value.id)
   } catch ({ message }) {
-    isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
+    avatar.error = true
+    avatar.errorMessage = message
+    clearAvatarErrorMessage()
   }
 }
 
 async function deleteAvatar() {
   try {
-    await profileStore.deleteAvatar(loggedAdmin.value.admin.id, token.value)
-    await store.getAdmin(loggedAdmin.value.admin.id, token.value)
-    models.avatar = null
+    clearTimeout(avatar.timeout)
+    await profileStore.deleteAvatar(loggedAdmin.value.id)
+    await profileStore.getAdmin(loggedAdmin.value.id)
   } catch ({ message }) {
-    isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
+    avatar.error = true
+    avatar.errorMessage = message
+    clearAvatarErrorMessage()
   }
+}
+
+function clearAvatarErrorMessage() {
+  avatar.timeout = setTimeout(() => {
+    avatar.error = false
+    avatar.errorMessage = ''
+  }, 5000)
 }
 
 async function changeProfile() {
-  const isFormCorrect = await v$.value.$validate()
+  const isFormCorrect = await profileValidate.value.$validate()
 
   if (!isFormCorrect) return
 
   try {
-    await profileStore.changeProfile(loggedAdmin.value.admin.id, token.value, models)
-    await store.getAdmin(loggedAdmin.value.admin.id, token.value)
+    clearTimeout(profile.timeout)
+    profile.loading = true
+    profile.error = false
+    profile.success = false
+    await profileStore.changeProfile(loggedAdmin.value.id, profileModels)
+    await profileStore.getAdmin(loggedAdmin.value.id)
+    profile.loading = false
+    profile.success = true
+    profile.successMessage = 'Profile updated successfully.'
+    clearProfileSuccessMessage()
   } catch ({ message }) {
-    isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
+    profile.loading = false
+    profile.error = true
+    profile.errorMessage = message
+    clearProfileErrorMessage()
   }
+}
+
+function clearProfileErrorMessage() {
+  profile.timeout = setTimeout(() => {
+    profile.error = false
+    profile.errorMessage = ''
+  }, 5000)
+}
+
+function clearProfileSuccessMessage() {
+  profile.timeout = setTimeout(() => {
+    profile.success = false
+    profile.successMessage = ''
+  }, 5000)
 }
 
 async function changePassword() {
-  const isFormCorrect = await vv$.value.$validate()
+  const isFormCorrect = await passwordValidate.value.$validate()
 
   if (!isFormCorrect) return
 
   try {
-    await profileStore.changePassword(loggedAdmin.value.admin.id, token.value, models)
-    await store.getAdmin(loggedAdmin.value.admin.id, token.value)
+    clearTimeout(password.timeout)
+    password.loading = true
+    password.error = false
+    password.success = false
+    await profileStore.changePassword(loggedAdmin.value.id, passwordModels)
+    await profileStore.getAdmin(loggedAdmin.value.id)
+    password.loading = false
+    password.success = true
+    password.successMessage = 'Password updated successfully.'
+    passwordValidate.value.$reset()
+    passwordModels.current = ''
+    passwordModels.new = ''
+    passwordModels.confirm = ''
+    clearPasswordSuccessMessage()
   } catch ({ message }) {
-    isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
+    password.loading = false
+    password.error = true
+    password.errorMessage = message
+    clearPasswordErrorMessage()
   }
 }
 
-function closeAlert() {
-  isError.value = false
+function clearPasswordErrorMessage() {
+  password.timeout = setTimeout(() => {
+    password.error = false
+    password.errorMessage = ''
+  }, 5000)
+}
+
+function clearPasswordSuccessMessage() {
+  password.timeout = setTimeout(() => {
+    password.success = false
+    password.successMessage = ''
+  }, 5000)
 }
 </script>

@@ -33,23 +33,12 @@
           <div>
             <FormLabel label-id="password" :is-invalid="v$.password.$error">Password</FormLabel>
             <div class="relative mt-2">
-              <FormInput
+              <FormPassword
                 id="password"
                 v-model="models.password"
-                :type="isShowPassword ? 'text' : 'password'"
                 placeholder="Enter your password"
-                class="peer pr-10"
                 :is-invalid="v$.password.$error"
               />
-              <div
-                class="absolute inset-y-0 right-0 flex cursor-pointer items-center pr-3 text-gray-300 peer-focus:text-slate-600"
-                @click="togglePassword"
-              >
-                <Icon
-                  :icon="isShowPassword ? 'ic:baseline-remove-red-eye' : 'mdi:eye-off'"
-                  class="text-lg"
-                />
-              </div>
             </div>
             <FormValidation v-if="v$.password.$error"> Password is required. </FormValidation>
           </div>
@@ -75,6 +64,7 @@ import { required, email } from '@vuelidate/validators'
 import BaseCard from '@/components/UI/card/BaseCard.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
+import FormPassword from '@/components/UI/forms/FormPassword.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
@@ -85,7 +75,6 @@ const models = reactive({
   email: '',
   password: ''
 })
-const isShowPassword = ref(false)
 const isLoading = ref(false)
 const isError = ref(false)
 const errorMessage = ref('')
@@ -99,10 +88,6 @@ const rules = computed(() => {
 })
 
 const v$ = useVuelidate(rules, models)
-
-function togglePassword() {
-  isShowPassword.value = !isShowPassword.value
-}
 
 async function login() {
   const isFormCorrect = await v$.value.$validate()
