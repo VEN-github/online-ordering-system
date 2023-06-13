@@ -57,3 +57,39 @@
 .dropdown-enter-to, .dropdown-leave-from {
   @apply transform opacity-100 scale-100
 }
+
+.modal-fade-enter-active, .modal-fade-leave-active {
+  @apply ease-out
+}
+
+.modal-fade-enter-active {
+  @apply duration-300
+}
+
+.modal-fade-leave-active {
+  @apply duration-200
+}
+
+.modal-fade-enter-from, .modal-fade-leave-to {
+  @apply opacity-0
+}
+
+.modal-fade-enter-to, .modal-fade-leave-from {
+  @apply opacity-100
+}
+
+.modal-show-enter-active {
+  @apply ease-out duration-300
+}
+
+.modal-show-leave-active {
+  @apply ease-in duration-200
+}
+
+.modal-show-enter-from, .modal-show-leave-to {
+  @apply opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95
+}
+
+.modal-show-enter-to, .modal-show-leave-from {
+  @apply opacity-100 translate-y-0 sm:scale-100
+}

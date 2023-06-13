@@ -3,7 +3,7 @@
     <Transition name="fade-menu">
       <div v-show="isOpen" class="fixed inset-0 bg-gray-900/80"></div>
     </Transition>
-    <div class="side-bar fixed inset-0 flex">
+    <div class="side-bar fixed inset-0" :class="[isOpen ? 'flex' : 'hidden']">
       <Transition name="slide-menu">
         <div v-show="isOpen" class="relative mr-16 flex w-full max-w-xs flex-1">
           <Transition name="menu-close">
