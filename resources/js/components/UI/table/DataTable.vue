@@ -21,9 +21,14 @@ const props = defineProps({
     }
   }
 })
-const emit = defineEmits(['update:dataTable'])
 
 const dataTable = ref(null)
+
+defineExpose({
+  reload() {
+    dataTable.value.ajax.reload(null, false)
+  }
+})
 
 onMounted(() => {
   dataTable.value = new DataTable('#data-table', {
@@ -34,7 +39,5 @@ onMounted(() => {
       searchPlaceholder: 'Type a keyword...'
     }
   })
-
-  emit('update:dataTable', dataTable.value)
 })
 </script>

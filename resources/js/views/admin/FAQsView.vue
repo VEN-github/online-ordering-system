@@ -4,7 +4,7 @@
     <BaseButton mode="primary" size="lg" @click="toggleAddForm">Add Q&A</BaseButton>
   </div>
   <div class="mt-5 flow-root">
-    <DataTable :config="config" @update:data-table="dataTable = $event">
+    <DataTable ref="table" :config="config">
       <template #table-head>
         <tr>
           <th>Question</th>
@@ -48,7 +48,7 @@ import ConfirmationModal from '@/components/UI/modal/ConfirmationModal.vue'
 
 const authStore = useAuthStore()
 const faqStore = useFAQStore()
-const dataTable = ref(null)
+const table = ref(null)
 const showAddForm = ref(false)
 const showEditForm = ref(false)
 const showDeleteModal = ref(false)
@@ -148,7 +148,7 @@ function toggleDeleteModal() {
 function onSuccess() {
   showAddForm.value = false
   showEditForm.value = false
-  dataTable.value.ajax.reload()
+  table.value.reload()
 }
 
 async function deleteFAQ() {
@@ -165,7 +165,7 @@ async function deleteFAQ() {
       pauseOnHover: false,
       pauseOnFocusLoss: false
     })
-    dataTable.value.ajax.reload()
+    table.value.reload()
   } catch ({ message }) {
     toast(message, {
       type: 'error',
