@@ -109,9 +109,9 @@ const config = computed(() => {
         createdCell: function (cell, _, rowData) {
           cell.innerHTML = `
             <div class="flex">
-              <button type="button" class="edit btn btn-flat-info btn--md">Edit</button>
+              <button type="button" class="edit btn btn-flat-info btn--md shadow-none">Edit</button>
               <div class="mx-4 my-1 w-px bg-slate-200"></div>
-              <button type="button"class="delete btn btn-flat-danger btn--md">Delete</button>
+              <button type="button"class="delete btn btn-flat-danger btn--md shadow-none">Delete</button>
             </div>
           `
           cell.onclick = (event) => {

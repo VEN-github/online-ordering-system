@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import api from '@/config/axios'
-import { handleError } from '@/composables/handleApiError'
+import { handleError } from '@/helpers/handleApiError'
 
 export const useFAQStore = defineStore('faq', {
   actions: {

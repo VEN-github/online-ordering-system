@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { AES, enc } from 'crypto-js'
 import api from '@/config/axios'
-import { handleError } from '@/composables/handleApiError'
+import { handleError } from '@/helpers/handleApiError'
 
 export const useAuthStore = defineStore('auth', {
   state: () => {

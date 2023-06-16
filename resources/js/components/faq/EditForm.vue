@@ -48,7 +48,7 @@
         size="lg"
         class="order-2 w-full sm:order-1 sm:w-auto"
         :disabled="isLoading"
-        @click="emit('onClose')"
+        @click="onClose"
       >
         Cancel
       </BaseButton>
@@ -121,11 +121,15 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, models)
 
 watchEffect(() => {
-  ;(models.question = props.modelValue?.question || ''),
-    (models.slug = props.modelValue?.slug || ''),
-    (models.answer = props.modelValue?.answer || ''),
-    (models.active = props.modelValue?.active || 0)
+  initModels()
 })
+
+function initModels() {
+  models.question = props.modelValue?.question || ''
+  models.slug = props.modelValue?.slug || ''
+  models.answer = props.modelValue?.answer || ''
+  models.active = props.modelValue?.active || 0
+}
 
 async function editFaq() {
   const isFormCorrect = await v$.value.$validate()
@@ -171,5 +175,11 @@ function resetForm() {
   models.slug = ''
   models.answer = ''
   models.active = 0
+}
+
+function onClose() {
+  v$.value.$reset()
+  initModels()
+  emit('onClose')
 }
 </script>

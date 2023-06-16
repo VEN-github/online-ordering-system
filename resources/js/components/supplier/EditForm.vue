@@ -1,46 +1,43 @@
 <template>
-  <FormModal title="Add Q&A" :is-show="isShow" @on-submit="addFaq">
+  <FormModal title="Edit Supplier" :is-show="isShow" @on-submit="editSupplier">
     <Transition name="fade">
       <BaseAlert v-if="isError" mode="error" class="mb-5">{{ errorMessage }}</BaseAlert>
     </Transition>
     <div>
-      <FormLabel label-id="question" :is-invalid="v$.question.$error">Question</FormLabel>
+      <FormLabel label-id="supplier-name" :is-invalid="v$.name.$error">Name</FormLabel>
       <div class="mt-2">
         <FormInput
-          id="question"
-          v-model="models.question"
-          placeholder="Enter question"
-          :is-invalid="v$.question.$error"
+          id="supplier-name"
+          v-model="models.name"
+          placeholder="Enter name"
+          :is-invalid="v$.name.$error"
         />
       </div>
-      <FormValidation v-if="v$.question.$error"> Question is required. </FormValidation>
+      <FormValidation v-if="v$.name.$error"> Name is required. </FormValidation>
     </div>
     <div class="mt-5">
-      <FormLabel label-id="slug" :is-invalid="v$.slug.$error">Slug</FormLabel>
+      <FormLabel label-id="city" :is-invalid="v$.city.$error">City</FormLabel>
       <div class="mt-2">
         <FormInput
-          id="slug"
-          v-model="models.slug"
-          placeholder="Enter slug"
-          :is-invalid="v$.slug.$error"
+          id="city"
+          v-model="models.city"
+          placeholder="Enter city"
+          :is-invalid="v$.city.$error"
         />
-        <FormValidation v-if="v$.slug.$error"> Slug is required. </FormValidation>
+        <FormValidation v-if="v$.city.$error"> City is required. </FormValidation>
       </div>
     </div>
     <div class="mt-5">
-      <FormLabel label-id="answer" :is-invalid="v$.answer.$error">Answer</FormLabel>
+      <FormLabel label-id="country" :is-invalid="v$.country.$error">Country</FormLabel>
       <div class="mt-2">
         <FormInput
-          id="answer"
-          v-model="models.answer"
-          placeholder="Enter answer"
-          :is-invalid="v$.answer.$error"
+          id="country"
+          v-model="models.country"
+          placeholder="Enter country"
+          :is-invalid="v$.country.$error"
         />
       </div>
-      <FormValidation v-if="v$.answer.$error"> Answer is required. </FormValidation>
-    </div>
-    <div class="mt-5">
-      <FormSwitch v-model="models.active" label="Show on homepage" />
+      <FormValidation v-if="v$.country.$error"> Country is required. </FormValidation>
     </div>
     <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
       <BaseButton
@@ -67,8 +64,8 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed } from 'vue'
-import { useFAQStore } from '@/store/faq/faq'
+import { ref, reactive, computed, watchEffect } from 'vue'
+import { useSupplierStore } from '@/store/supplier/supplier'
 import { useVuelidate } from '@vuelidate/core'
 import { required } from '@vuelidate/validators'
 import { toast } from 'vue3-toastify'
@@ -77,27 +74,31 @@ import 'vue3-toastify/dist/index.css'
 import FormModal from '@/components/UI/modal/FormModal.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
-import FormSwitch from '@/components/UI/forms/FormSwitch.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
 
-defineProps({
+const props = defineProps({
   isShow: {
     type: Boolean,
     default() {
       return false
     }
+  },
+  modelValue: {
+    type: Object,
+    default() {
+      return null
+    }
   }
 })
 const emit = defineEmits(['onClose', 'onSuccess'])
 
-const faqStore = useFAQStore()
+const supplierStore = useSupplierStore()
 const models = reactive({
-  question: '',
-  slug: '',
-  answer: '',
-  active: 0
+  name: '',
+  city: '',
+  country: ''
 })
 const isLoading = ref(false)
 const isError = ref(false)
@@ -106,15 +107,25 @@ let timeout
 
 const rules = computed(() => {
   return {
-    question: { required },
-    slug: { required },
-    answer: { required }
+    name: { required },
+    city: { required },
+    country: { required }
   }
 })
 
 const v$ = useVuelidate(rules, models)
 
-async function addFaq() {
+watchEffect(() => {
+  initModels()
+})
+
+function initModels() {
+  models.name = props.modelValue?.name || ''
+  models.city = props.modelValue?.city || ''
+  models.country = props.modelValue?.country || ''
+}
+
+async function editSupplier() {
   const isFormCorrect = await v$.value.$validate()
 
   if (!isFormCorrect) return
@@ -123,10 +134,10 @@ async function addFaq() {
     clearTimeout(timeout)
     isLoading.value = true
     isError.value = false
-    await faqStore.addFAQ(models)
+    await supplierStore.editSupplier(props.modelValue?.id, models)
     isLoading.value = false
     resetForm()
-    toast('Successfully Added', {
+    toast('Successfully Updated', {
       type: 'success',
       theme: 'colored',
       hideProgressBar: true,
@@ -154,14 +165,14 @@ function clearErrorMessage() {
 
 function resetForm() {
   v$.value.$reset()
-  models.question = ''
-  models.slug = ''
-  models.answer = ''
-  models.active = 0
+  models.name = ''
+  models.city = ''
+  models.country = ''
 }
 
 function onClose() {
-  resetForm()
+  v$.value.$reset()
+  initModels()
   emit('onClose')
 }
 </script>
