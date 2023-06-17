@@ -1,6 +1,4 @@
-import { useAuthStore } from '@/store/auth'
-
-import HomeView from '@/views/client/HomeView.vue'
+import { useAuthStore } from '@/store/auth/auth'
 
 const routes = [
   {
@@ -15,16 +13,6 @@ const routes = [
         next('/admin')
       }
     }
-  },
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    component: () => import('@/views/client/AboutView.vue')
   }
 ]
 

@@ -1,0 +1,19 @@
+.avatar {
+  @apply object-cover;
+}
+
+.avatar--sm {
+  @apply h-8 w-8;
+}
+
+.avatar--md {
+  @apply h-24 w-24;
+}
+
+.initials--sm {
+  @apply text-sm;
+}
+
+.initials--md {
+  @apply text-3xl;
+}

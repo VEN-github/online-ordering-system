@@ -1,153 +1,60 @@
 <template>
-  <Teleport to="body">
-    <BaseModal v-if="isOpen">
-      <BaseCard v-if="currentMode === 'delete'">
-        <div class="max-w-md sm:flex sm:items-start">
-          <div
-            class="mx-auto flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10"
-          >
-            <Icon icon="material-symbols:warning-rounded" class="h-6 w-6 text-red-600" />
-          </div>
-          <div class="mt-3 text-center sm:ml-4 sm:mt-0 sm:text-left">
-            <h3 class="text-base font-semibold leading-6 text-gray-900">Delete Supplier</h3>
-            <div class="mt-2">
-              <p class="text-sm text-gray-500">
-                Are you sure you want to delete this supplier? This action cannot be undone.
-              </p>
-            </div>
-          </div>
-        </div>
-        <div class="mt-5 sm:mt-4 sm:flex sm:flex-row-reverse">
-          <BaseButton mode="danger" class="w-full sm:ml-3 sm:w-auto" @click="submitForm">
-            Delete
-          </BaseButton>
-          <BaseButton
-            mode="outline-default"
-            class="mt-3 w-full sm:mt-0 sm:w-auto"
-            @click="isOpen = false"
-          >
-            Cancel
-          </BaseButton>
-        </div>
-      </BaseCard>
-      <BaseCard v-else>
-        <div class="flex justify-end">
-          <BaseButton mode="outline-default" @click="isOpen = false">
-            <Icon icon="ph:x-bold" class="h-4 w-4" />
-          </BaseButton>
-        </div>
-        <h2 class="my-3 text-center text-xl font-semibold text-slate-800">
-          {{ currentMode === 'add' ? 'Add New Supplier' : 'Edit Supplier' }}
-        </h2>
-        <form class="space-y-6" @submit.prevent="submitForm">
-          <div>
-            <FormLabel label-id="supplier-name" :is-invalid="v$.name.$error">Name</FormLabel>
-            <div class="mt-2">
-              <FormInput
-                id="supplier-name"
-                v-model="models.name"
-                placeholder="Enter supplier name"
-                :is-invalid="v$.name.$error"
-              />
-            </div>
-            <FormValidation v-if="v$.name.$error"> Name is required. </FormValidation>
-          </div>
-          <div>
-            <FormLabel label-id="city" :is-invalid="v$.city.$error">City</FormLabel>
-            <div class="mt-2">
-              <FormInput
-                id="city"
-                v-model="models.city"
-                placeholder="Enter city"
-                :is-invalid="v$.city.$error"
-              />
-            </div>
-            <FormValidation v-if="v$.city.$error"> City is required. </FormValidation>
-          </div>
-          <div>
-            <FormLabel label-id="country" :is-invalid="v$.country.$error">Country</FormLabel>
-            <div class="mt-2">
-              <FormInput
-                id="country"
-                v-model="models.country"
-                placeholder="Enter country"
-                :is-invalid="v$.country.$error"
-              />
-            </div>
-            <FormValidation v-if="v$.country.$error"> Country is required. </FormValidation>
-          </div>
-          <div>
-            <BaseButton
-              type="submit"
-              mode="primary"
-              size="lg"
-              is-full
-              :disabled="isLoading"
-              class="capitalize"
-            >
-              <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
-              {{ isLoading ? 'Loading...' : `${currentMode} Supplier` }}
-            </BaseButton>
-          </div>
-        </form>
-      </BaseCard>
-    </BaseModal>
-  </Teleport>
   <div class="flex items-center justify-between space-x-4 py-5 lg:py-6">
     <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Suppliers</h2>
-    <BaseButton mode="primary" size="lg" @click="toggleForm('add')">Add Supplier</BaseButton>
+    <BaseButton mode="primary" size="lg" @click="toggleAddForm"> Add Supplier </BaseButton>
   </div>
   <div class="mt-5 flow-root">
-    <DataTable :config="config">
+    <DataTable ref="table" :config="config">
       <template #table-head>
         <tr>
-          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">id</th>
-          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Name</th>
-          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Address</th>
-          <th class="px-3 py-3.5 text-left text-sm font-semibold text-gray-900">Actions</th>
+          <th>Name</th>
+          <th>Address</th>
+          <th>Actions</th>
         </tr>
       </template>
     </DataTable>
   </div>
-  <Transition name="slide-fade">
-    <div v-if="isError" class="fixed top-4 right-4 z-50">
-      <AlertError :message="errorMsg" @close-alert="closeAlert" />
-    </div>
-  </Transition>
+  <AddForm :is-show="showAddForm" @on-close="toggleAddForm" @on-success="onSuccess" />
+  <EditForm
+    :is-show="showEditForm"
+    :model-value="models"
+    @on-close="toggleEditForm"
+    @on-success="onSuccess"
+  />
+  <ConfirmationModal
+    :is-show="showDeleteModal"
+    modal-type="danger"
+    title="Delete Supplier"
+    message="Are you sure you want to delete this Supplier? This action cannot be undone."
+    confirm-text="Delete"
+    @on-close="toggleDeleteModal"
+    @on-confirm="deleteSupplier"
+  />
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onUnmounted } from 'vue'
-import { useAuthStore } from '@/store/auth'
-import { useSupplierStore } from '@/store/supplier'
-import { useVuelidate } from '@vuelidate/core'
-import { required } from '@vuelidate/validators'
+import { ref, computed } from 'vue'
+import { useAuthStore } from '@/store/auth/auth'
+import { useSupplierStore } from '@/store/supplier/supplier'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 import DataTable from '@/components/UI/table/DataTable.vue'
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
-import BaseModal from '@/components/UI/modal/BaseModal.vue'
-import BaseCard from '@/components/UI/cards/BaseCard.vue'
-import FormLabel from '@/components/UI/forms/FormLabel.vue'
-import FormInput from '@/components/UI/forms/FormInput.vue'
-import FormValidation from '@/components/UI/forms/FormValidation.vue'
-import AlertError from '@/components/UI/errors/AlertError.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
+import AddForm from '@/components/supplier/AddForm.vue'
+import EditForm from '@/components/supplier/EditForm.vue'
+import ConfirmationModal from '@/components/UI/modal/ConfirmationModal.vue'
 
 const authStore = useAuthStore()
 const supplierStore = useSupplierStore()
-const isOpen = ref(false)
-const currentMode = ref(null)
-const isLoading = ref(false)
-const models = reactive({
-  id: '',
-  name: '',
-  city: '',
-  country: ''
-})
-const isError = ref(false)
-const errorMsg = ref('')
+const table = ref(null)
+const showAddForm = ref(false)
+const showEditForm = ref(false)
+const showDeleteModal = ref(false)
+const models = ref(null)
 
 const token = computed(() => {
-  return authStore?.getLoggedAdmin?.token
+  return authStore.getAccessToken
 })
 
 const config = computed(() => {
@@ -175,146 +82,85 @@ const config = computed(() => {
       dataSrc: 'data.data'
     },
     columnDefs: [
-      { target: 0, visible: false },
       {
-        target: 2,
-        render: function (_, _2, row) {
-          return `${row.city}, ${row.country}`
+        target: 1,
+        render: function (_, _2, rowData) {
+          return `${rowData.city}, ${rowData.country}`
         }
       },
       {
-        target: 3,
+        target: 2,
         createdCell: function (cell, _, rowData) {
+          cell.innerHTML = `
+            <div class="flex">
+              <button type="button" class="edit btn btn-flat-info btn--md shadow-none">Edit</button>
+              <div class="mx-4 my-1 w-px bg-slate-200"></div>
+              <button type="button"class="delete btn btn-flat-danger btn--md shadow-none">Delete</button>
+            </div>
+          `
           cell.onclick = (event) => {
-            if (event.target.id === 'edit') {
-              editSupplier(rowData, 'edit')
+            if (event.target.classList.contains('edit')) {
+              models.value = rowData
+              toggleEditForm()
               return
             }
-            if (event.target.id === 'delete') {
-              deleteSupplier(rowData, 'delete')
+            if (event.target.classList.contains('delete')) {
+              models.value = rowData
+              toggleDeleteModal()
               return
             }
           }
-        },
-        render: function () {
-          return `<div class="flex"><button id="edit" type="button" class="text-sky-500 hover:underline hover:text-sky-800">Edit</button><div class="mx-4 my-1 w-px bg-slate-200"></div><button id="delete" type="button"class="text-red-500 hover:underline hover:text-red-800">Delete</button></div>`
         }
       }
     ],
-    columns: [{ data: 'id' }, { data: 'name' }, { data: null }, { data: null }]
+    columns: [{ data: 'name' }, { data: null }, { data: null }]
   }
 })
 
-const rules = computed(() => {
-  return {
-    name: { required },
-    city: { required },
-    country: { required }
-  }
-})
-
-const params = computed(() => {
-  return {
-    name: models.name || null,
-    city: models.city || null,
-    country: models.country || null
-  }
-})
-
-const v$ = useVuelidate(rules, models)
-
-watch(isOpen, (value) => {
-  if (value) document.addEventListener('click', detectClickOutside)
-})
-
-onUnmounted(() => {
-  document.removeEventListener('click', detectClickOutside)
-})
-
-function resetForm() {
-  v$.value.$reset()
-  models.id = ''
-  models.name = ''
-  models.city = ''
-  models.country = ''
+function toggleAddForm() {
+  showAddForm.value = !showAddForm.value
 }
 
-async function submitForm() {
-  if (currentMode.value === 'delete') {
-    try {
-      await supplierStore.deleteSupplier(models.id, token.value)
-      isOpen.value = false
-      location.reload()
-    } catch ({ message }) {
-      isOpen.value = false
-      isError.value = true
-      errorMsg.value = message
+function toggleEditForm() {
+  showEditForm.value = !showEditForm.value
+}
 
-      setTimeout(() => {
-        isError.value = false
-        errorMsg.value = ''
-      }, 3000)
-    }
-    return
-  }
+function toggleDeleteModal() {
+  showDeleteModal.value = !showDeleteModal.value
+}
 
-  const isFormCorrect = await v$.value.$validate()
+function onSuccess() {
+  showAddForm.value = false
+  showEditForm.value = false
+  table.value.reload()
+}
 
-  if (!isFormCorrect) return
-
+async function deleteSupplier() {
   try {
-    isLoading.value = true
-    if (currentMode.value === 'add') {
-      await supplierStore.addSupplier(models, token.value)
-    } else {
-      await supplierStore.editSupplier(models.id, token.value, params.value)
-    }
-    isLoading.value = false
-    isOpen.value = false
-    location.reload()
+    await supplierStore.deleteSupplier(models.value.id)
+    showDeleteModal.value = false
+    toast('Successfully Deleted', {
+      type: 'success',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_CENTER,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
+    table.value.reload()
   } catch ({ message }) {
-    isLoading.value = false
-    isOpen.value = false
-    isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
-  }
-}
-
-function editSupplier({ id, name, city, country }, mode) {
-  currentMode.value = mode
-  models.id = id
-  models.name = name
-  models.city = city
-  models.country = country
-  isOpen.value = true
-}
-
-function deleteSupplier({ id }, mode) {
-  currentMode.value = mode
-  models.id = id
-  isOpen.value = true
-}
-
-function closeAlert() {
-  isError.value = false
-}
-
-function toggleForm(mode) {
-  resetForm()
-  currentMode.value = mode
-  isOpen.value = !isOpen.value
-}
-
-function detectClickOutside(event) {
-  if (event.target.classList.contains('modal-overlay')) {
-    resetForm()
-    isOpen.value = false
-    isLoading.value = false
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 </script>

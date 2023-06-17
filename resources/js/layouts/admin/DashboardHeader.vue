@@ -2,7 +2,11 @@
   <div
     class="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-gray-200 bg-white px-4 shadow-sm sm:gap-x-6 sm:px-6 lg:px-8"
   >
-    <button type="button" class="-m-2.5 p-2.5 text-gray-700 lg:hidden" @click="toggleSidebar">
+    <button
+      type="button"
+      class="-m-2.5 p-2.5 text-gray-700 lg:hidden"
+      @click="emit('toggleSidebar')"
+    >
       <span class="sr-only">Open sidebar</span>
       <Icon icon="solar:hamburger-menu-outline" class="h-6 w-6" />
     </button>
@@ -15,39 +19,39 @@
             @click="toggleMenu = !toggleMenu"
           >
             <span class="sr-only">Open user menu</span>
-            <img
-              v-if="loggedAdmin?.admin?.avatar"
-              class="h-8 w-8 rounded-full bg-gray-50"
-              :src="loggedAdmin?.admin?.avatar"
-              alt="Admin Avatar"
+            <BaseAvatar
+              v-if="loggedAdmin?.avatar"
+              :avatar="loggedAdmin?.avatar"
+              size="sm"
+              rounded
             />
-            <div v-else class="h-8 w-8 rounded-full bg-gray-200 p-1.5 text-sm uppercase">
-              <span>{{ initialsAvatar }}</span>
-            </div>
+            <AvatarInitials v-else :initials="loggedAdmin" size="sm" rounded />
             <span class="hidden lg:flex lg:items-center">
               <span class="ml-4 text-sm font-semibold leading-6 text-gray-900" aria-hidden="true">
-                {{ loggedAdmin?.admin?.first_name }} {{ loggedAdmin?.admin?.last_name }}
+                {{ loggedAdmin?.first_name }} {{ loggedAdmin?.last_name }}
               </span>
               <Icon icon="tabler:chevron-down" class="ml-2 h-5 w-5 text-gray-400" />
             </span>
           </button>
-          <div
-            v-if="toggleMenu"
-            class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right space-y-1.5 rounded-md bg-white p-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
-          >
-            <RouterLink
-              to="/profile"
-              class="inline-flex w-full items-center gap-x-2 rounded-md p-2 font-semibold leading-6 text-gray-700 hover:bg-gray-50"
+          <Transition name="dropdown">
+            <div
+              v-if="toggleMenu"
+              class="absolute right-0 z-10 mt-2.5 w-32 origin-top-right space-y-1.5 rounded-md bg-white p-2 shadow-lg ring-1 ring-gray-900/5 focus:outline-none"
             >
-              <Icon icon="ph:user-bold" />
-              Profile
-            </RouterLink>
-            <div class="my-4 h-px bg-slate-200"></div>
-            <BaseButton is-full @click="logout">
-              <Icon icon="material-symbols:logout-rounded" />
-              Logout
-            </BaseButton>
-          </div>
+              <RouterLink
+                to="/profile"
+                class="inline-flex w-full items-center gap-x-2 rounded-md p-2 font-semibold leading-6 text-gray-700 hover:bg-gray-50"
+              >
+                <Icon icon="ph:user-bold" />
+                Profile
+              </RouterLink>
+              <div class="my-4 h-px bg-slate-200"></div>
+              <BaseButton is-full @click="logout">
+                <Icon icon="material-symbols:logout-rounded" />
+                Logout
+              </BaseButton>
+            </div>
+          </Transition>
         </div>
       </div>
     </div>
@@ -57,24 +61,22 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
-import { useAuthStore } from '@/store/auth'
+import { useAuthStore } from '@/store/auth/auth'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
+import BaseAvatar from '@/components/UI/avatar/BaseAvatar.vue'
+import AvatarInitials from '@/components/UI/avatar/AvatarInitials.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
 
 const emit = defineEmits(['toggleSidebar'])
 
 const router = useRouter()
-const store = useAuthStore()
+const authStore = useAuthStore()
 const toggleMenu = ref(false)
 
 const loggedAdmin = computed(() => {
-  return store.getLoggedAdmin
-})
-
-const initialsAvatar = computed(() => {
-  return `${store.getLoggedAdmin?.admin?.first_name.charAt(
-    0
-  )}${store.getLoggedAdmin?.admin?.last_name.charAt(0)}`
+  return authStore.getLoggedAdmin
 })
 
 watch(toggleMenu, (value) => {
@@ -85,17 +87,22 @@ function detectClickOutside(event) {
   if (!event.target.closest('.profile-menu')) toggleMenu.value = false
 }
 
-function toggleSidebar() {
-  emit('toggleSidebar')
-}
-
 async function logout() {
   try {
-    const token = loggedAdmin.value.token
-    await store.adminLogout(token)
+    await authStore.adminLogout()
     router.replace('/admin/login')
-  } catch (error) {
-    console.error(error)
+    authStore.$reset()
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 </script>

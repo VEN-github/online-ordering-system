@@ -1,12 +1,15 @@
 <template>
   <div class="flex min-h-screen flex-col justify-center px-1 sm:px-0">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
-      <img class="mx-auto h-12 w-auto" src="../../../assets/images/logo.svg" alt="Logo" />
+      <img class="mx-auto h-12 w-auto" src="../../../assets/images/logo/logo.svg" alt="Logo" />
       <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">
         Sign in to your account
       </h2>
     </div>
-    <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
+    <div class="mx-auto mt-8 w-full max-w-md">
+      <Transition name="fade">
+        <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">{{ errorMessage }}</BaseAlert>
+      </Transition>
       <BaseCard>
         <form class="space-y-6" @submit.prevent="login">
           <div>
@@ -30,32 +33,15 @@
           <div>
             <FormLabel label-id="password" :is-invalid="v$.password.$error">Password</FormLabel>
             <div class="relative mt-2">
-              <FormInput
+              <FormPassword
                 id="password"
                 v-model="models.password"
-                type="password"
                 placeholder="Enter your password"
                 :is-invalid="v$.password.$error"
               />
             </div>
             <FormValidation v-if="v$.password.$error"> Password is required. </FormValidation>
           </div>
-          <!-- <div class="flex items-center justify-between">
-            <div class="flex items-center">
-              <input
-                id="remember-me"
-                name="remember-me"
-                type="checkbox"
-                class="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-600"
-              />
-              <label for="remember-me" class="ml-2 block text-sm text-gray-900">Remember me</label>
-            </div>
-            <div class="text-sm">
-              <a href="#" class="font-medium text-indigo-600 hover:text-indigo-500"
-                >Forgot your password?</a
-              >
-            </div>
-          </div> -->
           <div>
             <BaseButton type="submit" mode="primary" size="lg" is-full :disabled="isLoading">
               <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
@@ -65,37 +51,34 @@
         </form>
       </BaseCard>
     </div>
-    <Transition name="slide-fade">
-      <div v-if="isError" class="fixed top-4 right-4">
-        <AlertError :message="errorMsg" @close-alert="closeAlert" />
-      </div>
-    </Transition>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth/auth'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
-import { useAuthStore } from '@/store/auth'
-import { useRouter } from 'vue-router'
 
-import BaseCard from '@/components/UI/cards/BaseCard.vue'
+import BaseCard from '@/components/UI/card/BaseCard.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
+import FormPassword from '@/components/UI/forms/FormPassword.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
-import AlertError from '@/components/UI/errors/AlertError.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
+import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
 
-const store = useAuthStore()
 const router = useRouter()
+const authStore = useAuthStore()
 const models = reactive({
   email: '',
   password: ''
 })
 const isLoading = ref(false)
 const isError = ref(false)
-const errorMsg = ref('')
+const errorMessage = ref('')
+let timeout
 
 const rules = computed(() => {
   return {
@@ -112,23 +95,24 @@ async function login() {
   if (!isFormCorrect) return
 
   try {
+    clearTimeout(timeout)
+    isError.value = false
     isLoading.value = true
-    await store.adminLogin(models)
+    await authStore.adminLogin(models)
     isLoading.value = false
     router.replace('/dashboard')
   } catch ({ message }) {
     isLoading.value = false
     isError.value = true
-    errorMsg.value = message
-
-    setTimeout(() => {
-      isError.value = false
-      errorMsg.value = ''
-    }, 3000)
+    errorMessage.value = message
+    clearErrorMessage()
   }
 }
 
-function closeAlert() {
-  isError.value = false
+function clearErrorMessage() {
+  timeout = setTimeout(() => {
+    isError.value = false
+    errorMessage.value = ''
+  }, 5000)
 }
 </script>

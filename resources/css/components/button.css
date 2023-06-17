@@ -26,6 +26,14 @@
   @apply text-slate-700 hover:bg-slate-300/20 active:bg-slate-300/25
 }
 
+.btn-flat-info {
+  @apply text-sky-700 hover:bg-sky-300/20 active:bg-sky-300/25
+}
+
+.btn-flat-danger {
+  @apply text-red-700 hover:bg-red-300/20 active:bg-red-300/25
+}
+
 .btn--xs {
   @apply rounded px-2 py-1 text-xs;
 }
