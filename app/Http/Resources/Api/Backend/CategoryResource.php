@@ -1,13 +1,11 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Http\Resources;
+namespace App\Http\Resources\Api\Backend;
 
 use Illuminate\Http\Request;
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class AdminResource extends JsonResource
+class CategoryResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -18,10 +16,8 @@ class AdminResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'first_name' => $this->first_name,
-            'last_name' => $this->last_name,
-            'email' => $this->email,
-            'avatar' => $this->avatar?->getUrl(),
+            'name' => $this->name,
+            'slug'=> $this->slug,
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

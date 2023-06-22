@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models\Traits;
 
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Str;
 
 trait GeneratesUniqueSlug
@@ -22,9 +23,13 @@ trait GeneratesUniqueSlug
         }
 
         $slug = Str::slug($slug);
+        $query = static::query();
 
-        $count = static::query()
-            ->withTrashed()
+        if (in_array(SoftDeletes::class, class_uses(static::class))) {
+            $query = $query->withTrashed();
+        }
+
+        $count = $query
             ->where('slug', 'LIKE', '%' . $slug)
             ->count();
 

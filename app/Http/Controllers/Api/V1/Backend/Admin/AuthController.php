@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\Admin\AuthLoginRequest;
-use App\Http\Resources\AdminResource;
+use App\Http\Resources\Api\Backend\AdminResource;
 use App\Models\Admin\Admin;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +23,7 @@ class AuthController extends BaseController
                 ->filterByEmail($email)
                 ->first();
 
-            if ( ! Auth::guard('web_admins')->once([
+            if ( ! Auth::guard('web_admins')->attempt([
                 'email' => $admin?->email,
                 'password' => $request->password,
             ])) {
@@ -46,7 +46,7 @@ class AuthController extends BaseController
             return $this->success(
                 $message,
                 [
-                    'admin' => new AdminResource($admin),
+                    'admin' => AdminResource::make($admin),
                     'token' => $admin
                         ->createToken(Admin::ACCESS_TOKEN)
                         ->plainTextToken,
@@ -62,7 +62,7 @@ class AuthController extends BaseController
     public function logout()
     {
         try {
-            auth('sanctum')->user()->currentAccessToken()->delete();
+            auth()->user()->currentAccessToken()->delete();
 
             return $this->success();
         } catch (Exception $e) {

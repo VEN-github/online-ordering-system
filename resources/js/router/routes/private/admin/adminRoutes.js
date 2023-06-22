@@ -27,6 +27,20 @@ const routes = [
         }
       },
       {
+        path: '/products',
+        component: () => import('@/views/admin/ProductsView.vue'),
+        meta: {
+          title: 'Products'
+        }
+      },
+      {
+        path: '/products/create',
+        component: () => import('@/views/admin/CreateProduct.vue'),
+        meta: {
+          title: 'Add Product'
+        }
+      },
+      {
         path: '/supplier',
         component: () => import('@/views/admin/SupplierView.vue'),
         meta: {

@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\Admin\ProfileRequest;
-use App\Http\Resources\AdminResource;
+use App\Http\Resources\Api\Backend\AdminResource;
 use App\Models\Admin\Admin;
 use Exception;
 
@@ -18,7 +18,7 @@ class ProfileController extends BaseController
             $admin = Admin::find($id);
 
             return $admin
-            ? new AdminResource($admin)
+            ? AdminResource::make($admin)
             : $this->error(config('general.messages.model.not_found'));
         } catch (Exception $e) {
             return $this->error();

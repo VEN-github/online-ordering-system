@@ -40,6 +40,11 @@ const lists = ref([
     icon: 'fluent-mdl2:product-variant'
   },
   {
+    name: 'Products',
+    link: '/products',
+    icon: 'streamline:money-cashier-tag-codes-tags-tag-product-label'
+  },
+  {
     name: 'Supplier',
     link: '/supplier',
     icon: 'mdi:truck-outline'
@@ -47,7 +52,7 @@ const lists = ref([
   {
     name: 'FAQs',
     link: '/faqs',
-    icon: 'wpf:faq'
+    icon: 'streamline:interface-help-question-circle-circle-faq-frame-help-info-mark-more-query-question'
   }
 ])
 </script>

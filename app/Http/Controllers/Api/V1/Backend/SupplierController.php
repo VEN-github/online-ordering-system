@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\SupplierRequest;
-use App\Http\Resources\SupplierResource;
+use App\Http\Resources\Api\Backend\SupplierResource;
 use App\Models\Supplier\Supplier;
 use Exception;
 

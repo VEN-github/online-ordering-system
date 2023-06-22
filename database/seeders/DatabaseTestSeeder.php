@@ -8,6 +8,7 @@ use App\Models\Category\Category;
 use App\Models\Faq\Faq;
 use App\Models\Supplier\Supplier;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Artisan;
 
 class DatabaseTestSeeder extends Seeder
 {
