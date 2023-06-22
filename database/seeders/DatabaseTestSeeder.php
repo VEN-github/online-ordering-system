@@ -6,6 +6,7 @@ namespace Database\Seeders;
 
 use App\Models\Category\Category;
 use App\Models\Faq\Faq;
+use App\Models\Product\Product;
 use App\Models\Supplier\Supplier;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
@@ -26,5 +27,9 @@ class DatabaseTestSeeder extends Seeder
         $this->command->info('Running Faq Seeder...');
         Faq::factory()->count(100)->create();
         $this->command->info('Faq Seeded Successfully.');
+
+        $this->command->info('Running Product Seeder...');
+        Product::factory()->count(100)->create();
+        $this->command->info('Faq Product Successfully.');
     }
 }
