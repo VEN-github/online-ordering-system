@@ -6,8 +6,11 @@ namespace Database\Seeders;
 
 use App\Models\Category\Category;
 use App\Models\Faq\Faq;
+use App\Models\Item\Item;
+use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\Supplier\Supplier;
+use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -30,6 +33,18 @@ class DatabaseTestSeeder extends Seeder
 
         $this->command->info('Running Product Seeder...');
         Product::factory()->count(100)->create();
-        $this->command->info('Faq Product Successfully.');
+        $this->command->info('Faq Seeded Successfully.');
+
+        $this->command->info('Running User Seeder...');
+        User::factory()->count(10)->create();
+        $this->command->info('User Seeded Successfully.');
+
+        $this->command->info('Running Order Seeder...');
+        Order::factory()->count(5)->create();
+        $this->command->info('Order Seeded Successfully.');
+
+        $this->command->info('Running Item Seeder...');
+        Item::factory()->count(25)->create();
+        $this->command->info('Item Seeded Successfully.');
     }
 }

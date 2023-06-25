@@ -29,13 +29,19 @@ class ProductResource extends JsonResource
             'express_shipping_price' => $this->express_shipping_price,
             'supplier' => SupplierResource::make($this->whenLoaded('supplier')),
             'variations' => VariationResource::collection($this->whenLoaded('variations')),
-            'highlight_image' => $this->whenLoaded('highlightImages')
-                ->map(
-                    fn ($image) => $image->getUrl()
-                )
-                ->first() ?? null,
-            'images' => $this->whenLoaded('images')->map(
-                    fn ($image) => $image->getUrl()
+            'highlight_image' => $this->when(
+                    $this->relationLoaded('highlightImages'),
+                    function () {
+                        return $this->highlightImages
+                            ->map(fn ($image) => $image->getUrl())
+                            ->first();
+                    }
+                ),
+            'images' => $this->when(
+                    $this->relationLoaded('images'),
+                    function () {
+                        return $this->images->map(fn ($image) => $image->getUrl());
+                    }
                 ),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
