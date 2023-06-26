@@ -20,11 +20,7 @@
             <div class="col-span-full">
               <FormLabel :is-invalid="v$.highlightImage.$error">Highlight Image</FormLabel>
               <div class="mt-2">
-                <FilePond
-                  ref="filePond"
-                  accepted-file-types="image/jpeg, image/png"
-                  @updatefiles="handleHighlightImage"
-                />
+                <FormUpload @on-upload="handleHighlightImage" />
               </div>
               <FormValidation v-if="v$.highlightImage.$error">
                 Highlight Image is required.
@@ -33,13 +29,7 @@
             <div class="col-span-full">
               <FormLabel>Products Images</FormLabel>
               <div class="mt-2">
-                <FilePond
-                  ref="pond"
-                  accepted-file-types="image/jpeg, image/png"
-                  :allow-multiple="true"
-                  max-files="3"
-                  @updatefiles="handleImages"
-                />
+                <FormUpload max-files="3" allow-multiple @on-upload="handleImages" />
               </div>
             </div>
           </div>
@@ -124,10 +114,9 @@
                   api-key="h150xfdpyl6rtt2kexadd3wh4rlahxzbt1gzv3qnhpku52hu"
                   :init="{
                     skin: 'bootstrap',
-                    icons: 'jam',
                     menubar: false,
                     plugins:
-                      'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode',
+                      'anchor autolink charmap codesample emoticons image link lists media searchreplace table visualblocks wordcount',
                     toolbar:
                       'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link image media table mergetags | addcomment showcomments | spellcheckdialog a11ycheck typography | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
                     height: '500'
@@ -160,6 +149,7 @@
                 <FormInput
                   id="product-price"
                   v-model="models.originalPrice"
+                  type="number"
                   placeholder="Enter original price"
                   :is-invalid="v$.originalPrice.$error"
                 />
@@ -174,6 +164,7 @@
                 <FormInput
                   id="product-discount"
                   v-model="models.discountPrice"
+                  type="number"
                   placeholder="Enter discount price(optional)"
                 />
               </div>
@@ -193,6 +184,7 @@
                       <FormInput
                         id="standard-shipping"
                         v-model="models.standardShipping"
+                        type="number"
                         placeholder="Enter standard shipping price"
                         :is-invalid="v$.standardShipping.$error"
                       />
@@ -207,6 +199,7 @@
                       <FormInput
                         id="express-shipping"
                         v-model="models.expressShipping"
+                        type="number"
                         placeholder="Enter express shipping price"
                         :is-invalid="v$.expressShipping.$error"
                       />
@@ -233,7 +226,7 @@
         <div class="px-4 py-6 sm:p-8">
           <div
             class="grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6"
-            :class="{ 'pointer-events-none opacity-60': enableVariation == 1 }"
+            :class="{ 'pointer-events-none opacity-60': models.enableVariation == 1 }"
           >
             <div class="sm:col-span-3">
               <FormLabel label-id="product-stock" :is-invalid="v$.stock.$error">
@@ -243,6 +236,7 @@
                 <FormInput
                   id="product-stock"
                   v-model="models.stock"
+                  type="number"
                   placeholder="Enter product stock"
                   :is-invalid="v$.stock.$error"
                 />
@@ -265,53 +259,97 @@
             </div>
           </div>
           <div class="col-span-full my-6">
-            <FormSwitch v-model="enableVariation" label="Add Variation" @change="toggleVariation" />
+            <FormSwitch
+              v-model="models.enableVariation"
+              label="Add Variation"
+              @change="toggleVariation"
+            />
           </div>
           <div
             v-for="(variation, i) in models.variation"
             :key="i"
             class="mb-6 grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 border-b border-b-slate-200 pb-6 sm:grid-cols-6"
-            :class="{ 'pointer-events-none opacity-60': enableVariation == 0 }"
+            :class="{ 'pointer-events-none opacity-60': models.enableVariation == 0 }"
           >
             <div class="sm:col-span-3">
-              <FormLabel :label-id="'product-size-' + i">Product Size</FormLabel>
+              <FormLabel
+                :label-id="'product-size-' + i"
+                :is-invalid="v$.variation.$each.$response.$data[i].size.$error"
+              >
+                Product Size
+              </FormLabel>
               <div class="mt-2">
                 <FormInput
                   :id="'product-size-' + i"
                   v-model="variation.size"
                   placeholder="Enter product size"
+                  :is-invalid="v$.variation.$each.$response.$data[i].size.$error"
                 />
               </div>
+              <FormValidation v-if="v$.variation.$each.$response.$data[i].size.$error">
+                Product Size is required.
+              </FormValidation>
             </div>
             <div class="sm:col-span-3">
-              <FormLabel :label-id="'product-color-' + i">Product Color</FormLabel>
+              <FormLabel
+                :label-id="'product-color-' + i"
+                :is-invalid="v$.variation.$each.$response.$data[i].color.$error"
+              >
+                Product Color
+              </FormLabel>
               <div class="mt-2">
                 <FormInput
                   :id="'product-color-' + i"
                   v-model="variation.color"
                   placeholder="Enter product color"
+                  :is-invalid="v$.variation.$each.$response.$data[i].color.$error"
                 />
               </div>
+              <FormValidation v-if="v$.variation.$each.$response.$data[i].color.$error">
+                Product Color is required.
+              </FormValidation>
             </div>
             <div class="sm:col-span-3">
-              <FormLabel :label-id="'product-stock-' + i">Product Stock</FormLabel>
+              <FormLabel
+                :label-id="'product-stock-' + i"
+                :is-invalid="v$.variation.$each.$response.$data[i].stock.$error"
+              >
+                Product Stock
+              </FormLabel>
               <div class="mt-2">
                 <FormInput
                   :id="'product-stock-' + i"
                   v-model="variation.stock"
+                  type="number"
                   placeholder="Enter product stock"
+                  :is-invalid="v$.variation.$each.$response.$data[i].stock.$error"
                 />
               </div>
+              <FormValidation v-if="v$.variation.$each.$response.$data[i].stock.$error">
+                Product Stock is required.
+              </FormValidation>
             </div>
             <div class="sm:col-span-3">
-              <FormLabel :label-id="'sku-' + i">SKU (Stock Keeping Unit)</FormLabel>
+              <FormLabel
+                :label-id="'sku-' + i"
+                :is-invalid="v$.variation.$each.$response.$data[i].sku.$error"
+              >
+                SKU (Stock Keeping Unit)
+              </FormLabel>
               <div class="mt-2">
-                <FormInput :id="'sku-' + i" v-model="variation.sku" placeholder="Enter SKU" />
+                <FormInput
+                  :id="'sku-' + i"
+                  v-model="variation.sku"
+                  placeholder="Enter SKU"
+                  :is-invalid="v$.variation.$each.$response.$data[i].sku.$error"
+                />
               </div>
-              <!-- <FormValidation> {{ v$.variation }} </FormValidation> -->
+              <FormValidation v-if="v$.variation.$each.$response.$data[i].sku.$error">
+                SKU is required.
+              </FormValidation>
             </div>
           </div>
-          <div :class="{ 'pointer-events-none opacity-60': enableVariation == 0 }">
+          <div :class="{ 'pointer-events-none opacity-60': models.enableVariation == 0 }">
             <BaseButton mode="primary" @click="addMoreVariation">Add more</BaseButton>
           </div>
         </div>
@@ -319,34 +357,37 @@
     </div>
   </div>
   <div class="mt-6 flex items-center justify-end gap-x-6">
-    <BaseButton link="/products" is-link size="xl">Cancel</BaseButton>
-    <BaseButton mode="primary" size="xl" @click.prevent="addProduct">Save</BaseButton>
+    <BaseButton link="/products" is-link size="xl" :disabled="isLoading">Cancel</BaseButton>
+    <BaseButton mode="primary" size="xl" :disabled="isLoading" @click.prevent="addProduct">
+      <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
+      {{ isLoading ? 'Saving...' : 'Save' }}
+    </BaseButton>
   </div>
 </template>
 
 <script setup>
 import { ref, reactive, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useCategoryStore } from '@/store/products/category'
+import { useSupplierStore } from '@/store/supplier/supplier'
+import { useProductStore } from '@/store/products/product'
 import { useVuelidate } from '@vuelidate/core'
-import { required, requiredIf } from '@vuelidate/validators'
-import { useAuthStore } from '@/store/auth'
-import { useProductStore } from '@/store/product'
-import vueFilePond from 'vue-filepond'
-import 'filepond/dist/filepond.min.css'
-import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
-import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
-import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import { required, requiredIf, helpers } from '@vuelidate/validators'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 import Editor from '@tinymce/tinymce-vue'
 
-import BaseButton from '@/components/UI/buttons/BaseButton.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
+import FormUpload from '@/components/UI/forms/FormUpload.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
 import FormSwitch from '@/components/UI/forms/FormSwitch.vue'
 import FormSelect from '@/components/UI/forms/FormSelect.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
 
-const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
-
-const authStore = useAuthStore()
+const router = useRouter()
+const categoryStore = useCategoryStore()
+const supplierStore = useSupplierStore()
 const productStore = useProductStore()
 const categories = ref([])
 const suppliers = ref([])
@@ -373,13 +414,10 @@ const models = reactive({
       stock: '',
       sku: ''
     }
-  ]
+  ],
+  enableVariation: 0
 })
-const enableVariation = ref(0)
-
-const token = computed(() => {
-  return authStore?.getLoggedAdmin?.token
-})
+const isLoading = ref(false)
 
 const rules = computed(() => {
   return {
@@ -391,20 +429,44 @@ const rules = computed(() => {
     originalPrice: { required },
     standardShipping: { required },
     expressShipping: { required },
-    stock: { required: requiredIf(() => enableVariation.value == 0) },
-    sku: { required: requiredIf(() => enableVariation.value == 0) },
+    stock: { required: requiredIf(() => models.enableVariation == 0) },
+    sku: { required: requiredIf(() => models.enableVariation == 0) },
     variation: {
-      $each: {
-        size: { required: requiredIf(() => enableVariation.value == 1) },
-        color: { required: requiredIf(() => enableVariation.value == 1) },
-        stock: { required: requiredIf(() => enableVariation.value == 1) },
-        sku: { required: requiredIf(() => enableVariation.value == 1) }
-      }
+      $each: helpers.forEach({
+        size: { required: requiredIf(() => models.enableVariation == 1) },
+        color: { required: requiredIf(() => models.enableVariation == 1) },
+        stock: { required: requiredIf(() => models.enableVariation == 1) },
+        sku: { required: requiredIf(() => models.enableVariation == 1) }
+      })
     }
   }
 })
-
 const v$ = useVuelidate(rules, models)
+
+const formData = computed(() => {
+  let file = new FormData()
+  file.append('file', models.highlight_image)
+  file.append('file', models.images)
+
+  return {
+    highlight_image: models.highlightImage,
+    images: models.images,
+    is_featured: models.isFeatured,
+    is_active: models.isActive,
+    name: models.name,
+    slug: models.slug,
+    category_id: models.category,
+    supplier_id: models.supplier,
+    description: models.description,
+    orig_price: models.originalPrice,
+    discounted_price: models.discountPrice,
+    standard_shipping_price: models.standardShipping,
+    express_shipping_price: models.expressShipping,
+    stocks: models.enableVariation == 0 ? models.stock : null,
+    sku: models.enableVariation == 0 ? models.sku : null,
+    variations: models.enableVariation == 1 ? models.variation : null
+  }
+})
 
 onMounted(async () => {
   await getCategories()
@@ -413,19 +475,37 @@ onMounted(async () => {
 
 async function getCategories() {
   try {
-    await productStore.getCategories(token.value)
-    categories.value = productStore.categories
-  } catch (error) {
-    console.error(error)
+    await categoryStore.getCategories()
+    categories.value = categoryStore.categories
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 
 async function getSuppliers() {
   try {
-    await productStore.getSuppliers(token.value)
-    suppliers.value = productStore.suppliers
-  } catch (error) {
-    console.error(error)
+    await supplierStore.getSuppliers()
+    suppliers.value = supplierStore.suppliers
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 
@@ -440,7 +520,7 @@ function handleImages(fileItems) {
 }
 
 function toggleVariation() {
-  if (enableVariation.value == 0) {
+  if (models.enableVariation == 0) {
     models.variation = [
       {
         size: '',
@@ -469,33 +549,23 @@ async function addProduct() {
 
   if (!isFormCorrect) return
 
-  const formData = {
-    highlight_image: models.highlightImage,
-    images: models.images,
-    is_featured: models.isFeatured,
-    is_active: models.isActive,
-    name: models.name,
-    slug: models.slug,
-    category_id: models.category,
-    supplier_id: models.supplier,
-    description: models.description,
-    orig_price: models.originalPrice,
-    discounted_price: models.discountPrice,
-    standard_shipping_price: models.standardShipping,
-    express_shipping_price: models.expressShipping,
-    stocks: models.stock,
-    sku: models.sku
-    // variations: models.variation
-  }
-
-  let file = new FormData()
-  file.append('file', formData.highlight_image)
-  file.append('file', formData.images)
-
   try {
-    await productStore.addProduct(formData, token.value)
-  } catch (error) {
-    console.error(error)
+    isLoading.value = true
+    await productStore.addProduct(formData.value)
+    router.push('/products')
+    isLoading.value = false
+  } catch ({ message }) {
+    isLoading.value = false
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
   }
 }
 </script>
