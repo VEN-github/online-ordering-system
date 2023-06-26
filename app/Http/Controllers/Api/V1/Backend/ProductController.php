@@ -17,11 +17,11 @@ class ProductController extends BaseController
             $products = Product::query()
                 ->eagerLoadRelationships()
                 ->latest()
-                ->get();
+                ->paginate($this->paginate);
 
             return $this->success(
                     config('general.messages.request.success'),
-                    ProductResource::collection($products)
+                    $products
                 );
         } catch (\Exception $e) {
             return $this->error();
