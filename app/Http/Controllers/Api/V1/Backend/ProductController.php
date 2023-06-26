@@ -14,16 +14,14 @@ class ProductController extends BaseController
     public function index()
     {
         try {
-            $products = ProductResource::collection(
-                    Product::query()
-                        ->eagerLoadRelationships()
-                        ->latest()
-                        ->get()
-                );
+            $products = Product::query()
+                ->eagerLoadRelationships()
+                ->latest()
+                ->paginate($this->paginate);
 
             return $this->success(
                     config('general.messages.request.success'),
-                    $products->paginate($this->paginate)
+                    $products
                 );
         } catch (\Exception $e) {
             return $this->error();
