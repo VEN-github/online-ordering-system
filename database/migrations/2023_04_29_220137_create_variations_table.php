@@ -13,10 +13,13 @@ return new class extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->id();
-            $table->string('size')->nullable();
-            $table->string('color')->nullable();
-            $table->unsignedMediumInteger('stock')->nullable();
-            $table->string('sku')->nullable();
+            $table->string('name');
+            // $table->string('size');
+            // $table->string('color');
+            // $table->string('slug')->unique()->index();
+            $table->json('options');
+            $table->unsignedMediumInteger('stock');
+            // $table->string('sku');
             $table->unsignedMediumInteger('order');
             $table->unsignedBigInteger('product_id');
             $table->timestamps();

@@ -60,7 +60,7 @@ class ProductController extends BaseController
                     ProductResource::make($product)
                 );
         } catch (\Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error();
         }
     }
 
