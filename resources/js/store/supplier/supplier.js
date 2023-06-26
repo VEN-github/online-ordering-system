@@ -3,7 +3,22 @@ import api from '@/config/axios'
 import { handleError } from '@/helpers/handleApiError'
 
 export const useSupplierStore = defineStore('supplier', {
+  state: () => {
+    return {
+      suppliers: []
+    }
+  },
   actions: {
+    async getSuppliers() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/admin/product/suppliers')
+        this.suppliers = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
     async addSupplier(formData) {
       try {
         await api.post('/api/admin/suppliers', formData)
