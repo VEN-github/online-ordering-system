@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between space-x-4 py-5 lg:py-6">
     <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Products</h2>
-    <BaseButton mode="primary" size="lg" link="/products/create" is-link>
+    <BaseButton mode="primary" size="lg" link="/product/create" is-link>
       Add New Product
     </BaseButton>
   </div>
@@ -33,6 +33,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
 import { useProductStore } from '@/store/products/product'
 import { toast } from 'vue3-toastify'
@@ -42,6 +43,7 @@ import DataTable from '@/components/UI/table/DataTable.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 import ConfirmationModal from '@/components/UI/modal/ConfirmationModal.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const table = ref(null)
@@ -205,8 +207,7 @@ const config = computed(() => {
           `
           cell.onclick = (event) => {
             if (event.target.classList.contains('edit')) {
-              models.value = rowData
-              // toggleEditForm()
+              router.push(`/product/${rowData.slug}/edit`)
               return
             }
             if (event.target.classList.contains('delete')) {

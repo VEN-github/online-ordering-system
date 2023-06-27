@@ -1,8 +1,10 @@
 <template>
   <FilePond
+    :files="files"
     accepted-file-types="image/jpeg, image/png"
     :allow-multiple="allowMultiple"
     :max-files="maxFiles"
+    :class="{ 'filepond--single': !allowMultiple }"
     @updatefiles="emit('onUpload', $event)"
   />
 </template>
@@ -15,6 +17,12 @@ import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
 
 defineProps({
+  files: {
+    type: [String, Array],
+    default() {
+      return null
+    }
+  },
   allowMultiple: {
     type: Boolean,
     default() {
