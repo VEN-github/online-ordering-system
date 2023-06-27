@@ -26,8 +26,13 @@ class StoreVariations
                     throw new \Exception('Variation cannot be empty.');
                 }
 
-                $variation['order'] = $index;
-                $variations[] = $variation;
+                $variations[] = [
+                    'size' => $variation['size'],
+                    'color' => $variation['color'],
+                    'stock' => $variation['stock'],
+                    'sku' => $variation['sku'],
+                    'order' => $index,
+                ];
             }
 
             if ($variations) {
