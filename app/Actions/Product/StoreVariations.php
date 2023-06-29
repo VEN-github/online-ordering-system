@@ -34,6 +34,11 @@ class StoreVariations
                 $product
                     ->variations()
                     ->createMany($variations);
+
+                $product->update([
+                    'sku' => NULL,
+                    'stocks' => collect($variations)->sum('stock'),
+                ]);
             }
         });
     }
