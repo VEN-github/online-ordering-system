@@ -24,7 +24,7 @@ return new class () extends Migration {
             $table->bigInteger('standard_shipping_price')->nullable();
             $table->bigInteger('express_shipping_price')->nullable();
             $table->unsignedBigInteger('supplier_id')->nullable();
-            $table->unsignedBigInteger('stocks')->default(0);
+            $table->unsignedBigInteger('stocks')->nullable();
             $table->timestamps();
             $table->softDeletes();
         });

@@ -37,7 +37,7 @@ class StoreVariations
 
                 $product->update([
                     'sku' => NULL,
-                    'stocks' => collect($variations)->sum('stock'),
+                    'stocks' => NULL,
                 ]);
             }
         });
