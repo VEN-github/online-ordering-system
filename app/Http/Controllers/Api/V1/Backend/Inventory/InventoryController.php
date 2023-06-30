@@ -23,13 +23,17 @@ class InventoryController extends BaseController
 
                 $variation->increment('stock', $inventory->added_stock);
 
-                $product->load('variations');
-
                 $product->update([
-                    'stocks' => $product->variations->sum('stock')
+                    'stocks' => NULL
                 ]);
             } else {
-                $product->increment('stocks', $inventory->added_stock);
+                if (! is_null($product->stocks)) {
+                    $product->increment('stocks', $inventory->added_stock);
+                } else {
+                    $product->update([
+                        'stocks' => $inventory->added_stock
+                    ]);
+                }
             }
 
             return $this->success(
