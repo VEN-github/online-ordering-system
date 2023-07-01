@@ -101,20 +101,17 @@ class ProductController extends BaseController
 
             $product->update($request->validated());
 
-            StoreImages::runIf(
-                $request->hasFile($highlight),
+            StoreImages::run(
                 $product,
                 $highlight
             );
 
-            StoreImages::runIf(
-                $request->hasFile($collection),
+            StoreImages::run(
                 $product,
                 $collection
             );
 
-            StoreVariations::runIf(
-                $request->has('variations'),
+            StoreVariations::run(
                 $product,
                 $request->get('variations')
             );

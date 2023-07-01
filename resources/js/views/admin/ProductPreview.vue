@@ -78,7 +78,7 @@
               </p>
             </div>
           </div>
-          <div v-if="product.variations.length" class="mt-5">
+          <div v-if="product?.variations.length" class="mt-5">
             <h4 class="mb-2 text-base font-semibold text-slate-800">Variations</h4>
             <div class="grid grid-cols-1 gap-2 sm:grid-cols-2">
               <div
