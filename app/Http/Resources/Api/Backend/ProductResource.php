@@ -27,6 +27,7 @@ class ProductResource extends JsonResource
             'discounted_price' => $this->discounted_price,
             'standard_shipping_price' => $this->standard_shipping_price,
             'express_shipping_price' => $this->express_shipping_price,
+            'stocks' => $this->stocks,
             'supplier' => SupplierResource::make($this->whenLoaded('supplier')),
             'variations' => VariationResource::collection($this->whenLoaded('variations')),
             'highlight_image' => $this->when(

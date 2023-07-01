@@ -34,10 +34,18 @@ const routes = [
         }
       },
       {
-        path: '/products/create',
+        path: '/product/create',
         component: () => import('@/views/admin/CreateProduct.vue'),
         meta: {
           title: 'Add Product'
+        }
+      },
+      {
+        path: '/product/:slug/edit',
+        component: () => import('@/views/admin/EditProduct.vue'),
+        props: true,
+        meta: {
+          title: 'Edit Product'
         }
       },
       {

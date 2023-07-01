@@ -14,14 +14,16 @@ class ProductController extends BaseController
     public function index()
     {
         try {
-            $products = Product::query()
-                ->eagerLoadRelationships()
-                ->latest()
-                ->get();
+            $products = ProductResource::collection(
+                    Product::query()
+                        ->eagerLoadRelationships()
+                        ->latest()
+                        ->get()
+                );
 
             return $this->success(
                     config('general.messages.request.success'),
-                    ProductResource::collection($products)
+                    $products->paginate($this->paginate)
                 );
         } catch (\Exception $e) {
             return $this->error();
@@ -60,7 +62,7 @@ class ProductController extends BaseController
                     ProductResource::make($product)
                 );
         } catch (\Exception $e) {
-            return $this->error($e);
+            return $this->error($e->getMessage());
         }
     }
 
@@ -99,19 +101,22 @@ class ProductController extends BaseController
 
             $product->update($request->validated());
 
-            StoreImages::run(
+            StoreImages::runIf(
+                $request->hasFile($highlight),
                 $product,
                 $highlight
             );
 
-            StoreImages::run(
+            StoreImages::runIf(
+                $request->hasFile($collection),
                 $product,
                 $collection
             );
 
-            StoreVariations::run(
+            StoreVariations::runIf(
+                $request->has('variations'),
                 $product,
-                $request->get('variations') ?? []
+                $request->get('variations')
             );
 
             $product = $product

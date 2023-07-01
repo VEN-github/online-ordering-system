@@ -3,6 +3,7 @@
 namespace App\Actions\Product;
 
 use App\Models\Product\Product;
+use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreVariations
@@ -15,19 +16,30 @@ class StoreVariations
             return;
         }
 
-        $variations = [];
+        DB::transaction(function () use ($product, $values) {
+            $variations = [];
 
-        $product->variations()->delete();
+            $product->variations()->delete();
 
-        foreach ($values as $index => $variation) {
-            $variation['order'] = $index;
-            $variations[] = $variation;
-        }
+            foreach ($values as $index => $variation) {
+                if (empty($variation)) {
+                    throw new \Exception('Variation cannot be empty.');
+                }
 
-        if ($variations) {
-            $product
-                ->variations()
-                ->createMany($variations);
-        }
+                $variations[] = [
+                    'size' => $variation['size'],
+                    'color' => $variation['color'],
+                    'stock' => $variation['stock'],
+                    'sku' => $variation['sku'],
+                    'order' => $index,
+                ];
+            }
+
+            if ($variations) {
+                $product
+                    ->variations()
+                    ->createMany($variations);
+            }
+        });
     }
 }

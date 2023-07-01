@@ -4,9 +4,9 @@
       <div v-show="isShow" class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"></div>
     </Transition>
     <div v-show="isShow" class="fixed inset-0 z-10 overflow-y-auto">
-      <div class="modal-overlay flex min-h-full items-center justify-center p-4 sm:p-0">
+      <div class="modal-overlay flex min-h-full items-center justify-center p-4 xl:p-0">
         <Transition name="modal-show">
-          <BaseCard v-show="isShow">
+          <BaseCard v-show="isShow" :size="size">
             <slot></slot>
           </BaseCard>
         </Transition>
@@ -24,6 +24,13 @@ defineProps({
     default() {
       return false
     }
+  },
+  size: {
+    type: String,
+    default() {
+      return 'md'
+    },
+    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '7xl'].includes(value)
   }
 })
 </script>

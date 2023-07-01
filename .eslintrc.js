@@ -16,7 +16,7 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest'
   },
-  ignorePatterns: ['node_modules/*', 'build/*', 'dist/*', 'src/helpers/*'],
+  ignorePatterns: ['node_modules/*', 'build/*', 'dist/*'],
   rules: {
     'prettier/prettier': [
       'error',

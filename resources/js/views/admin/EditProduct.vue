@@ -4,7 +4,7 @@
       <Icon icon="material-symbols:arrow-back-rounded" />
       <span>Back</span>
     </BaseButton>
-    <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Add Product</h2>
+    <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Edit Product</h2>
   </div>
   <div class="mt-5 space-y-10 divide-y divide-gray-900/10">
     <div class="grid grid-cols-1 gap-x-8 gap-y-8 md:grid-cols-3">
@@ -20,7 +20,7 @@
             <div class="col-span-full">
               <FormLabel :is-invalid="v$.highlightImage.$error">Highlight Image</FormLabel>
               <div class="mt-2">
-                <FormUpload @on-upload="handleHighlightImage" />
+                <FormUpload :files="product?.highlight_image" @on-upload="handleHighlightImage" />
               </div>
               <FormValidation v-if="v$.highlightImage.$error">
                 Highlight Image is required.
@@ -29,7 +29,12 @@
             <div class="col-span-full">
               <FormLabel>Products Images</FormLabel>
               <div class="mt-2">
-                <FormUpload max-files="3" allow-multiple @on-upload="handleImages" />
+                <FormUpload
+                  :files="product?.images"
+                  max-files="3"
+                  allow-multiple
+                  @on-upload="handleImages"
+                />
               </div>
             </div>
           </div>
@@ -259,11 +264,7 @@
             </div>
           </div>
           <div class="col-span-full my-6">
-            <FormSwitch
-              v-model="models.enableVariation"
-              label="Add Variation"
-              @change="toggleVariation"
-            />
+            <FormSwitch v-model="models.enableVariation" label="Add Variation" />
           </div>
           <div
             v-for="(variation, i) in models.variation"
@@ -358,7 +359,7 @@
   </div>
   <div class="mt-6 flex items-center justify-end gap-x-6">
     <BaseButton link="/products" is-link size="xl" :disabled="isLoading">Cancel</BaseButton>
-    <BaseButton mode="primary" size="xl" :disabled="isLoading" @click.prevent="addProduct">
+    <BaseButton mode="primary" size="xl" :disabled="isLoading" @click.prevent="editProduct">
       <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
       {{ isLoading ? 'Saving...' : 'Save' }}
     </BaseButton>
@@ -385,12 +386,22 @@ import FormSwitch from '@/components/UI/forms/FormSwitch.vue'
 import FormSelect from '@/components/UI/forms/FormSelect.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
 
+const props = defineProps({
+  slug: {
+    type: String,
+    default() {
+      return ''
+    }
+  }
+})
+
 const router = useRouter()
 const categoryStore = useCategoryStore()
 const supplierStore = useSupplierStore()
 const productStore = useProductStore()
 const categories = ref([])
 const suppliers = ref([])
+const product = ref(null)
 const models = reactive({
   highlightImage: '',
   images: [],
@@ -471,6 +482,8 @@ const formData = computed(() => {
 onMounted(async () => {
   await getCategories()
   await getSuppliers()
+  await getProduct()
+  initProduct()
 })
 
 async function getCategories() {
@@ -509,6 +522,46 @@ async function getSuppliers() {
   }
 }
 
+async function getProduct() {
+  try {
+    await productStore.getProduct(props.slug)
+    product.value = productStore.product
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_RIGHT,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
+  }
+}
+
+function initProduct() {
+  if (product.value) {
+    models.highlightImage = product.value.highlight_image
+    models.images = product.value.images
+    models.isFeatured = product.value.is_featured
+    models.isActive = product.value.is_active
+    models.name = product.value.name
+    models.slug = product.value.slug
+    models.category = product.value.category.id
+    models.supplier = product.value.supplier.id
+    models.description = product.value.description
+    models.originalPrice = product.value.orig_price
+    models.discountPrice = product.value.discounted_price
+    models.standardShipping = product.value.standard_shipping_price
+    models.expressShipping = product.value.express_shipping_price
+    models.stock = product.value.stocks ?? ''
+    models.sku = product.value.sku ?? ''
+    models.variation = product.value.variations.length ? product.value.variations : models.variation
+    models.enableVariation = product.value.stocks ? 0 : 1
+  }
+}
+
 function handleHighlightImage(fileItems) {
   const file = fileItems.map((fileItem) => fileItem.file)
   models.highlightImage = file[0]
@@ -517,22 +570,6 @@ function handleHighlightImage(fileItems) {
 function handleImages(fileItems) {
   const files = fileItems.map((fileItem) => fileItem.file)
   models.images = files.map((file) => file)
-}
-
-function toggleVariation() {
-  if (models.enableVariation == 0) {
-    models.variation = [
-      {
-        size: '',
-        color: '',
-        stock: '',
-        sku: ''
-      }
-    ]
-  } else {
-    models.stock = ''
-    models.sku = ''
-  }
 }
 
 function addMoreVariation() {
@@ -544,14 +581,14 @@ function addMoreVariation() {
   })
 }
 
-async function addProduct() {
+async function editProduct() {
   const isFormCorrect = await v$.value.$validate()
 
   if (!isFormCorrect) return
 
   try {
     isLoading.value = true
-    await productStore.addProduct(formData.value)
+    await productStore.editProduct(props.slug, formData.value)
     router.push('/products')
     isLoading.value = false
   } catch ({ message }) {
