@@ -33,6 +33,10 @@ class StoreImages
             }
         }
 
+        if (! $this->request->has($collection)) {
+            return;
+        }
+
         $model->clearMediaCollection($collection);
 
         if ($this->request->hasFile($collection)) {
