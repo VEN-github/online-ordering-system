@@ -113,7 +113,7 @@ class ProductController extends BaseController
 
             StoreVariations::run(
                 $product,
-                $request->get('variations') ?? []
+                $request->get('variations')
             );
 
             $product = $product

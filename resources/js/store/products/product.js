@@ -5,7 +5,8 @@ import { handleError } from '@/helpers/handleApiError'
 export const useProductStore = defineStore('product', {
   state: () => {
     return {
-      products: []
+      products: [],
+      product: null
     }
   },
   actions: {
@@ -15,6 +16,16 @@ export const useProductStore = defineStore('product', {
           data: { data }
         } = await api.get('/api/admin/products')
         this.products = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getProduct(slug) {
+      try {
+        const {
+          data: { data }
+        } = await api.get(`/api/admin/products/${slug}`)
+        this.product = data
       } catch ({ response }) {
         handleError(response)
       }
@@ -30,7 +41,7 @@ export const useProductStore = defineStore('product', {
     },
     async editProduct(slug, formData) {
       try {
-        await api.post(`/api/admin/products/${slug}`, formData, {
+        await api.post(`/api/admin/products/${slug}?_method=PATCH`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
       } catch ({ response }) {

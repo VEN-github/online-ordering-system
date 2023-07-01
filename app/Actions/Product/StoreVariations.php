@@ -12,14 +12,14 @@ class StoreVariations
 
     public function handle(Product $product, mixed $values): void
     {
-        if (!is_array($values)) {
-            return;
-        }
-
         DB::transaction(function () use ($product, $values) {
             $variations = [];
 
             $product->variations()->delete();
+
+            if (is_null($values) || !is_array($values)) {
+                return;
+            }
 
             foreach ($values as $index => $variation) {
                 if (empty($variation)) {

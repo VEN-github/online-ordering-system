@@ -1,7 +1,7 @@
 <template>
   <div class="flex items-center justify-between space-x-4 py-5 lg:py-6">
     <h2 class="text-xl font-medium text-slate-800 lg:text-2xl">Products</h2>
-    <BaseButton mode="primary" size="lg" link="/products/create" is-link>
+    <BaseButton mode="primary" size="lg" link="/product/create" is-link>
       Add New Product
     </BaseButton>
   </div>
@@ -20,6 +20,12 @@
       </template>
     </DataTable>
   </div>
+  <ProductPreview
+    :is-show="showProductPreview"
+    :product="models"
+    size="7xl"
+    @on-close="toggleProductPreview"
+  />
   <ConfirmationModal
     :is-show="showDeleteModal"
     modal-type="danger"
@@ -33,6 +39,7 @@
 
 <script setup>
 import { ref, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
 import { useProductStore } from '@/store/products/product'
 import { toast } from 'vue3-toastify'
@@ -40,11 +47,14 @@ import 'vue3-toastify/dist/index.css'
 
 import DataTable from '@/components/UI/table/DataTable.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
+import ProductPreview from './ProductPreview.vue'
 import ConfirmationModal from '@/components/UI/modal/ConfirmationModal.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const table = ref(null)
+const showProductPreview = ref(false)
 const showDeleteModal = ref(false)
 const models = ref(null)
 
@@ -204,9 +214,13 @@ const config = computed(() => {
             </div>
           `
           cell.onclick = (event) => {
-            if (event.target.classList.contains('edit')) {
+            if (event.target.classList.contains('preview')) {
               models.value = rowData
-              // toggleEditForm()
+              toggleProductPreview()
+              return
+            }
+            if (event.target.classList.contains('edit')) {
+              router.push(`/product/${rowData.slug}/edit`)
               return
             }
             if (event.target.classList.contains('delete')) {
@@ -229,6 +243,10 @@ const config = computed(() => {
     ]
   }
 })
+
+function toggleProductPreview() {
+  showProductPreview.value = !showProductPreview.value
+}
 
 function toggleDeleteModal() {
   showDeleteModal.value = !showDeleteModal.value
