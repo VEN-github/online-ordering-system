@@ -20,6 +20,12 @@
       </template>
     </DataTable>
   </div>
+  <ProductPreview
+    :is-show="showProductPreview"
+    :product="models"
+    size="7xl"
+    @on-close="toggleProductPreview"
+  />
   <ConfirmationModal
     :is-show="showDeleteModal"
     modal-type="danger"
@@ -41,12 +47,14 @@ import 'vue3-toastify/dist/index.css'
 
 import DataTable from '@/components/UI/table/DataTable.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
+import ProductPreview from './ProductPreview.vue'
 import ConfirmationModal from '@/components/UI/modal/ConfirmationModal.vue'
 
 const router = useRouter()
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const table = ref(null)
+const showProductPreview = ref(false)
 const showDeleteModal = ref(false)
 const models = ref(null)
 
@@ -206,6 +214,11 @@ const config = computed(() => {
             </div>
           `
           cell.onclick = (event) => {
+            if (event.target.classList.contains('preview')) {
+              models.value = rowData
+              toggleProductPreview()
+              return
+            }
             if (event.target.classList.contains('edit')) {
               router.push(`/product/${rowData.slug}/edit`)
               return
@@ -230,6 +243,10 @@ const config = computed(() => {
     ]
   }
 })
+
+function toggleProductPreview() {
+  showProductPreview.value = !showProductPreview.value
+}
 
 function toggleDeleteModal() {
   showDeleteModal.value = !showDeleteModal.value
