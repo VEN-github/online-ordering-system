@@ -29,7 +29,7 @@ class InventoryController extends BaseController
 
             return $this->success(
                     config('general.messages.request.success'),
-                    $inventories
+                    $inventories->paginate($this->paginate)
                 );
         } catch (\Exception $e) {
             return $this->error();
