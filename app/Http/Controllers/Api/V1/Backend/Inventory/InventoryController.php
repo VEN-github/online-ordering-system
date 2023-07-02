@@ -11,6 +11,30 @@ use App\Models\Variation\Variation;
 
 class InventoryController extends BaseController
 {
+    public function index()
+    {
+        try {
+            $inventories = InventoryResource::collection(
+                    Inventory::query()
+                        ->with(
+                            'product.category',
+                            'product.highlightImages',
+                            'product.images',
+                            'product.supplier',
+                            'variation'
+                        )
+                        ->latest()
+                        ->get()
+                );
+
+            return $this->success(
+                    config('general.messages.request.success'),
+                    $inventories
+                );
+        } catch (\Exception $e) {
+            return $this->error();
+        }
+    }
     public function store(InventoryRequest $request)
     {
         try {

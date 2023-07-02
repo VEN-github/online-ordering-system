@@ -5,5 +5,6 @@ Route::middleware(['auth:api_admins'])
     ->prefix('inventories')
     ->name('inventory.')
     ->group(function() {
+        Route::get('/', 'InventoryController@index')->name('index');
         Route::post('/', 'InventoryController@store')->name('store');
     });
