@@ -45,6 +45,11 @@ const lists = ref([
     icon: 'streamline:money-cashier-tag-codes-tags-tag-product-label'
   },
   {
+    name: 'Inventory',
+    link: '/inventory',
+    icon: 'material-symbols:inventory'
+  },
+  {
     name: 'Supplier',
     link: '/supplier',
     icon: 'mdi:truck-outline'

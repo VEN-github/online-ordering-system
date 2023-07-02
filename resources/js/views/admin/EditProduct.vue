@@ -247,6 +247,7 @@
                   id="product-stock"
                   v-model="models.stock"
                   type="number"
+                  min="1"
                   placeholder="Enter product stock"
                   :is-invalid="v$.stock.$error"
                 />
@@ -336,6 +337,7 @@
                   :id="'product-stock-' + i"
                   v-model="variation.stock"
                   type="number"
+                  min="1"
                   placeholder="Enter product stock"
                   :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].stock.$error"
                 />

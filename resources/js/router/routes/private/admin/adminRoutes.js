@@ -49,6 +49,13 @@ const routes = [
         }
       },
       {
+        path: '/inventory',
+        component: () => import('@/views/admin/InventoryView.vue'),
+        meta: {
+          title: 'Inventory'
+        }
+      },
+      {
         path: '/supplier',
         component: () => import('@/views/admin/SupplierView.vue'),
         meta: {
