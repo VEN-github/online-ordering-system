@@ -20,7 +20,11 @@
             <div class="col-span-full">
               <FormLabel :is-invalid="v$.highlightImage.$error">Highlight Image</FormLabel>
               <div class="mt-2">
-                <FormUpload :files="product?.highlight_image" @on-upload="handleHighlightImage" />
+                <FormUpload
+                  :files="product?.highlight_image"
+                  @on-upload="handleHighlightImage"
+                  @on-remove="handleRemoveHighlightImage"
+                />
               </div>
               <FormValidation v-if="v$.highlightImage.$error">
                 Highlight Image is required.
@@ -34,6 +38,7 @@
                   max-files="3"
                   allow-multiple
                   @on-upload="handleImages"
+                  @on-remove="handleRemoveImages"
                 />
               </div>
             </div>
@@ -272,10 +277,15 @@
             class="mb-6 grid max-w-2xl grid-cols-1 gap-x-6 gap-y-8 border-b border-b-slate-200 pb-6 sm:grid-cols-6"
             :class="{ 'pointer-events-none opacity-60': models.enableVariation == 0 }"
           >
+            <div v-if="models.variation.length > 1" class="justify-self-end sm:col-span-full">
+              <BaseButton mode="outline-default" size="sm" @click="removeVariation(i)">
+                <Icon icon="line-md:close" />
+              </BaseButton>
+            </div>
             <div class="sm:col-span-3">
               <FormLabel
                 :label-id="'product-size-' + i"
-                :is-invalid="v$.variation.$each.$response.$data[i].size.$error"
+                :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].size.$error"
               >
                 Product Size
               </FormLabel>
@@ -284,17 +294,19 @@
                   :id="'product-size-' + i"
                   v-model="variation.size"
                   placeholder="Enter product size"
-                  :is-invalid="v$.variation.$each.$response.$data[i].size.$error"
+                  :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].size.$error"
                 />
               </div>
-              <FormValidation v-if="v$.variation.$each.$response.$data[i].size.$error">
+              <FormValidation
+                v-if="formSubmitted && v$.variation.$each.$response.$data[i].size.$error"
+              >
                 Product Size is required.
               </FormValidation>
             </div>
             <div class="sm:col-span-3">
               <FormLabel
                 :label-id="'product-color-' + i"
-                :is-invalid="v$.variation.$each.$response.$data[i].color.$error"
+                :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].color.$error"
               >
                 Product Color
               </FormLabel>
@@ -303,17 +315,19 @@
                   :id="'product-color-' + i"
                   v-model="variation.color"
                   placeholder="Enter product color"
-                  :is-invalid="v$.variation.$each.$response.$data[i].color.$error"
+                  :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].color.$error"
                 />
               </div>
-              <FormValidation v-if="v$.variation.$each.$response.$data[i].color.$error">
+              <FormValidation
+                v-if="formSubmitted && v$.variation.$each.$response.$data[i].color.$error"
+              >
                 Product Color is required.
               </FormValidation>
             </div>
             <div class="sm:col-span-3">
               <FormLabel
                 :label-id="'product-stock-' + i"
-                :is-invalid="v$.variation.$each.$response.$data[i].stock.$error"
+                :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].stock.$error"
               >
                 Product Stock
               </FormLabel>
@@ -323,17 +337,19 @@
                   v-model="variation.stock"
                   type="number"
                   placeholder="Enter product stock"
-                  :is-invalid="v$.variation.$each.$response.$data[i].stock.$error"
+                  :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].stock.$error"
                 />
               </div>
-              <FormValidation v-if="v$.variation.$each.$response.$data[i].stock.$error">
+              <FormValidation
+                v-if="formSubmitted && v$.variation.$each.$response.$data[i].stock.$error"
+              >
                 Product Stock is required.
               </FormValidation>
             </div>
             <div class="sm:col-span-3">
               <FormLabel
                 :label-id="'sku-' + i"
-                :is-invalid="v$.variation.$each.$response.$data[i].sku.$error"
+                :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].sku.$error"
               >
                 SKU (Stock Keeping Unit)
               </FormLabel>
@@ -342,10 +358,12 @@
                   :id="'sku-' + i"
                   v-model="variation.sku"
                   placeholder="Enter SKU"
-                  :is-invalid="v$.variation.$each.$response.$data[i].sku.$error"
+                  :is-invalid="formSubmitted && v$.variation.$each.$response.$data[i].sku.$error"
                 />
               </div>
-              <FormValidation v-if="v$.variation.$each.$response.$data[i].sku.$error">
+              <FormValidation
+                v-if="formSubmitted && v$.variation.$each.$response.$data[i].sku.$error"
+              >
                 SKU is required.
               </FormValidation>
             </div>
@@ -428,6 +446,7 @@ const models = reactive({
   ],
   enableVariation: 0
 })
+const formSubmitted = ref(false)
 const isLoading = ref(false)
 
 const rules = computed(() => {
@@ -562,14 +581,20 @@ function initProduct() {
   }
 }
 
-function handleHighlightImage(fileItems) {
-  const file = fileItems.map((fileItem) => fileItem.file)
-  models.highlightImage = file[0]
+function handleHighlightImage(file) {
+  models.highlightImage = file
 }
 
-function handleImages(fileItems) {
-  const files = fileItems.map((fileItem) => fileItem.file)
-  models.images = files.map((file) => file)
+function handleRemoveHighlightImage() {
+  models.highlightImage = ''
+}
+
+function handleImages(file) {
+  models.images.push(file)
+}
+
+function handleRemoveImages(file) {
+  models.images.splice(models.images.indexOf(file), 1)
 }
 
 function addMoreVariation() {
@@ -581,7 +606,12 @@ function addMoreVariation() {
   })
 }
 
+function removeVariation(index) {
+  models.variation.splice(index, 1)
+}
+
 async function editProduct() {
+  formSubmitted.value = true
   const isFormCorrect = await v$.value.$validate()
 
   if (!isFormCorrect) return
@@ -591,8 +621,10 @@ async function editProduct() {
     await productStore.editProduct(props.slug, formData.value)
     router.push('/products')
     isLoading.value = false
+    formSubmitted.value = false
   } catch ({ message }) {
     isLoading.value = false
+    formSubmitted.value = false
     toast(message, {
       type: 'error',
       theme: 'colored',

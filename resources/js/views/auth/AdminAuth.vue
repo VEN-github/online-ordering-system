@@ -100,7 +100,7 @@ async function login() {
     isLoading.value = true
     await authStore.adminLogin(models)
     isLoading.value = false
-    router.replace('/dashboard')
+    router.push('/dashboard')
   } catch ({ message }) {
     isLoading.value = false
     isError.value = true

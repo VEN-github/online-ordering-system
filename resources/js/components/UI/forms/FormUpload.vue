@@ -5,7 +5,8 @@
     :allow-multiple="allowMultiple"
     :max-files="maxFiles"
     :class="{ 'filepond--single': !allowMultiple }"
-    @updatefiles="emit('onUpload', $event)"
+    @addfile="handleFilePondAddFile"
+    @removefile="handleFilePondRemoveFile"
   />
 </template>
 
@@ -36,7 +37,25 @@ defineProps({
     }
   }
 })
-const emit = defineEmits(['onUpload'])
+const emit = defineEmits(['onUpload', 'onRemove'])
 
 const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
+
+function handleFilePondAddFile(error, file) {
+  if (error) {
+    console.log('FilePond error: ', error)
+    return
+  }
+
+  emit('onUpload', file.file)
+}
+
+function handleFilePondRemoveFile(error, file) {
+  if (error) {
+    console.log('FilePond error: ', error)
+    return
+  }
+
+  emit('onRemove', file.file)
+}
 </script>

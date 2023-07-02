@@ -22,7 +22,7 @@
               :src="product?.highlight_image"
               :alt="product?.highlight_image"
             />
-            <div class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <div v-if="product?.images.length" class="mt-2 grid grid-cols-1 gap-2 sm:grid-cols-3">
               <img
                 v-for="image in product?.images"
                 :key="image"
