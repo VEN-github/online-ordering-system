@@ -15,6 +15,7 @@ return new class () extends Migration {
             $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('variation_id')->nullable();
             $table->bigInteger('added_stock');
+            $table->unsignedBigInteger('added_by');
             $table->timestamps();
             $table->softDeletes();
         });

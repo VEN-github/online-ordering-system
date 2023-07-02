@@ -19,5 +19,6 @@ class Inventory extends Model
         'product_id',
         'variation_id',
         'added_stock',
+        'added_by'
     ];
 }

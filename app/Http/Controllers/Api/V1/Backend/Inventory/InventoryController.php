@@ -21,6 +21,7 @@ class InventoryController extends BaseController
                             'product.highlightImages',
                             'product.images',
                             'product.supplier',
+                            'addedBy',
                             'variation'
                         )
                         ->latest()
@@ -32,13 +33,18 @@ class InventoryController extends BaseController
                     $inventories->paginate($this->paginate)
                 );
         } catch (\Exception $e) {
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
     public function store(InventoryRequest $request)
     {
         try {
-            $inventory = Inventory::create($request->validated());
+            $inventory = Inventory::create(array_merge(
+                $request->validated(),
+                [
+                    'added_by' => auth()->id()
+                ]
+            ));
             $inventory = $inventory->loadMissingRelationships();
             $product = Product::findOrFail($inventory->product_id);
 

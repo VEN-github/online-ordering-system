@@ -19,6 +19,7 @@ class InventoryResource extends JsonResource
             'product' => ProductResource::make($this->whenLoaded('product')),
             'variation' => VariationResource::make($this->whenLoaded('variation')),
             'added_stock' => $this->added_stock,
+            'added_by' => AdminResource::make($this->whenLoaded('addedBy')),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
