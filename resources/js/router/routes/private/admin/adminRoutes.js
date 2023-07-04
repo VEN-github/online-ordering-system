@@ -68,6 +68,14 @@ const routes = [
         meta: {
           title: 'FAQs'
         }
+      },
+      {
+        path: '/:pathMatch(.*)*',
+        name: 'not-found',
+        component: () => import('@/views/errors/404View.vue'),
+        meta: {
+          title: 'Not Found'
+        }
       }
     ],
     meta: {
