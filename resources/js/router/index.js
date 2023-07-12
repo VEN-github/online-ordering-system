@@ -7,7 +7,14 @@ import privateRoutes from './routes/private/privateRoutes'
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [...publicRoutes, ...privateRoutes],
-  linkActiveClass: 'active'
+  linkActiveClass: 'active',
+  scrollBehavior(_, _2, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { top: 0, behavior: 'smooth' }
+    }
+  }
 })
 
 const DEFAULT_TITLE = 'Online Ordering System'

@@ -6,6 +6,7 @@ import { Icon } from '@iconify/vue'
 
 import App from './App.vue'
 import router from './router'
+import LoadingScreen from '@/components/UI/loader/LoadingScreen.vue'
 
 const app = createApp(App)
 
@@ -15,5 +16,6 @@ pinia.use(piniaPluginPersistedstate)
 app.use(pinia)
 app.use(router)
 app.component('Icon', Icon)
+app.component('LoadingScreen', LoadingScreen)
 
 app.mount('#app')
