@@ -1,0 +1,19 @@
+.loader {
+  @apply flex h-screen flex-col items-center justify-center;
+}
+
+.logo {
+  @apply fill-none stroke-emerald-500;
+  stroke-dasharray: 50px;
+  animation: load 15s infinite linear;
+}
+
+@keyframes load {
+  0% {
+    stroke-dashoffset: 0px;
+  }
+
+  100% {
+    stroke-dashoffset: 500px;
+  }
+}
