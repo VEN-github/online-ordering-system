@@ -16,7 +16,7 @@
 
     @vite('resources/css/app.css')
   </head>
-  <body class="antialiased bg-slate-100">
+  <body class="antialiased bg-slate-100 overflow-x-hidden">
     <div id="app"></div>
 
     @vite('resources/js/app.js')
