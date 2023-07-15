@@ -1,0 +1,72 @@
+<template>
+  <section class="bg-white">
+    <div class="min-h-screen lg:grid lg:grid-cols-12">
+      <section
+        class="relative flex h-[16rem] items-end bg-gray-900 lg:col-span-5 lg:h-full xl:col-span-6"
+      >
+        <img
+          alt="Night"
+          src="https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80"
+          class="absolute inset-0 h-full w-full object-cover opacity-80"
+        />
+        <div class="hidden lg:relative lg:block lg:p-12">
+          <RouterLink class="block text-white" to="/">
+            <span class="sr-only">Home</span>
+            <img class="h-8 sm:h-10" src="../../../assets/images/logo/logo.svg" alt="logo" />
+          </RouterLink>
+          <h2 class="mt-6 text-2xl font-bold text-white sm:text-3xl md:text-4xl">Welcome!</h2>
+          <p class="mt-4 leading-relaxed text-white/90">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
+            quibusdam aperiam voluptatum.
+          </p>
+        </div>
+      </section>
+      <main
+        class="relative flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+      >
+        <div class="relative -mt-16 block lg:hidden">
+          <RouterLink
+            class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-white text-blue-600 sm:h-20 sm:w-20"
+            to="/"
+          >
+            <span class="sr-only">Home</span>
+            <img class="h-8 sm:h-10" src="../../../assets/images/logo/logo.svg" alt="logo" />
+          </RouterLink>
+          <h1 class="mt-2 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Welcome!</h1>
+          <p class="mt-4 leading-relaxed text-gray-500">
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
+            quibusdam aperiam voluptatum.
+          </p>
+        </div>
+        <form
+          class="absolute top-2/4 left-0 mt-8 w-3/4 -translate-y-2/4 translate-x-20 space-y-6 lg:mt-0"
+        >
+          <div>
+            <FormLabel label-id="email">Email Address</FormLabel>
+            <div class="mt-2">
+              <FormInput id="email" type="email" placeholder="Enter your email address" />
+            </div>
+          </div>
+          <div>
+            <FormLabel label-id="password">Password</FormLabel>
+            <div class="relative mt-2">
+              <FormPassword id="password" placeholder="Enter your password" />
+            </div>
+          </div>
+          <div>
+            <BaseButton type="subtmi" mode="primary" size="lg" is-full> Login </BaseButton>
+          </div>
+        </form>
+      </main>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { RouterLink } from 'vue-router'
+
+import FormLabel from '@/components/UI/forms/FormLabel.vue'
+import FormInput from '@/components/UI/forms/FormInput.vue'
+import FormPassword from '@/components/UI/forms/FormPassword.vue'
+import BaseButton from '@/components/UI/button/BaseButton.vue'
+</script>
