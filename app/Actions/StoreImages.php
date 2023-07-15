@@ -45,22 +45,22 @@ class StoreImages
             if (is_array($this->request->file($collection))) {
                 foreach ($this->request->file($collection) as $file) {
                     $path = $file->storeAs('public/images', uniqid() . '.jpg', 'local');
-
+                    // info(storage_path($path));
                     $model
-                        ->addMedia($path)
+                        ->addMedia(storage_path($path))
                         ->toMediaCollection($collection);
 
-                    // Storage::disk('local')->delete($path);
+                    Storage::disk('local')->delete($path);
                 }
             } else {
                 $file = $this->request->file($collection);
                 $path = $file->storeAs('public/images', uniqid() . '.jpg', 'local');
-
+                // info(storage_path($path));
                 $model
-                    ->addMediaFromRequest($collection)
+                    ->addMedia(storage_path($path))
                     ->toMediaCollection($collection);
 
-                // Storage::disk('local')->delete($path);
+                Storage::disk('local')->delete($path);
             }
         }
     }
