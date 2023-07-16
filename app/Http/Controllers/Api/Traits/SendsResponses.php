@@ -9,7 +9,7 @@ use Illuminate\Http\JsonResponse;
 trait SendsResponses
 {
     protected function success(
-        string $message = '',
+        string $message = 'Request was successful',
         mixed $data = null
     ) {
         return response()->json([
