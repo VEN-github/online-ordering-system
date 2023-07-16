@@ -15,6 +15,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             AdminSeeder::class,
             CipherSweetSeeder::class,
+            UserSeeder::class
         ]);
     }
 }
