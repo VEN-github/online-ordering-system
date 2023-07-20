@@ -91,7 +91,6 @@ async function logout() {
   try {
     await authStore.adminLogout()
     router.replace('/admin/login')
-    authStore.$reset()
   } catch ({ message }) {
     toast(message, {
       type: 'error',
