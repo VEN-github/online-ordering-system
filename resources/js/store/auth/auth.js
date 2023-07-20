@@ -8,25 +8,17 @@ export const useAuthStore = defineStore('auth', {
     return {
       loggedAdmin: null,
       accessToken: null,
+      loggedUser: null,
+      userToken: null,
       ENCRYPTION_KEY: import.meta.env.VITE_ENCRYPTION_KEY
     }
   },
   getters: {
     getLoggedAdmin({ loggedAdmin }) {
-      var decryptedData
-      if (loggedAdmin) {
-        var bytes = AES.decrypt(loggedAdmin, this.ENCRYPTION_KEY)
-        decryptedData = JSON.parse(bytes.toString(enc.Utf8))
-      }
-      return decryptedData
+      return loggedAdmin ? this.decryptData(loggedAdmin) : null
     },
     getAccessToken({ accessToken }) {
-      var decryptedData
-      if (accessToken) {
-        var bytes = AES.decrypt(accessToken, this.ENCRYPTION_KEY)
-        decryptedData = JSON.parse(bytes.toString(enc.Utf8))
-      }
-      return decryptedData
+      return accessToken ? this.decryptData(accessToken) : null
     },
     isAdminAuthenticated({ loggedAdmin }) {
       return !!loggedAdmin
@@ -40,8 +32,8 @@ export const useAuthStore = defineStore('auth', {
             data: { admin, token }
           }
         } = await api.post('/api/admin/login', { email, password })
-        this.loggedAdmin = AES.encrypt(JSON.stringify(admin), this.ENCRYPTION_KEY).toString()
-        this.accessToken = AES.encrypt(JSON.stringify(token), this.ENCRYPTION_KEY).toString()
+        this.loggedAdmin = this.encryptData(admin)
+        this.accessToken = this.encryptData(token)
       } catch ({ response }) {
         handleError(response)
       }
@@ -49,14 +41,45 @@ export const useAuthStore = defineStore('auth', {
     async adminLogout() {
       try {
         await api.delete('/api/admin/logout')
+        this.loggedAdmin = null
+        this.accessToken = null
       } catch ({ response }) {
         handleError(response)
       }
+    },
+    async userLogin(formData) {
+      try {
+        const {
+          data: {
+            data: { user, token }
+          }
+        } = await api.post('/api/user/login', formData)
+        this.loggedUser = this.encryptData(user)
+        this.userToken = this.encryptData(token)
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async userLogout() {
+      try {
+        await api.delete('/api/user/logout')
+        this.loggedUser = null
+        this.userToken = null
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    encryptData(data) {
+      return AES.encrypt(JSON.stringify(data), this.ENCRYPTION_KEY).toString()
+    },
+    decryptData(data) {
+      var bytes = AES.decrypt(data, this.ENCRYPTION_KEY)
+      return JSON.parse(bytes.toString(enc.Utf8))
     }
   },
   persist: {
     storage: localStorage,
-    key: 'admin',
-    paths: ['loggedAdmin', 'accessToken']
+    key: 'auth',
+    paths: ['loggedAdmin', 'accessToken', 'loggedUser', 'userToken']
   }
 })

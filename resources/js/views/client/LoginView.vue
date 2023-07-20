@@ -22,7 +22,7 @@
         </div>
       </section>
       <main
-        class="relative flex items-center justify-center px-8 py-8 sm:px-12 lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
+        class="flex flex-col items-center justify-center px-8 py-8 sm:px-12 lg:relative lg:col-span-7 lg:px-16 lg:py-12 xl:col-span-6"
       >
         <div class="relative -mt-16 block lg:hidden">
           <RouterLink
@@ -39,22 +39,49 @@
           </p>
         </div>
         <form
-          class="absolute top-2/4 left-0 mt-8 w-3/4 -translate-y-2/4 translate-x-20 space-y-6 lg:mt-0"
+          class="mt-8 w-full space-y-6 lg:absolute lg:top-2/4 lg:left-0 lg:mt-0 lg:w-2/4 lg:-translate-y-2/4 lg:translate-x-52"
+          @submit.prevent="login"
         >
+          <Transition name="fade">
+            <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">
+              {{ errorMessage }}
+            </BaseAlert>
+          </Transition>
           <div>
-            <FormLabel label-id="email">Email Address</FormLabel>
+            <FormLabel label-id="email" :is-invalid="v$.email.$error">Email Address</FormLabel>
             <div class="mt-2">
-              <FormInput id="email" type="email" placeholder="Enter your email address" />
+              <FormInput
+                id="email"
+                v-model="models.email"
+                type="email"
+                placeholder="Enter your email address"
+                :is-invalid="v$.email.$error"
+              />
             </div>
+            <FormValidation v-if="v$.email.$error && v$.email.required.$invalid">
+              Email address is required.
+            </FormValidation>
+            <FormValidation v-if="v$.email.$error && v$.email.email.$invalid">
+              Email address is not valid.
+            </FormValidation>
           </div>
           <div>
-            <FormLabel label-id="password">Password</FormLabel>
+            <FormLabel label-id="password" :is-invalid="v$.password.$error">Password</FormLabel>
             <div class="relative mt-2">
-              <FormPassword id="password" placeholder="Enter your password" />
+              <FormPassword
+                id="password"
+                v-model="models.password"
+                placeholder="Enter your password"
+                :is-invalid="v$.password.$error"
+              />
             </div>
+            <FormValidation v-if="v$.password.$error"> Password is required. </FormValidation>
           </div>
           <div>
-            <BaseButton type="subtmi" mode="primary" size="lg" is-full> Login </BaseButton>
+            <BaseButton type="submit" mode="primary" size="lg" is-full :disabled="isLoading">
+              <Icon v-if="isLoading" icon="gg:spinner" class="animate-spin text-base" />
+              {{ isLoading ? 'Loading...' : 'Login' }}
+            </BaseButton>
           </div>
         </form>
       </main>
@@ -63,10 +90,64 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { ref, reactive, computed } from 'vue'
+import { RouterLink, useRouter } from 'vue-router'
+import { useAuthStore } from '@/store/auth/auth'
+import { useVuelidate } from '@vuelidate/core'
+import { required, email } from '@vuelidate/validators'
 
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
 import FormPassword from '@/components/UI/forms/FormPassword.vue'
+import FormValidation from '@/components/UI/forms/FormValidation.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
+import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
+
+const router = useRouter()
+const authStore = useAuthStore()
+const models = reactive({
+  email: '',
+  password: ''
+})
+
+const isLoading = ref(false)
+const isError = ref(false)
+const errorMessage = ref('')
+let timeout
+
+const rules = computed(() => {
+  return {
+    email: { required, email },
+    password: { required }
+  }
+})
+
+const v$ = useVuelidate(rules, models)
+
+async function login() {
+  const isFormCorrect = await v$.value.$validate()
+
+  if (!isFormCorrect) return
+
+  try {
+    clearTimeout(timeout)
+    isError.value = false
+    isLoading.value = true
+    await authStore.userLogin(models)
+    isLoading.value = false
+    router.push('/')
+  } catch ({ message }) {
+    isLoading.value = false
+    isError.value = true
+    errorMessage.value = message
+    clearErrorMessage()
+  }
+}
+
+function clearErrorMessage() {
+  timeout = setTimeout(() => {
+    isError.value = false
+    errorMessage.value = ''
+  }, 5000)
+}
 </script>
