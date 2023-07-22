@@ -39,6 +39,14 @@ const routes = [
     meta: {
       title: 'Login'
     }
+  },
+  {
+    path: '/register',
+    name: 'register',
+    component: () => import('@/views/client/RegisterView.vue'),
+    meta: {
+      title: 'Register'
+    }
   }
 ]
 
