@@ -83,6 +83,10 @@
               {{ isLoading ? 'Loading...' : 'Login' }}
             </BaseButton>
           </div>
+          <div class="text-center">
+            <span class="text-sm text-gray-600">Don't have an account?</span>
+            <RouterLink class="text-sm text-emerald-600" to="/register"> Register </RouterLink>
+          </div>
         </form>
       </main>
     </div>
