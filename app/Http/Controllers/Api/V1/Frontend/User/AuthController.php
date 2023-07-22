@@ -23,7 +23,7 @@ class AuthController extends BaseController
                 ->filterByEmail($email)
                 ->first();
 
-            if ( ! Auth::guard('users')->attempt([
+            if ( ! Auth::guard('web')->attempt([
                 'email' => $user?->email,
                 'password' => $request->password,
             ])) {
