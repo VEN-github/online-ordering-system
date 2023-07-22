@@ -40,7 +40,7 @@
       </div>
     </div>
     <div class="mt-2 flex flex-col justify-between gap-2 sm:flex-row">
-      <BaseButton mode="outline-default" class="order-2 sm:order-1">
+      <BaseButton mode="outline-default" class="order-2 sm:order-1" @click="toggleProductQuickView">
         <Icon class="h-6 w-6 text-gray-800" icon="carbon:view" />
         <span> Quick View </span>
       </BaseButton>
@@ -50,8 +50,22 @@
       </BaseButton>
     </div>
   </div>
+  <ProductQuickView
+    :is-show="showProductQuickView"
+    size="2xl"
+    @on-close="showProductQuickView = false"
+  />
 </template>
 
 <script setup>
+import { ref } from 'vue'
+
 import BaseButton from '@/components/UI/button/BaseButton.vue'
+import ProductQuickView from './ProductQuickView.vue'
+
+const showProductQuickView = ref(false)
+
+function toggleProductQuickView() {
+  showProductQuickView.value = !showProductQuickView.value
+}
 </script>
