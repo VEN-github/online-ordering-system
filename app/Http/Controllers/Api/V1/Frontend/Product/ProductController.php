@@ -8,6 +8,25 @@ use App\Models\Product\Product;
 
 class ProductController extends BaseController
 {
+    public function index()
+    {
+        try {
+            $products = ProductResource::collection(
+                    Product::query()
+                        ->eagerLoadRelationships()
+                        ->latest()
+                        ->get()
+                );
+
+            return $this->success(
+                    config('general.messages.request.success'),
+                    $products->paginate($this->paginate)
+                );
+        } catch (\Exception $e) {
+            return $this->error();
+        }
+    }
+
     public function getFeatured()
     {
         try {
