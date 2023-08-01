@@ -1,0 +1,29 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Controllers\Api\V1\Frontend\Faq;
+
+use App\Http\Controllers\Api\BaseController;
+use App\Http\Resources\FaqResource;
+use App\Models\Faq\Faq;
+use Exception;
+
+class FaqController extends BaseController
+{
+    public function index()
+    {
+        try {
+            $faqs = FaqResource::collection(
+                Faq::query()->latest()->get()
+            );
+
+            return $this->success(
+                config('general.messages.request.success'),
+                $faqs
+            );
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+}
