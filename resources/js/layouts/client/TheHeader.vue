@@ -26,10 +26,15 @@
         </RouterLink>
         <RouterLink
           to="#"
-          class="flex h-12 w-12 flex-col items-center justify-center gap-1.5 transition duration-100 hover:bg-gray-100 sm:h-20 sm:w-20 md:h-24 md:w-24"
+          class="relative flex h-12 w-12 flex-col items-center justify-center gap-1.5 transition duration-100 hover:bg-gray-100 sm:h-20 sm:w-20 md:h-24 md:w-24"
           active-class="bg-gray-100"
         >
           <Icon class="h-6 w-6 text-gray-800" icon="heroicons:shopping-bag" />
+          <span
+            class="absolute top-5 right-7 h-5 w-5 rounded-full bg-emerald-500 text-center text-sm text-white"
+          >
+            0
+          </span>
           <span class="hidden text-xs font-semibold text-gray-500 sm:block">Cart</span>
         </RouterLink>
         <button

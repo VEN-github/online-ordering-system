@@ -6,7 +6,8 @@ export const useProductStore = defineStore('product', {
   state: () => {
     return {
       products: [],
-      product: null
+      product: null,
+      featuredProducts: []
     }
   },
   actions: {
@@ -51,6 +52,26 @@ export const useProductStore = defineStore('product', {
     async deleteProduct(slug) {
       try {
         await api.delete(`/api/admin/products/${slug}`)
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getFeaturedProducts() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/products/featured')
+        this.featuredProducts = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getGuestProducts(page = 1) {
+      try {
+        const {
+          data: { data }
+        } = await api.get(`/api/products?page=${page}`)
+        this.products = data
       } catch ({ response }) {
         handleError(response)
       }

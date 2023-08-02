@@ -22,6 +22,14 @@ const routes = [
         }
       },
       {
+        path: '/product/:slug',
+        component: () => import('@/views/client/ProductDetails.vue'),
+        meta: {
+          title: 'Product Details'
+        },
+        props: true
+      },
+      {
         path: '/about',
         name: 'about',
         component: () => import('@/views/client/AboutView.vue'),
