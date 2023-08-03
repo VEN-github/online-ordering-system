@@ -9,7 +9,8 @@ return [
             'not_found' => 'No record found.'
         ],
         'request' => [
-            'success' => 'Request was successful.'
+            'success' => 'Request was successful.',
+            'error' => 'Request was unsuccessful.'
         ]
     ]
 ];
