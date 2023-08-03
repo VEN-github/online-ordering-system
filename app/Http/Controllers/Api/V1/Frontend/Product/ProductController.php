@@ -47,4 +47,23 @@ class ProductController extends BaseController
             return $this->error();
         }
     }
+
+    public function show(string $slug)
+    {
+        try {
+            $product = Product::query()
+                ->eagerLoadRelationships()
+                ->whereSlug($slug)
+                ->first();
+
+            return $product
+                ? $this->success(
+                        config('general.messages.request.success'),
+                        ProductResource::make($product)
+                    )
+                : $this->error(config('general.messages.model.not_found'));
+        } catch (\Exception $e) {
+            return $this->error();
+        }
+    }
 }
