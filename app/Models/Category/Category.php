@@ -10,8 +10,9 @@ use App\Models\Category\Traits\CategoryScope;
 use App\Models\Traits\GeneratesUniqueSlug;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Spatie\MediaLibrary\HasMedia;
 
-class Category extends Model
+class Category extends Model implements HasMedia
 {
     use GeneratesUniqueSlug;
     use CategoryMethod;
@@ -23,4 +24,6 @@ class Category extends Model
         'name',
         'slug',
     ];
+
+    protected const IMAGE_COLLECTION = 'image';
 }

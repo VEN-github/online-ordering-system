@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Backend;
 
+use App\Actions\StoreImages;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\CategoryRequest;
 use App\Http\Resources\CategoryResource;
@@ -32,13 +33,22 @@ class CategoryController extends BaseController
     {
         try {
             $category = Category::create($request->validated());
+            $image = Category::getImageCollection();
+
+            StoreImages::runIf(
+                $request->hasFile($image),
+                $category,
+                $image
+            );
+
+            $category = $category->loadMissingRelationships();
 
             return $this->success(
                 config('general.messages.model.created'),
                 CategoryResource::make($category)
             );
         } catch (Exception $e) {
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
 
@@ -72,6 +82,15 @@ class CategoryController extends BaseController
             }
 
             $category->update($request->validated());
+
+            $image = Category::getImageCollection();
+
+            StoreImages::run(
+                $category,
+                $image
+            );
+
+            $category = $category->loadMissingRelationships();
 
             return $this->success(
                 config('general.messages.model.updated'),

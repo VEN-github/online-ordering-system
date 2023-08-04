@@ -17,8 +17,17 @@ class CategoryResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'slug' => $this->slug,
+            'image' => $this->when(
+                $this->relationLoaded('image'),
+                function () {
+                    return $this->image
+                        ? $this->image->getUrl()
+                        : null;
+                }
+            ),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];
