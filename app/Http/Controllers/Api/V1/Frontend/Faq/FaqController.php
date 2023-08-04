@@ -15,7 +15,11 @@ class FaqController extends BaseController
     {
         try {
             $faqs = FaqResource::collection(
-                Faq::query()->latest()->get()
+                Faq::query()
+                    ->inRandomOrder()
+                    ->limit(6)
+                    ->whereActive(true)
+                    ->get()
             );
 
             return $this->success(
