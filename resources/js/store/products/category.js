@@ -5,10 +5,21 @@ import { handleError } from '@/helpers/handleApiError'
 export const useCategoryStore = defineStore('category', {
   state: () => {
     return {
-      categories: []
+      categories: [],
+      guestCategories: []
     }
   },
   actions: {
+    async getGuestCategories() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/categories')
+        this.guestCategories = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
     async getCategories() {
       try {
         const {
