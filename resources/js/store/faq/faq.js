@@ -3,7 +3,22 @@ import api from '@/config/axios'
 import { handleError } from '@/helpers/handleApiError'
 
 export const useFAQStore = defineStore('faq', {
+  state: () => {
+    return {
+      faqs: []
+    }
+  },
   actions: {
+    async getFAQs() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/faqs')
+        this.faqs = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
     async addFAQ(formData) {
       try {
         await api.post('/api/admin/faqs', formData)
