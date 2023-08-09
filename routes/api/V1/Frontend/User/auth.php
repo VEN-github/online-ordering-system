@@ -7,6 +7,9 @@ Route::namespace('User')
         Route::post('/login', 'AuthController@login')
             ->name('login');
 
+        Route::post('/register', 'AuthController@register')
+            ->name('register');
+
         Route::middleware('auth:api_users')
             ->delete('/logout', 'AuthController@logout')
             ->name('logout');

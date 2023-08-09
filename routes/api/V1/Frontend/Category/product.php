@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-Route::prefix('category/products')
+Route::prefix('categories')
     ->namespace('Category')
     ->name('category.')
     ->group(function () {
