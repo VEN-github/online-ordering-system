@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-Route::prefix('categories')
+Route::prefix('category')
     ->namespace('Category')
     ->name('category.')
     ->group(function () {
-        Route::get('/', 'CategoryController@index')->name('index');
+        Route::get('{category}/products', 'ProductController@index')->name('index');
     });
