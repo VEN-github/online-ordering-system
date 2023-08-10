@@ -33,7 +33,7 @@ class ProductController extends BaseController
 
             return $this->success(
                 config('general.messages.request.success'),
-                $products
+                $products->paginate($this->paginate)
             );
         } catch (Exception $e) {
             return $this->error($e->getMessage());
