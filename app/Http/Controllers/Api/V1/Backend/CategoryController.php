@@ -16,17 +16,19 @@ class CategoryController extends BaseController
     public function index()
     {
         try {
-            $categories = Category::query()
+            $categories = CategoryResource::collection(
+                Category::query()
                 ->with('image')
                 ->latest()
-                ->paginate($this->paginate);
+                ->get()
+            );
 
             return $this->success(
                 config('general.messages.request.success'),
-                $categories
+                $categories->paginate($this->paginate)
             );
         } catch (Exception $e) {
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
 
