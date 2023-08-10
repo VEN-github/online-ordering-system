@@ -7,4 +7,5 @@ Route::prefix('categories')
     ->name('category.')
     ->group(function () {
         Route::get('/', 'CategoryController@index')->name('index');
+        Route::get('/featured', 'CategoryController@getFeatured')->name('index');
     });

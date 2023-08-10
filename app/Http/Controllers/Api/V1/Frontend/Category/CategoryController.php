@@ -17,6 +17,24 @@ class CategoryController extends BaseController
             $categories = CategoryResource::collection(
                 Category::query()
                     ->with('image')
+                    ->get()
+            );
+
+            return $this->success(
+                config('general.messages.request.success'),
+                $categories
+            );
+        } catch (Exception $e) {
+            return $this->error();
+        }
+    }
+
+    public function getFeatured()
+    {
+        try {
+            $categories = CategoryResource::collection(
+                Category::query()
+                    ->with('image')
                     ->inRandomOrder()
                     ->limit(2)
                     ->get()
@@ -27,7 +45,7 @@ class CategoryController extends BaseController
                 $categories
             );
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error();
         }
     }
 }
