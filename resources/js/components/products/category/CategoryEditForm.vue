@@ -21,6 +21,16 @@
         <FormInput id="category-slug" v-model="models.slug" placeholder="Enter slug (optional)" />
       </div>
     </div>
+    <div class="mt-5">
+      <FormLabel label-id="category-image">Image</FormLabel>
+      <div class="mt-2">
+        <FormUpload
+          :files="modelValue?.image"
+          @on-upload="handleImage"
+          @on-remove="handleRemoveImage"
+        />
+      </div>
+    </div>
     <div class="mt-5 flex flex-col gap-3 sm:flex-row sm:justify-end">
       <BaseButton
         mode="outline-default"
@@ -56,6 +66,7 @@ import 'vue3-toastify/dist/index.css'
 import FormModal from '@/components/UI/modal/FormModal.vue'
 import FormLabel from '@/components/UI/forms/FormLabel.vue'
 import FormInput from '@/components/UI/forms/FormInput.vue'
+import FormUpload from '@/components/UI/forms/FormUpload.vue'
 import FormValidation from '@/components/UI/forms/FormValidation.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
@@ -79,7 +90,8 @@ const emit = defineEmits(['onClose', 'onSuccess'])
 const categoryStore = useCategoryStore()
 const models = reactive({
   name: '',
-  slug: ''
+  slug: '',
+  image: ''
 })
 const isLoading = ref(false)
 const isError = ref(false)
@@ -101,12 +113,24 @@ watchEffect(() => {
 function initModels() {
   models.name = props.modelValue?.name || ''
   models.slug = props.modelValue?.slug || ''
+  models.image = props.modelValue?.image || ''
+}
+
+function handleImage(file) {
+  models.image = file
+}
+
+function handleRemoveImage() {
+  models.image = ''
 }
 
 async function editCategory() {
   const isFormCorrect = await v$.value.$validate()
 
   if (!isFormCorrect) return
+
+  let file = new FormData()
+  file.append('file', models.image)
 
   try {
     clearTimeout(timeout)

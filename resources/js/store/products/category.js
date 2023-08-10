@@ -43,14 +43,18 @@ export const useCategoryStore = defineStore('category', {
     },
     async addCategory(formData) {
       try {
-        await api.post('/api/admin/categories', formData)
+        await api.post('/api/admin/categories', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
       } catch ({ response }) {
         handleError(response)
       }
     },
     async editCategory(slug, formData) {
       try {
-        await api.patch(`/api/admin/categories/${slug}`, formData)
+        await api.patch(`/api/admin/categories/${slug}`, formData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
       } catch ({ response }) {
         handleError(response)
       }
