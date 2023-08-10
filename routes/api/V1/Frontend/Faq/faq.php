@@ -7,4 +7,5 @@ Route::prefix('faqs')
     ->name('faq.')
     ->group(function () {
         Route::get('/', 'FaqController@index')->name('index');
+        Route::get('/featured', 'FaqController@getFeatured')->name('index');
     });

@@ -14,6 +14,22 @@ class FaqController extends BaseController
     public function index()
     {
         try {
+            $faqs = Faq::query()
+                ->latest()
+                ->paginate($this->paginate);
+
+            return $this->success(
+                config('general.messages.request.success'),
+                $faqs
+            );
+        } catch (Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
+    public function getFeatured()
+    {
+        try {
             $faqs = FaqResource::collection(
                 Faq::query()
                     ->inRandomOrder()
