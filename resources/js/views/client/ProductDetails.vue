@@ -5,14 +5,15 @@
         <div class="flex flex-col-reverse">
           <div class="mx-auto mt-6 w-full max-w-2xl lg:max-w-none">
             <div
-              class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+              v-if="galleryImages.length"
+              class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4"
               aria-orientation="horizontal"
               role="tablist"
             >
               <button
                 v-for="(image, index) in galleryImages"
                 :key="index"
-                class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white text-sm font-medium uppercase text-gray-900 hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
+                class="relative flex h-24 cursor-pointer items-center justify-center rounded-md bg-white hover:bg-gray-50 focus:outline-none focus:ring focus:ring-opacity-50 focus:ring-offset-4"
                 role="tab"
                 type="button"
                 @click="highlightImage = image"
@@ -36,95 +37,131 @@
           <div class="aspect-h-1 aspect-w-1 w-full">
             <div id="tabs-1-panel-1" aria-labelledby="tabs-1-tab-1" role="tabpanel" tabindex="0">
               <img
+                v-if="highlightImage"
                 :src="highlightImage"
                 alt="Highlight Image"
+                class="h-[395px] w-full object-contain object-center sm:rounded-lg"
+              />
+              <img
+                v-else
+                src="../../../assets/images/no-image.png"
+                alt="No image available"
                 class="h-[395px] w-full object-contain object-center sm:rounded-lg"
               />
             </div>
           </div>
         </div>
         <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0">
-          <h1 class="text-3xl font-bold tracking-tight text-gray-900">Title Here</h1>
+          <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ product?.name }}</h1>
           <div class="mt-3">
             <h2 class="sr-only">Product information</h2>
-            <p class="gap-2 text-3xl tracking-tight text-gray-900">$122</p>
-            <p class="flex items-center gap-2 text-3xl tracking-tight text-gray-900">
-              <span>$122</span>
-              <span class="text-lg text-red-500 line-through">$12</span>
+            <p
+              v-if="!product?.discounted_price"
+              class="gap-2 text-3xl tracking-tight text-gray-900"
+            >
+              {{ formattedPrice }}
+            </p>
+            <p v-else class="flex items-center gap-2 text-3xl tracking-tight text-gray-900">
+              <span>{{ formattedDiscountedPrice }}</span>
+              <span class="text-lg text-red-500 line-through">{{ formattedPrice }}</span>
             </p>
           </div>
           <div class="mt-6">
             <h3 class="sr-only">Description</h3>
             <div class="space-y-6 text-base text-gray-700">
-              <p>Description Here</p>
+              <p v-html="product?.description"></p>
             </div>
+          </div>
+          <div class="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
+            <section aria-labelledby="options-heading">
+              <h2 id="options-heading" class="sr-only">Product options</h2>
+              <form>
+                <div class="sm:flex sm:justify-between">
+                  <fieldset>
+                    <legend class="block text-sm font-medium text-gray-700">Options</legend>
+                    <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
+                      <div
+                        class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 ring-2 ring-emerald-500 focus:outline-none"
+                      >
+                        <input
+                          type="radio"
+                          name="size-choice"
+                          value="18L"
+                          class="sr-only"
+                          aria-labelledby="size-choice-0-label"
+                          aria-describedby="size-choice-0-description"
+                        />
+                        <p id="size-choice-0-label" class="text-base font-medium text-gray-900">
+                          Small
+                        </p>
+                        <p id="size-choice-0-description" class="mt-1 text-sm text-gray-500">Red</p>
+                        <div
+                          class="pointer-events-none absolute -inset-px rounded-lg border-2 border-emerald-500"
+                          aria-hidden="true"
+                        ></div>
+                      </div>
+                      <div
+                        class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none"
+                      >
+                        <input
+                          type="radio"
+                          name="size-choice"
+                          value="20L"
+                          class="sr-only"
+                          aria-labelledby="size-choice-1-label"
+                          aria-describedby="size-choice-1-description"
+                        />
+                        <p id="size-choice-1-label" class="text-base font-medium text-gray-900">
+                          Large
+                        </p>
+                        <p id="size-choice-1-description" class="mt-1 text-sm text-gray-500">
+                          Blue
+                        </p>
+                        <div
+                          class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent"
+                          aria-hidden="true"
+                        ></div>
+                      </div>
+                    </div>
+                  </fieldset>
+                </div>
+              </form>
+            </section>
           </div>
           <div class="mt-6">
             <div class="mt-10">
-              <BaseButton mode="primary" size="xl" class="max-w-xs sm:w-full">
+              <BaseButton mode="primary" size="xl" is-full>
                 <Icon class="h-5 w-5 text-white" icon="heroicons:shopping-bag" />
                 <span> Add to Cart </span>
               </BaseButton>
             </div>
           </div>
-          <section aria-labelledby="details-heading" class="mt-12">
-            <h2 id="details-heading" class="sr-only">Additional details</h2>
-            <div class="divide-y divide-gray-200 border-t">
-              <div>
-                <h3>
-                  <button
-                    type="button"
-                    class="group relative flex w-full items-center justify-between py-6 text-left"
-                    @click="toggleShippingDetails"
-                  >
-                    <span
-                      class="text-sm font-medium"
-                      :class="[showShippingDetails ? 'text-emerald-600' : 'text-gray-900']"
-                      >Shipping</span
-                    >
-                    <span class="ml-6 flex items-center">
-                      <svg
-                        class="h-6 w-6 text-gray-400 group-hover:text-gray-500"
-                        :class="[showShippingDetails ? 'hidden' : 'block']"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          d="M12 4.5v15m7.5-7.5h-15"
-                        />
-                      </svg>
-                      <svg
-                        class="block h-6 w-6 text-emerald-400 group-hover:text-emerald-500"
-                        :class="[showShippingDetails ? 'block' : 'hidden']"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke-width="1.5"
-                        stroke="currentColor"
-                        aria-hidden="true"
-                      >
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 12h-15" />
-                      </svg>
-                    </span>
-                  </button>
-                </h3>
-                <div v-if="showShippingDetails" class="px-6 text-sm">
-                  <ul role="list" class="list-disc">
-                    <li>Multiple strap configurations</li>
-                    <li>Spacious interior with top zip</li>
-                    <li>Leather handle and tabs</li>
-                    <li>Interior dividers</li>
-                    <li>Stainless strap loops</li>
-                    <li>Double stitched construction</li>
-                    <li>Water-resistant</li>
-                  </ul>
-                </div>
+          <section aria-labelledby="policies-heading" class="mt-10">
+            <h2 id="policies-heading" class="sr-only">Our Policies</h2>
+            <dl
+              class="grid grid-cols-1 gap-6 divide-y divide-gray-200 border-t pt-5 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2"
+            >
+              <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
+                <dt>
+                  <Icon
+                    icon="akar-icons:shipping-box-02"
+                    class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400"
+                  />
+                  <span class="mt-4 text-sm font-medium text-gray-900">Standard Shipping</span>
+                </dt>
+                <dd class="mt-1 text-sm text-gray-500">{{ formattedStandardShippingPrice }}</dd>
               </div>
-            </div>
+              <div class="rounded-lg border border-gray-200 bg-gray-50 p-6 text-center">
+                <dt>
+                  <Icon
+                    icon="la:shipping-fast"
+                    class="mx-auto h-6 w-6 flex-shrink-0 text-gray-400"
+                  />
+                  <span class="mt-4 text-sm font-medium text-gray-900">Express Shipping</span>
+                </dt>
+                <dd class="mt-1 text-sm text-gray-500">{{ formattedExpressShippingPrice }}</dd>
+              </div>
+            </dl>
           </section>
         </div>
       </div>
@@ -133,7 +170,9 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, computed, onMounted } from 'vue'
+import { useRouter } from 'vue-router'
+import { useProductStore } from '@/store/products/product'
 
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 
@@ -146,21 +185,53 @@ const props = defineProps({
   }
 })
 
-const highlightImage = ref(
-  'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
-)
-const galleryImages = ref([
-  'https://images.unsplash.com/photo-1592078615290-033ee584e267?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80',
-  'https://images.unsplash.com/photo-1524758631624-e2822e304c36?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80',
-  'https://plus.unsplash.com/premium_photo-1678402545080-2353b489c0c3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80'
-])
-const showShippingDetails = ref(false)
+const router = useRouter()
+const productStore = useProductStore()
+const product = ref(null)
+const highlightImage = ref(null)
+const galleryImages = ref([])
 
-onMounted(() => {
-  console.log(props.slug)
+const formattedPrice = computed(() => {
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(product.value?.orig_price)
 })
 
-function toggleShippingDetails() {
-  showShippingDetails.value = !showShippingDetails.value
+const formattedDiscountedPrice = computed(() => {
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(product.value?.discounted_price)
+})
+
+const formattedStandardShippingPrice = computed(() => {
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(product.value?.standard_shipping_price)
+})
+
+const formattedExpressShippingPrice = computed(() => {
+  return new Intl.NumberFormat('en-PH', {
+    style: 'currency',
+    currency: 'PHP'
+  }).format(product.value?.express_shipping_price)
+})
+
+onMounted(async () => {
+  await getGuestProduct()
+})
+
+async function getGuestProduct() {
+  try {
+    await productStore.getGuestProduct(props.slug)
+    product.value = productStore.guestProduct
+    highlightImage.value = product.value.highlight_image
+    if (!product.value.images.length) return
+    galleryImages.value = [product.value.highlight_image, ...product.value.images]
+  } catch ({ message }) {
+    router.push({ name: 'not-found' })
+  }
 }
 </script>

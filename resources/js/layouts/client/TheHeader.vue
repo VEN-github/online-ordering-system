@@ -25,9 +25,8 @@
           <span class="hidden text-xs font-semibold text-gray-500 sm:block">Account</span>
         </RouterLink>
         <RouterLink
-          to="#"
+          to="/cart"
           class="relative flex h-12 w-12 flex-col items-center justify-center gap-1.5 transition duration-100 hover:bg-gray-100 sm:h-20 sm:w-20 md:h-24 md:w-24"
-          active-class="bg-gray-100"
         >
           <Icon class="h-6 w-6 text-gray-800" icon="heroicons:shopping-bag" />
           <span

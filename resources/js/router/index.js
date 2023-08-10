@@ -6,7 +6,18 @@ import privateRoutes from './routes/private/privateRoutes'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [...publicRoutes, ...privateRoutes],
+  routes: [
+    ...publicRoutes,
+    ...privateRoutes,
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: () => import('@/views/client/NotFoundView.vue'),
+      meta: {
+        title: 'Not Found'
+      }
+    }
+  ],
   linkActiveClass: 'active',
   scrollBehavior(_, _2, savedPosition) {
     if (savedPosition) {

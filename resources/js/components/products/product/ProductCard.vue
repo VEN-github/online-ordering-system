@@ -37,7 +37,7 @@
         <span class="pointer-events-none text-sm opacity-0">N/A</span>
       </div>
     </div>
-    <div class="mt-2 flex flex-col justify-between gap-2 sm:flex-row">
+    <!-- <div class="mt-2 flex flex-col justify-between gap-2 sm:flex-row">
       <BaseButton mode="outline-default" class="order-2 sm:order-1" @click="toggleProductQuickView">
         <Icon class="h-6 w-6 text-gray-800" icon="carbon:view" />
         <span> Quick View </span>
@@ -46,21 +46,21 @@
         <Icon class="h-6 w-6 text-white" icon="heroicons:shopping-bag" />
         <span> Add to Cart </span>
       </BaseButton>
-    </div>
+    </div> -->
   </div>
-  <ProductQuickView
+  <!-- <ProductQuickView
     :is-show="showProductQuickView"
     size="2xl"
     @on-close="showProductQuickView = false"
-  />
+  /> -->
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { computed } from 'vue'
 import { RouterLink } from 'vue-router'
 
-import BaseButton from '@/components/UI/button/BaseButton.vue'
-import ProductQuickView from './ProductQuickView.vue'
+// import BaseButton from '@/components/UI/button/BaseButton.vue'
+// import ProductQuickView from './ProductQuickView.vue'
 
 const props = defineProps({
   product: {
@@ -71,7 +71,7 @@ const props = defineProps({
   }
 })
 
-const showProductQuickView = ref(false)
+// const showProductQuickView = ref(false)
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('en-PH', {
@@ -87,7 +87,7 @@ const formattedDiscountedPrice = computed(() => {
   }).format(props.product?.discounted_price)
 })
 
-function toggleProductQuickView() {
-  showProductQuickView.value = !showProductQuickView.value
-}
+// function toggleProductQuickView() {
+//   showProductQuickView.value = !showProductQuickView.value
+// }
 </script>

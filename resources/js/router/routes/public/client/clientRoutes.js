@@ -44,6 +44,30 @@ const routes = [
         meta: {
           title: 'Contact'
         }
+      },
+      {
+        path: '/faq',
+        name: 'faq',
+        component: () => import('@/views/client/FaqView.vue'),
+        meta: {
+          title: 'FAQ'
+        }
+      },
+      {
+        path: '/cart',
+        name: 'cart',
+        component: () => import('@/views/client/CartView.vue'),
+        meta: {
+          title: 'Cart'
+        }
+      },
+      {
+        path: '/checkout',
+        name: 'checkout',
+        component: () => import('@/views/client/CheckoutView.vue'),
+        meta: {
+          title: 'Checkout'
+        }
       }
     ]
   },
@@ -61,6 +85,14 @@ const routes = [
     component: () => import('@/views/client/RegisterView.vue'),
     meta: {
       title: 'Register'
+    }
+  },
+  {
+    path: '/order-confirmed',
+    name: 'order-confirmed',
+    component: () => import('@/views/client/OrderSuccessView.vue'),
+    meta: {
+      title: 'Order Confirmed'
     }
   }
 ]

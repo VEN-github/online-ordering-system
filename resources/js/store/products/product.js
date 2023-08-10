@@ -7,7 +7,9 @@ export const useProductStore = defineStore('product', {
     return {
       products: [],
       product: null,
-      featuredProducts: []
+      featuredProducts: [],
+      guestProducts: [],
+      guestProduct: null
     }
   },
   actions: {
@@ -71,7 +73,17 @@ export const useProductStore = defineStore('product', {
         const {
           data: { data }
         } = await api.get(`/api/products?page=${page}`)
-        this.products = data
+        this.guestProducts = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getGuestProduct(slug) {
+      try {
+        const {
+          data: { data }
+        } = await api.get(`/api/products/${slug}`)
+        this.guestProduct = data
       } catch ({ response }) {
         handleError(response)
       }

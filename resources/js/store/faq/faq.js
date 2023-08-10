@@ -5,7 +5,8 @@ import { handleError } from '@/helpers/handleApiError'
 export const useFAQStore = defineStore('faq', {
   state: () => {
     return {
-      faqs: []
+      faqs: [],
+      featuredFaqs: []
     }
   },
   actions: {
@@ -15,6 +16,16 @@ export const useFAQStore = defineStore('faq', {
           data: { data }
         } = await api.get('/api/faqs')
         this.faqs = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getFeaturedFAQs() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/faqs/featured')
+        this.featuredFaqs = data
       } catch ({ response }) {
         handleError(response)
       }

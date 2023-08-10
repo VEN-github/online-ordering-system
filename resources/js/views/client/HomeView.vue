@@ -145,8 +145,8 @@ const faqs = ref([])
 
 onMounted(async () => {
   await getFeaturedProducts()
-  await getCategories()
-  await getFaqs()
+  await getFeaturedCategories()
+  await getFeaturedFaqs()
 })
 
 async function getFeaturedProducts() {
@@ -167,10 +167,10 @@ async function getFeaturedProducts() {
   }
 }
 
-async function getCategories() {
+async function getFeaturedCategories() {
   try {
-    await categoryStore.getGuestCategories()
-    categories.value = categoryStore.guestCategories
+    await categoryStore.getGuestFeaturedCategories()
+    categories.value = categoryStore.guestFeaturedCategories
   } catch ({ message }) {
     toast(message, {
       type: 'error',
@@ -185,10 +185,10 @@ async function getCategories() {
   }
 }
 
-async function getFaqs() {
+async function getFeaturedFaqs() {
   try {
-    await faqStore.getFAQs()
-    faqs.value = faqStore.faqs
+    await faqStore.getFeaturedFAQs()
+    faqs.value = faqStore.featuredFaqs
   } catch ({ message }) {
     toast(message, {
       type: 'error',

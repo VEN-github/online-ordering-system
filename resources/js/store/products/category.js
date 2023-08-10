@@ -6,7 +6,8 @@ export const useCategoryStore = defineStore('category', {
   state: () => {
     return {
       categories: [],
-      guestCategories: []
+      guestCategories: [],
+      guestFeaturedCategories: []
     }
   },
   actions: {
@@ -16,6 +17,16 @@ export const useCategoryStore = defineStore('category', {
           data: { data }
         } = await api.get('/api/categories')
         this.guestCategories = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getGuestFeaturedCategories() {
+      try {
+        const {
+          data: { data }
+        } = await api.get('/api/categories/featured')
+        this.guestFeaturedCategories = data
       } catch ({ response }) {
         handleError(response)
       }

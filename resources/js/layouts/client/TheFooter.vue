@@ -74,7 +74,7 @@
             </div>
             <div>
               <RouterLink
-                to="#"
+                to="/faq"
                 class="text-gray-500 transition duration-100 hover:text-emerald-500"
                 active-class="text-emerald-500"
               >
