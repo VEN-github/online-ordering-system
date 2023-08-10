@@ -17,6 +17,7 @@ class CategoryController extends BaseController
     {
         try {
             $categories = Category::query()
+                ->with('image')
                 ->latest()
                 ->paginate($this->paginate);
 
@@ -56,6 +57,7 @@ class CategoryController extends BaseController
     {
         try {
             $category = Category::query()
+                ->with('image')
                 ->whereSlug($slug)
                 ->first();
 
@@ -74,6 +76,7 @@ class CategoryController extends BaseController
     {
         try {
             $category = Category::query()
+                ->with('image')
                 ->whereSlug($slug)
                 ->first();
 

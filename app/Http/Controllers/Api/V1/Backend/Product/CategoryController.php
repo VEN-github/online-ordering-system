@@ -13,6 +13,7 @@ class CategoryController extends BaseController
     {
         try {
             $categories = Category::query()
+                ->with('image')
                 ->latest()
                 ->get();
 
