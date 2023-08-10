@@ -52,7 +52,7 @@ export const useCategoryStore = defineStore('category', {
     },
     async editCategory(slug, formData) {
       try {
-        await api.patch(`/api/admin/categories/${slug}`, formData, {
+        await api.post(`/api/admin/categories/${slug}?_method=PATCH`, formData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         })
       } catch ({ response }) {
