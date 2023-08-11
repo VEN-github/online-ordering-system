@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Frontend\Order;
 
+use App\Actions\Product\GenerateRefId;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Frontend\Order\OrderRequest;
 use App\Http\Resources\Api\Backend\OrderResource;
@@ -14,6 +15,7 @@ class OrderController extends BaseController
     {
         try {
             $data = $request->validated();
+            $data['ref_id'] = GenerateRefId::run();
             $data['user_id'] = auth()->user()->id;
 
             $order = Order::create($data);
@@ -23,7 +25,7 @@ class OrderController extends BaseController
                     OrderResource::make($order)
                 );
         } catch (\Exception $e) {
-            return $this->error();
+            return $this->error($e->getMessage());
         }
     }
 }

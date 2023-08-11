@@ -22,4 +22,15 @@ trait OrderMethod
             set: fn ($value) => $value * 100,
         );
     }
+
+    protected function refId(): Attribute
+    {
+        $latestOrder = static::orderBy('created_at', 'DESC')->first();
+        $count = $latestOrder ? $latestOrder->id : 0;
+
+        return Attribute::make(
+            set: fn ($value) => '#'.str_pad($count + 1, 8, "0", STR_PAD_LEFT),
+            // set: fn ($value) => $value . now()->toDateString(),
+        );
+    }
 }

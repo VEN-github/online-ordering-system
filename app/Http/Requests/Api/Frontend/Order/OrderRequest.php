@@ -22,6 +22,17 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'email' => [],
+            'first_name' => [],
+            'last_name' => [],
+            'company' => [],
+            'address' => [],
+            'unit' => [],
+            'city' => [],
+            'country' => [],
+            'state' => [],
+            'postal_code' => [],
+            'phone' => [],
             'payment_method' => ['required', 'string'],
             'payment_status' => ['required', 'string'],
             'status' => ['required', 'string'],

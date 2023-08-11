@@ -15,8 +15,20 @@ return new class () extends Migration {
     public function up(): void
     {
         Schema::create('orders', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->id();
+            $table->string('ref_id')->unique();
             $table->unsignedBigInteger('user_id');
+            $table->string('email')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->text('company')->nullable();
+            $table->longText('address')->nullable();
+            $table->longText('unit')->nullable();
+            $table->string('city')->nullable();
+            $table->string('country')->nullable();
+            $table->string('state')->nullable();
+            $table->string('postal_code')->nullable();
+            $table->string('phone')->nullable();
             $table->enum('payment_method', PaymentMethod::toArray());
             $table->enum('payment_status', PaymentStatus::toArray());
             $table->enum('status', OrderStatus::toArray());
