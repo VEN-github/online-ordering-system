@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="h-fit">
     <RouterLink
       :to="`/product/${product.slug}`"
       class="group relative mb-2 block h-96 overflow-hidden rounded-lg bg-gray-100 shadow-lg lg:mb-3"

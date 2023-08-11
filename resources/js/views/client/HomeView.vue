@@ -65,10 +65,10 @@
         </p>
       </div>
       <div class="grid gap-6 sm:grid-cols-2">
-        <a
+        <RouterLink
           v-for="category in categories"
           :key="category.id"
-          href="#"
+          :to="`/shop/${category.slug}`"
           class="group relative flex h-80 items-end overflow-hidden rounded-lg bg-gray-100 p-4 shadow-lg"
         >
           <img
@@ -91,7 +91,7 @@
           <div class="relative flex flex-col">
             <span class="text-lg font-semibold text-white lg:text-xl">{{ category.name }}</span>
           </div>
-        </a>
+        </RouterLink>
       </div>
     </div>
   </div>

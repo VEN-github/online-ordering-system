@@ -22,6 +22,14 @@ const routes = [
         }
       },
       {
+        path: '/shop/:category',
+        component: () => import('@/views/client/ShopView.vue'),
+        meta: {
+          title: 'Shop'
+        },
+        props: true
+      },
+      {
         path: '/product/:slug',
         component: () => import('@/views/client/ProductDetails.vue'),
         meta: {

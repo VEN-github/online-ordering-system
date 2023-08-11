@@ -78,6 +78,16 @@ export const useProductStore = defineStore('product', {
         handleError(response)
       }
     },
+    async getGuestProductsByCategory(page = 1, categorySlug) {
+      try {
+        const {
+          data: { data }
+        } = await api.get(`/api/category/${categorySlug}/products?page=${page}`)
+        this.guestProducts = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
     async getGuestProduct(slug) {
       try {
         const {
