@@ -139,13 +139,17 @@ watch(
     currentPage.value = 1
     lastPage.value = 1
     products.value = []
+    isLoading.value = true
     await callProducts()
+    isLoading.value = false
   }
 )
 
 onMounted(async () => {
+  isLoading.value = true
   await getCategories()
   await callProducts()
+  isLoading.value = false
   window.addEventListener('scroll', handleScroll)
 })
 
@@ -181,12 +185,10 @@ async function getCategories() {
 
 async function getProductsByCategory() {
   try {
-    isLoading.value = true
     await productStore.getGuestProductsByCategory(currentPage.value, props.category)
     products.value = [...products.value, ...productStore.guestProducts.data]
     currentPage.value = productStore.guestProducts.current_page
     lastPage.value = productStore.guestProducts.last_page
-    isLoading.value = false
   } catch ({ message }) {
     toast(message, {
       type: 'error',
@@ -203,12 +205,10 @@ async function getProductsByCategory() {
 
 async function getProducts() {
   try {
-    isLoading.value = true
     await productStore.getGuestProducts(currentPage.value)
     products.value = [...products.value, ...productStore.guestProducts.data]
     currentPage.value = productStore.guestProducts.current_page
     lastPage.value = productStore.guestProducts.last_page
-    isLoading.value = false
   } catch ({ message }) {
     toast(message, {
       type: 'error',

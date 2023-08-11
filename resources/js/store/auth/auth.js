@@ -22,6 +22,9 @@ export const useAuthStore = defineStore('auth', {
     },
     isAdminAuthenticated({ loggedAdmin }) {
       return !!loggedAdmin
+    },
+    isUserAuthenticated({ loggedUser }) {
+      return !!loggedUser
     }
   },
   actions: {

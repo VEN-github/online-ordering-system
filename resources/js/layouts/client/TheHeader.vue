@@ -32,7 +32,7 @@
           <span
             class="absolute top-5 right-7 h-5 w-5 rounded-full bg-emerald-500 text-center text-sm text-white"
           >
-            0
+            {{ cartItemsNumber }}
           </span>
           <span class="hidden text-xs font-semibold text-gray-500 sm:block">Cart</span>
         </RouterLink>
@@ -49,9 +49,11 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { RouterLink } from 'vue-router'
+import { useProductStore } from '@/store/products/product'
 
+const productStore = useProductStore()
 const navLinks = ref([
   {
     name: 'Home',
@@ -70,4 +72,8 @@ const navLinks = ref([
     link: '/contact'
   }
 ])
+
+const cartItemsNumber = computed(() => {
+  return productStore.getCartItemsTotal
+})
 </script>

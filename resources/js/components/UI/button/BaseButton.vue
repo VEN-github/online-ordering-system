@@ -2,7 +2,12 @@
   <RouterLink
     v-if="isLink"
     :to="link"
-    :class="[`btn btn-${mode}`, `btn--${size}`, { 'link--disabled': disabled }]"
+    :class="[
+      `btn btn-${mode}`,
+      `btn--${size}`,
+      { 'w-full': isFull },
+      { 'link--disabled': disabled }
+    ]"
     :disabled="disabled"
   >
     <slot></slot>

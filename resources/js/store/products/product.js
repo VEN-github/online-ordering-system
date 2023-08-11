@@ -5,11 +5,27 @@ import { handleError } from '@/helpers/handleApiError'
 export const useProductStore = defineStore('product', {
   state: () => {
     return {
+      cartItems: [],
       products: [],
       product: null,
       featuredProducts: [],
       guestProducts: [],
       guestProduct: null
+    }
+  },
+  getters: {
+    getCartItemsTotal({ cartItems }) {
+      return cartItems.reduce((acc, item) => acc + item.quantity, 0)
+    },
+    getCartItemsTotalPrice({ cartItems }) {
+      return cartItems.reduce(
+        (acc, item) =>
+          acc +
+          (item.discounted_price
+            ? item.quantity * item.discounted_price
+            : item.quantity * item.orig_price),
+        0
+      )
     }
   },
   actions: {
@@ -97,6 +113,23 @@ export const useProductStore = defineStore('product', {
       } catch ({ response }) {
         handleError(response)
       }
+    },
+    addToCart(item) {
+      const exists = this.cartItems.find((i) => i.id === item.id)
+      if (exists) {
+        exists.quantity++
+        return
+      }
+      this.cartItems.push({ ...item, quantity: 1 })
+    },
+    removeFromCart(id) {
+      const index = this.cartItems.findIndex((item) => item.id == id)
+      this.cartItems.splice(index, 1)
     }
+  },
+  persist: {
+    storage: localStorage,
+    key: 'cart',
+    paths: ['cartItems']
   }
 })

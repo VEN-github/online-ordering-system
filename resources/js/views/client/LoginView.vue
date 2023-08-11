@@ -95,7 +95,7 @@
 
 <script setup>
 import { ref, reactive, computed } from 'vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink, useRouter, useRoute } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
 import { useVuelidate } from '@vuelidate/core'
 import { required, email } from '@vuelidate/validators'
@@ -108,6 +108,7 @@ import BaseButton from '@/components/UI/button/BaseButton.vue'
 import BaseAlert from '@/components/UI/alert/BaseAlert.vue'
 
 const router = useRouter()
+const route = useRoute()
 const authStore = useAuthStore()
 const models = reactive({
   email: '',
@@ -139,7 +140,8 @@ async function login() {
     isLoading.value = true
     await authStore.userLogin(models)
     isLoading.value = false
-    router.push('/')
+    const redirect = route.query.page != undefined ? `/${route.query.page}` : '/'
+    router.push(redirect)
   } catch ({ message }) {
     isLoading.value = false
     isError.value = true

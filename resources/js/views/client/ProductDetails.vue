@@ -72,7 +72,10 @@
               <p v-html="product?.description"></p>
             </div>
           </div>
-          <div class="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start">
+          <div
+            v-if="product?.variations.length"
+            class="mt-10 lg:col-start-1 lg:row-start-2 lg:max-w-lg lg:self-start"
+          >
             <section aria-labelledby="options-heading">
               <h2 id="options-heading" class="sr-only">Product options</h2>
               <form>
@@ -130,7 +133,7 @@
           </div>
           <div class="mt-6">
             <div class="mt-10">
-              <BaseButton mode="primary" size="xl" is-full>
+              <BaseButton mode="primary" size="xl" is-full @click="addToCart">
                 <Icon class="h-5 w-5 text-white" icon="heroicons:shopping-bag" />
                 <span> Add to Cart </span>
               </BaseButton>
@@ -173,6 +176,8 @@
 import { ref, computed, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/store/products/product'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
 
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 
@@ -233,5 +238,19 @@ async function getGuestProduct() {
   } catch ({ message }) {
     router.push({ name: 'not-found' })
   }
+}
+
+function addToCart() {
+  productStore.addToCart(product.value)
+  toast(`${product.value?.name} added to cart.`, {
+    type: 'success',
+    theme: 'colored',
+    hideProgressBar: true,
+    multiple: true,
+    transition: toast.TRANSITIONS.SLIDE,
+    position: toast.POSITION.TOP_CENTER,
+    pauseOnHover: false,
+    pauseOnFocusLoss: false
+  })
 }
 </script>
