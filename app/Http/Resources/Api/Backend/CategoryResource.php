@@ -21,7 +21,9 @@ class CategoryResource extends JsonResource
             'image' => $this->when(
                 $this->relationLoaded('image'),
                 function () {
-                    return $this->image->getUrl();
+                    return $this->image
+                        ? $this->image->getUrl()
+                        : null;
                 }
             ),
             'created_at' => $this->created_at,
