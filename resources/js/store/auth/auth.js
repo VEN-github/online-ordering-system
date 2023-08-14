@@ -56,7 +56,7 @@ export const useAuthStore = defineStore('auth', {
           data: {
             data: { user, token }
           }
-        } = await api.post('/api/user/login', formData)
+        } = await api.post('/api/login', formData)
         this.loggedUser = this.encryptData(user)
         this.userToken = this.encryptData(token)
       } catch ({ response }) {
@@ -65,7 +65,7 @@ export const useAuthStore = defineStore('auth', {
     },
     async userLogout() {
       try {
-        await api.delete('/api/user/logout')
+        await api.delete('/api/logout')
         this.loggedUser = null
         this.userToken = null
       } catch ({ response }) {

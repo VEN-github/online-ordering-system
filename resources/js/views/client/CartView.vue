@@ -44,7 +44,7 @@
                     </p>
                     <p v-else class="mt-1 text-sm font-medium">
                       <span class="text-gray-900">{{ formattedPrice(item.discounted_price) }}</span>
-                      <span class="text-red-500 line-through">
+                      <span class="ml-1 text-red-500 line-through">
                         {{ formattedPrice(item.orig_price) }}
                       </span>
                     </p>
