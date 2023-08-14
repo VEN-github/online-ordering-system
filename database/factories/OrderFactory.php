@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Actions\Product\GenerateRefId;
 use App\Enums\OrderStatus;
 use App\Enums\PaymentMethod;
 use App\Enums\PaymentStatus;
@@ -25,6 +26,18 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
+            'ref_id' => GenerateRefId::run(),
+            'email' => fake()->email(),
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->lastName(),
+            'company' => fake()->company(),
+            'address' => fake()->address(),
+            'unit' => fake()->numerify('###'),
+            'city' => fake()->city(),
+            'country' => fake()->country(),
+            'state' => fake()->name(),
+            'postal_code' => fake()->numerify('####'),
+            'phone' => fake()->phoneNumber(),
             'user_id' => fake()->unique()->numberBetween(1, User::count()),
             'payment_method' => fake()->randomElement(PaymentMethod::toArray()),
             'payment_status' => fake()->randomElement(PaymentStatus::toArray()),
