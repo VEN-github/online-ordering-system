@@ -18,6 +18,7 @@ class OrderResource extends JsonResource
      */
     public function toArray(Request $request): array
     {
+        $shippingPrice = new Money($this->shipping_price, new Currency(config('money.defaults.currency')));
         $price = new Money($this->total_price, new Currency(config('money.defaults.currency')));
 
         return [
@@ -39,6 +40,7 @@ class OrderResource extends JsonResource
             'payment_status' => $this->payment_status,
             'status' => $this->status,
             'shipping_method' => $this->shipping_method,
+            'shipping_price' => $shippingPrice->format(),
             'total_price' => $price->format(),
             'items' => ItemResource::collection($this->whenLoaded('items')),
         ];

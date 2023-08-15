@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->uuid('order_id')->nullable(false);
+            $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('product_id');
             $table->smallInteger('quantity');
-            $table->bigInteger('total_price')->nullable();
+            $table->bigInteger('total_price');
             $table->timestamps();
         });
     }

@@ -3,6 +3,7 @@
 namespace App\Models\Item\Traits;
 
 use Database\Factories\ItemFactory;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
@@ -13,5 +14,12 @@ trait ItemMethod
     protected static function newFactory(): Factory
     {
         return ItemFactory::new();
+    }
+
+    protected function totalPrice(): Attribute
+    {
+        return Attribute::make(
+            set: fn ($value) => $value * 100,
+        );
     }
 }

@@ -16,7 +16,7 @@ return new class () extends Migration {
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
-            $table->string('ref_id')->unique();
+            $table->unsignedBigInteger('ref_id')->unique();
             $table->unsignedBigInteger('user_id');
             $table->string('email')->nullable();
             $table->string('first_name')->nullable();
@@ -33,6 +33,7 @@ return new class () extends Migration {
             $table->enum('payment_status', PaymentStatus::toArray());
             $table->enum('status', OrderStatus::toArray());
             $table->enum('shipping_method', ShippingMethod::toArray());
+            $table->bigInteger('shipping_price')->nullable();
             $table->bigInteger('total_price')->nullable();
             $table->timestamps();
             $table->softDeletes();

@@ -37,6 +37,7 @@ class OrderRequest extends FormRequest
             'payment_status' => ['required', 'string'],
             'status' => ['required', 'string'],
             'shipping_method' => ['required', 'string'],
+            'shipping_price' => ['required'],
             'total_price' => ['required']
         ];
     }

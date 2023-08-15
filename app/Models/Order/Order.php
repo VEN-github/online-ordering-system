@@ -31,6 +31,7 @@ class Order extends Model
         'payment_status',
         'status',
         'shipping_method',
+        'shipping_price',
         'total_price'
     ];
 }
