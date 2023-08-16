@@ -7,5 +7,6 @@ Route::namespace('Order')
     ->prefix('orders')
     ->name('order.')
     ->group(function () {
+        Route::get('/', 'OrderController@index')->name('index');
         Route::post('/', 'OrderController@store')->name('store');
     });

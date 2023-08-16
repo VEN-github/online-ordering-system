@@ -14,6 +14,24 @@ use Illuminate\Validation\ValidationException;
 
 class OrderController extends BaseController
 {
+    public function index()
+    {
+        try {
+            $orders = Order::query()
+                ->whereId(auth()->user()->id)
+                ->eagerLoadRelationships()
+                ->latest()
+                ->get();
+
+            return $this->success(
+                config('general.messages.request.success'),
+                OrderResource::collection($orders)
+            );
+        } catch (\Exception $e) {
+            return $this->error($e->getMessage());
+        }
+    }
+
     public function store(OrderRequest $request)
     {
         DB::beginTransaction();

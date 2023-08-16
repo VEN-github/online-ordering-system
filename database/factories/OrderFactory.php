@@ -43,6 +43,7 @@ class OrderFactory extends Factory
             'payment_status' => fake()->randomElement(PaymentStatus::toArray()),
             'status' => fake()->randomElement(OrderStatus::toArray()),
             'shipping_method' => fake()->randomElement(ShippingMethod::toArray()),
+            'shipping_price' => fake()->numberBetween(1, 1000),
             'total_price' => fake()->numberBetween(1, 1000),
         ];
     }
