@@ -22,16 +22,17 @@ class AddressRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'first_name' => [],
-            'last_name' => [],
-            'company' => [],
-            'address' => [],
-            'unit' => [],
-            'city' => [],
-            'country' => [],
-            'state' => [],
-            'postal_code' => [],
-            'phone' => []
+            'first_name' => ['required'],
+            'last_name' => ['required'],
+            'company' => ['required'],
+            'address' => ['required'],
+            'unit' => ['required'],
+            'city' => ['required'],
+            'country' => ['required'],
+            'state' => ['required'],
+            'postal_code' => ['required'],
+            'phone' => ['required'],
+            'is_primary' => ['required', 'boolean']
         ];
     }
 }

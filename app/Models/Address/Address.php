@@ -25,5 +25,6 @@ class Address extends Model
         'state',
         'postal_code',
         'phone',
+        'is_primary'
     ];
 }

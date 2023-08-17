@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('is_primary')->default(false);
             $table->timestamps();
         });
     }
