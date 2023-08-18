@@ -19,7 +19,6 @@
           <div class="mt-6">
             <button
               type="button"
-              to="/"
               class="text-base font-medium text-emerald-600 hover:text-emerald-500"
               @click="goBack"
             >

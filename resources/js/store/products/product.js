@@ -115,16 +115,31 @@ export const useProductStore = defineStore('product', {
       }
     },
     addToCart(item) {
-      const exists = this.cartItems.find((i) => i.id === item.id)
+      let exists
+
+      if (item.selectedVariation) {
+        exists = this.cartItems.find(
+          (cart) => cart.id == item.id && cart.selectedVariation.id == item.selectedVariation.id
+        )
+      } else {
+        exists = this.cartItems.find((cart) => cart.id == item.id)
+      }
+
       if (exists) {
         exists.quantity++
         return
       }
-      this.cartItems.push({ ...item, quantity: 1 })
+      this.cartItems.push({ ...item })
     },
     removeFromCart(id) {
       const index = this.cartItems.findIndex((item) => item.id == id)
       this.cartItems.splice(index, 1)
+    },
+    increaseQuantity(index) {
+      this.cartItems[index].quantity++
+    },
+    decreaseQuantity(index) {
+      this.cartItems[index].quantity--
     }
   },
   persist: {
