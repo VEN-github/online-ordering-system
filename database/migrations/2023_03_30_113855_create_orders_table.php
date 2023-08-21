@@ -21,9 +21,9 @@ return new class () extends Migration {
             $table->string('email')->nullable();
             $table->string('first_name')->nullable();
             $table->string('last_name')->nullable();
-            $table->text('company')->nullable();
+            // $table->text('company')->nullable();
             $table->longText('address')->nullable();
-            $table->longText('unit')->nullable();
+            // $table->longText('unit')->nullable();
             $table->string('city')->nullable();
             $table->string('country')->nullable();
             $table->string('state')->nullable();
