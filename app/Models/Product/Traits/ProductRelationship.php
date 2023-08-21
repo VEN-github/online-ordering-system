@@ -2,6 +2,7 @@
 
 namespace App\Models\Product\Traits;
 
+use App\Models\Cart\Cart;
 use App\Models\Category\Category;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
@@ -14,6 +15,11 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait ProductRelationship
 {
+    public function carts(): BelongsToMany
+    {
+        return $this->belongsToMany(Cart::class);
+    }
+
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
