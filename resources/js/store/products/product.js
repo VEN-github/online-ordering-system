@@ -26,6 +26,24 @@ export const useProductStore = defineStore('product', {
             : item.quantity * item.orig_price),
         0
       )
+    },
+    getStandardShippingFee({ cartItems }) {
+      const shippingFee = cartItems.reduce((acc, item) => {
+        if (item.standard_shipping_price > acc) {
+          return item.standard_shipping_price
+        }
+        return acc
+      }, 0)
+      return shippingFee
+    },
+    getExpressShippingFee({ cartItems }) {
+      const shippingFee = cartItems.reduce((acc, item) => {
+        if (item.express_shipping_price > acc) {
+          return item.express_shipping_price
+        }
+        return acc
+      }, 0)
+      return shippingFee
     }
   },
   actions: {

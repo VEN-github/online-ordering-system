@@ -1,3 +1,6 @@
+import { useAuthStore } from '@/store/auth/auth'
+import { useProductStore } from '@/store/products/product'
+
 import ClientLayout from '@/layouts/client/ClientLayout.vue'
 
 const routes = [
@@ -75,6 +78,15 @@ const routes = [
         component: () => import('@/views/client/CheckoutView.vue'),
         meta: {
           title: 'Checkout'
+        },
+        beforeEnter: (_, _2, next) => {
+          const authStore = useAuthStore()
+          const productStore = useProductStore()
+          if (authStore.isUserAuthenticated && productStore.cartItems.length > 0) {
+            next()
+          } else {
+            next('/login')
+          }
         }
       }
     ]

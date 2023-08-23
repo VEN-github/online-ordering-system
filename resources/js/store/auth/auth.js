@@ -23,6 +23,12 @@ export const useAuthStore = defineStore('auth', {
     isAdminAuthenticated({ loggedAdmin }) {
       return !!loggedAdmin
     },
+    getLoggedUser({ loggedUser }) {
+      return loggedUser ? this.decryptData(loggedUser) : null
+    },
+    getUserToken({ userToken }) {
+      return userToken ? this.decryptData(userToken) : null
+    },
     isUserAuthenticated({ loggedUser }) {
       return !!loggedUser
     }
