@@ -10,11 +10,11 @@ export const useFAQStore = defineStore('faq', {
     }
   },
   actions: {
-    async getFAQs() {
+    async getFAQs(page = 1) {
       try {
         const {
           data: { data }
-        } = await api.get('/api/faqs')
+        } = await api.get(`/api/faqs?page=${page}`)
         this.faqs = data
       } catch ({ response }) {
         handleError(response)

@@ -5,62 +5,64 @@
         <h2 class="text-2xl font-bold leading-10 tracking-tight text-gray-900">
           Frequently asked questions
         </h2>
-        <dl class="mt-10 space-y-6 divide-y divide-gray-900/10">
-          <div class="pt-6">
-            <dt>
-              <!-- Expand/collapse question button -->
-              <button
-                type="button"
-                class="flex w-full items-start justify-between text-left text-gray-900"
-                aria-controls="faq-0"
-                aria-expanded="false"
-              >
-                <span class="text-base font-semibold leading-7">
-                  What&#039;s the best thing about Switzerland?
-                </span>
-                <span class="ml-6 flex h-7 items-center">
-                  <!--
-                  Icon when question is collapsed.
-
-                  Item expanded: "hidden", Item collapsed: ""
-                -->
-                  <svg
-                    class="h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m6-6H6" />
-                  </svg>
-                  <!--
-                  Icon when question is expanded.
-
-                  Item expanded: "", Item collapsed: "hidden"
-                -->
-                  <svg
-                    class="hidden h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke-width="1.5"
-                    stroke="currentColor"
-                    aria-hidden="true"
-                  >
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M18 12H6" />
-                  </svg>
-                </span>
-              </button>
-            </dt>
-            <dd id="faq-0" class="mt-2 pr-12">
-              <p class="text-base leading-7 text-gray-600">
-                I don&#039;t know, but the flag is a big plus. Lorem ipsum dolor sit amet
-                consectetur adipisicing elit. Quas cupiditate laboriosam fugiat.
-              </p>
-            </dd>
-          </div>
+        <dl ref="scrollComponent" class="mt-10 space-y-6 divide-y divide-gray-900/10">
+          <FAQItem v-for="faq in faqs" :key="faq.id" :faq="faq" />
         </dl>
       </div>
     </div>
   </div>
 </template>
+
+<script setup>
+import { ref, onMounted, onUnmounted } from 'vue'
+import { useFAQStore } from '@/store/faq/faq'
+import { toast } from 'vue3-toastify'
+import 'vue3-toastify/dist/index.css'
+
+import FAQItem from '@/components/faq/FAQItem.vue'
+
+const faqStore = useFAQStore()
+const faqs = ref([])
+const currentPage = ref(1)
+const lastPage = ref(1)
+const scrollComponent = ref(null)
+
+onMounted(async () => {
+  await getFAQs()
+  window.addEventListener('scroll', handleScroll)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll)
+})
+
+async function getFAQs() {
+  try {
+    await faqStore.getFAQs(currentPage.value)
+    faqs.value = [...faqs.value, ...faqStore.faqs.data]
+    currentPage.value = faqStore.faqs.current_page
+    lastPage.value = faqStore.faqs.last_page
+  } catch ({ message }) {
+    toast(message, {
+      type: 'error',
+      theme: 'colored',
+      hideProgressBar: true,
+      multiple: false,
+      transition: toast.TRANSITIONS.SLIDE,
+      position: toast.POSITION.TOP_CENTER,
+      pauseOnHover: false,
+      pauseOnFocusLoss: false
+    })
+  }
+}
+
+async function handleScroll() {
+  let element = scrollComponent.value
+  if (element.getBoundingClientRect().bottom < window.innerHeight) {
+    if (currentPage.value < lastPage.value) {
+      currentPage.value++
+      await getFAQs()
+    }
+  }
+}
+</script>
