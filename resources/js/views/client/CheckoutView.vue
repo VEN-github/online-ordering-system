@@ -31,6 +31,7 @@
 
 <script setup>
 import { reactive, computed } from 'vue'
+import { useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
 import { useProductStore } from '@/store/products/product'
 import { useOrderStore } from '@/store/order/order'
@@ -43,6 +44,7 @@ import ShippingMethod from '@/components/checkout/ShippingMethod.vue'
 import PaymentMethod from '@/components/checkout/PaymentMethod.vue'
 import CheckoutSummary from '@/components/checkout/CheckoutSummary.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const orderStore = useOrderStore()
@@ -99,6 +101,7 @@ const payload = computed(() => {
 async function addOrder(totalPrice) {
   try {
     await orderStore.addOrder({ ...payload.value, total_price: totalPrice })
+    router.push('/order-confirmed')
   } catch ({ message }) {
     toast(message, {
       type: 'error',

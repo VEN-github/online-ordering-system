@@ -2,10 +2,13 @@ import { defineStore } from 'pinia'
 import api from '@/config/axios'
 import { handleError } from '@/helpers/handleApiError'
 
+import { useProductStore } from '../products/product'
+
 export const useOrderStore = defineStore('order', {
   state: () => {
     return {
-      orders: []
+      orders: [],
+      newOrder: null
     }
   },
   actions: {
@@ -20,11 +23,22 @@ export const useOrderStore = defineStore('order', {
       }
     },
     async addOrder(payload) {
+      const productStore = useProductStore()
+
       try {
-        await api.post('/api/orders', payload)
+        const {
+          data: { data }
+        } = await api.post('/api/orders', payload)
+        this.newOrder = { ...data, cartItems: productStore.cartItems }
+        productStore.cartItems = []
       } catch ({ response }) {
         handleError(response)
       }
     }
+  },
+  persist: {
+    storage: localStorage,
+    key: 'newOrder',
+    paths: ['newOrder']
   }
 })

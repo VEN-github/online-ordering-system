@@ -1,5 +1,6 @@
 import { useAuthStore } from '@/store/auth/auth'
 import { useProductStore } from '@/store/products/product'
+import { useOrderStore } from '@/store/order/order'
 
 import ClientLayout from '@/layouts/client/ClientLayout.vue'
 
@@ -84,6 +85,8 @@ const routes = [
           const productStore = useProductStore()
           if (authStore.isUserAuthenticated && productStore.cartItems.length > 0) {
             next()
+          } else if (authStore.isUserAuthenticated) {
+            next('/')
           } else {
             next('/login')
           }
@@ -113,6 +116,17 @@ const routes = [
     component: () => import('@/views/client/OrderSuccessView.vue'),
     meta: {
       title: 'Order Confirmed'
+    },
+    beforeEnter: (_, _2, next) => {
+      const authStore = useAuthStore()
+      const orderStore = useOrderStore()
+      if (authStore.isUserAuthenticated && orderStore.newOrder) {
+        next()
+      } else if (authStore.isUserAuthenticated) {
+        next('/')
+      } else {
+        next('/login')
+      }
     }
   }
 ]
