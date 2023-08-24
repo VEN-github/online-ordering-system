@@ -100,6 +100,14 @@ const routes = [
     component: () => import('@/views/client/LoginView.vue'),
     meta: {
       title: 'Login'
+    },
+    beforeEnter: (_, _2, next) => {
+      const store = useAuthStore()
+      if (!store.isUserAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
     }
   },
   {
@@ -108,6 +116,14 @@ const routes = [
     component: () => import('@/views/client/RegisterView.vue'),
     meta: {
       title: 'Register'
+    },
+    beforeEnter: (_, _2, next) => {
+      const store = useAuthStore()
+      if (!store.isUserAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
     }
   },
   {

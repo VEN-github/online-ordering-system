@@ -4,7 +4,12 @@
     <div v-if="addressLists.length" class="sm:col-span-2">
       <FormLabel label-id="saved-address">Saved Address</FormLabel>
       <div class="mt-1">
-        <FormSelect id="saved-address" class="!mt-0">
+        <FormSelect
+          id="saved-address"
+          v-model="selectedAddress"
+          class="!mt-0"
+          @change="setSelectedAddress"
+        >
           <option value="" disabled>Saved Address</option>
           <option v-for="address in addressLists" :key="address" :value="address">
             {{ address.country }}
@@ -101,6 +106,7 @@ const addressStore = useAddressStore()
 const countryStore = useCountryStore()
 const addressLists = ref([])
 const countries = ref([])
+const selectedAddress = ref('')
 
 const models = computed({
   get() {
@@ -150,5 +156,17 @@ async function getCountries() {
       pauseOnFocusLoss: false
     })
   }
+}
+
+function setSelectedAddress() {
+  models.value.firstName = selectedAddress.value.first_name
+  models.value.lastName = selectedAddress.value.last_name
+  models.value.address = selectedAddress.value.address
+  models.value.city = selectedAddress.value.city
+  models.value.country = selectedAddress.value.country
+  models.value.province = selectedAddress.value.state
+  models.value.postalCode = selectedAddress.value.postal_code
+  models.value.phone = selectedAddress.value.phone
+  models.value.saveInfo = selectedAddress.value.is_primary
 }
 </script>

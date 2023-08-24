@@ -56,6 +56,19 @@ export const useAuthStore = defineStore('auth', {
         handleError(response)
       }
     },
+    async userRegister(formData) {
+      try {
+        const {
+          data: {
+            data: { user, token }
+          }
+        } = await api.post('/api/register', formData)
+        this.loggedUser = this.encryptData(user)
+        this.userToken = this.encryptData(token)
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
     async userLogin(formData) {
       try {
         const {
