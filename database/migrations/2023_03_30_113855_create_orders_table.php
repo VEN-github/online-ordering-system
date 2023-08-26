@@ -29,6 +29,7 @@ return new class () extends Migration {
             $table->string('state')->nullable();
             $table->string('postal_code')->nullable();
             $table->string('phone')->nullable();
+            $table->boolean('is_saved');
             $table->enum('payment_method', PaymentMethod::toArray());
             $table->enum('payment_status', PaymentStatus::toArray());
             $table->enum('status', OrderStatus::toArray());

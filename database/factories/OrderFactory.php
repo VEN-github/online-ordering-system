@@ -38,6 +38,7 @@ class OrderFactory extends Factory
             'state' => fake()->name(),
             'postal_code' => fake()->numerify('####'),
             'phone' => fake()->phoneNumber(),
+            'is_saved' => false,
             'user_id' => fake()->unique()->numberBetween(1, User::count()),
             'payment_method' => fake()->randomElement(PaymentMethod::toArray()),
             'payment_status' => fake()->randomElement(PaymentStatus::toArray()),

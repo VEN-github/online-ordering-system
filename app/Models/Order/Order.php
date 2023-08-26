@@ -27,6 +27,7 @@ class Order extends Model
         'state',
         'postal_code',
         'phone',
+        'is_saved',
         'payment_method',
         'payment_status',
         'status',

@@ -36,6 +36,7 @@ class OrderResource extends JsonResource
             'state' => $this->state,
             'postal_code' => $this->postal_code,
             'phone' => $this->phone,
+            'is_saved' => $this->is_saved,
             'payment_method' => $this->payment_method,
             'payment_status' => $this->payment_status,
             'status' => $this->status,

@@ -24,9 +24,9 @@ class AddressRequest extends FormRequest
         return [
             'first_name' => ['required'],
             'last_name' => ['required'],
-            'company' => ['required'],
+            // 'company' => ['required'],
             'address' => ['required'],
-            'unit' => ['required'],
+            // 'unit' => ['required'],
             'city' => ['required'],
             'country' => ['required'],
             'state' => ['required'],

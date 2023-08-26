@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api\V1\Frontend\Order;
 
+use App\Actions\Order\StoreAddress;
 use App\Actions\Product\GenerateRefId;
 use App\Actions\Order\StoreItems;
 use App\Http\Controllers\Api\BaseController;
@@ -47,6 +48,11 @@ class OrderController extends BaseController
             $data['user_id'] = auth()->user()->id;
 
             $order = Order::create($data);
+
+            StoreAddress::run(
+                auth()->user(),
+                $order
+            );
 
             StoreItems::run(
                 $order,
