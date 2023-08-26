@@ -14,6 +14,7 @@ class ProductController extends BaseController
             $products = ProductResource::collection(
                     Product::query()
                         ->eagerLoadRelationships()
+                        ->whereIsActive(true)
                         ->latest()
                         ->get()
                 );
