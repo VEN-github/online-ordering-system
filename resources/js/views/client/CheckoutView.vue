@@ -81,6 +81,7 @@ const payload = computed(() => {
     state: models.province,
     postal_code: models.postalCode,
     phone: models.phone,
+    is_saved: models.saveInfo,
     status: 'pending',
     shipping_method: models.shippingMethod.name,
     shipping_price: models.shippingMethod.price,

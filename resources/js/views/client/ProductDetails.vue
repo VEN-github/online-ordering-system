@@ -129,7 +129,13 @@
                 @add="quantity++"
                 @subtract="quantity--"
               />
-              <BaseButton mode="primary" size="xl" is-full @click="addToCart">
+              <BaseButton
+                mode="primary"
+                size="xl"
+                is-full
+                :disabled="isDisabled"
+                @click="addToCart"
+              >
                 <Icon class="h-5 w-5 text-white" icon="heroicons:shopping-bag" />
                 <span> Add to Cart </span>
               </BaseButton>
@@ -169,7 +175,7 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/store/products/product'
 import { toast } from 'vue3-toastify'
@@ -223,6 +229,20 @@ const formattedExpressShippingPrice = computed(() => {
     currency: 'PHP'
   }).format(product.value?.express_shipping_price)
 })
+
+const isDisabled = computed(() => {
+  if (!product.value?.variations.length) return false
+  return !selectedVariation.value
+})
+
+watch(
+  () => product.value?.variations,
+  (variations) => {
+    if (variations.length === 1) {
+      selectVariation(variations[0])
+    }
+  }
+)
 
 onMounted(async () => {
   await getGuestProduct()
