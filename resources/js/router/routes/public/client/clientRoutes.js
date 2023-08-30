@@ -3,6 +3,7 @@ import { useProductStore } from '@/store/products/product'
 import { useOrderStore } from '@/store/order/order'
 
 import ClientLayout from '@/layouts/client/ClientLayout.vue'
+import profileRoutes from '../../private/client/profileRoutes'
 
 const routes = [
   {
@@ -91,7 +92,8 @@ const routes = [
             next('/login')
           }
         }
-      }
+      },
+      ...profileRoutes
     ]
   },
   {

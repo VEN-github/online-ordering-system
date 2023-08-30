@@ -47,7 +47,9 @@
         </div>
       </div>
     </Transition>
-    <div class="mx-auto flex max-w-screen-2xl items-center justify-between px-4 md:px-8">
+    <div
+      class="mx-auto flex max-w-screen-2xl items-center justify-between py-4 px-4 md:py-0 md:px-8"
+    >
       <RouterLink to="/" aria-label="logo">
         <img class="h-auto sm:w-14" src="../../../assets/images/logo/logo.svg" alt="logo" />
       </RouterLink>
@@ -135,7 +137,7 @@
 
 <script setup>
 import { ref, computed, watch } from 'vue'
-import { RouterLink } from 'vue-router'
+import { RouterLink, useRouter } from 'vue-router'
 import { useAuthStore } from '@/store/auth/auth'
 import { useProductStore } from '@/store/products/product'
 import { toast } from 'vue3-toastify'
@@ -145,6 +147,7 @@ import BaseAvatar from '@/components/UI/avatar/BaseAvatar.vue'
 import AvatarInitials from '@/components/UI/avatar/AvatarInitials.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'
 
+const router = useRouter()
 const authStore = useAuthStore()
 const productStore = useProductStore()
 const navLinks = ref([
@@ -191,6 +194,7 @@ function detectClickOutside(event) {
 async function logout() {
   try {
     await authStore.userLogout()
+    router.push('/')
   } catch ({ message }) {
     toast(message, {
       type: 'error',
