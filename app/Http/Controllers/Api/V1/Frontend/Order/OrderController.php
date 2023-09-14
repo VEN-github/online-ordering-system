@@ -19,7 +19,7 @@ class OrderController extends BaseController
     {
         try {
             $orders = Order::query()
-                ->whereId(auth()->user()->id)
+                ->whereUserId(auth()->user()->id)
                 ->eagerLoadRelationships()
                 ->latest()
                 ->get();
