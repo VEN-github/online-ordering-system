@@ -22,11 +22,11 @@ class OrderController extends BaseController
                 ->whereUserId(auth()->user()->id)
                 ->eagerLoadRelationships()
                 ->latest()
-                ->get();
+                ->paginate(2);
 
             return $this->success(
                 config('general.messages.request.success'),
-                OrderResource::collection($orders)
+                $orders
             );
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
