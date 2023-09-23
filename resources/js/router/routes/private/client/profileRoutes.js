@@ -13,6 +13,22 @@ const routes = [
         component: () => import('@/views/client/ProfileView.vue')
       },
       {
+        path: '/orders',
+        name: 'orders',
+        component: () => import('@/views/client/OrderHistory.vue'),
+        meta: {
+          title: 'Orders'
+        }
+      },
+      {
+        path: '/address',
+        name: 'address',
+        component: () => import('@/views/client/AddressView.vue'),
+        meta: {
+          title: 'Address'
+        }
+      },
+      {
         path: '/profile-security',
         name: 'profile-security',
         component: () => import('@/views/client/SecurityView.vue')

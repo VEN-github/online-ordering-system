@@ -17,28 +17,30 @@
               </RouterLink>
             </li>
             <li>
-              <a
-                href="#"
+              <RouterLink
+                to="/orders"
                 class="group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-emerald-600"
+                active-class="!bg-gray-50 !text-emerald-600"
               >
                 <Icon
                   icon="fluent-mdl2:activate-orders"
-                  class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-emerald-600"
+                  class="h-6 w-6 shrink-0 group-hover:text-emerald-600"
                 />
                 Orders
-              </a>
+              </RouterLink>
             </li>
             <li>
-              <a
-                href="#"
+              <RouterLink
+                to="/address"
                 class="group flex gap-x-3 rounded-md py-2 pl-2 pr-3 text-sm font-semibold leading-6 text-gray-700 hover:bg-gray-50 hover:text-emerald-600"
+                active-class="!bg-gray-50 !text-emerald-600"
               >
                 <Icon
                   icon="mdi:address-marker-outline"
-                  class="h-6 w-6 shrink-0 text-gray-400 group-hover:text-emerald-600"
+                  class="h-6 w-6 shrink-0 group-hover:text-emerald-600"
                 />
-                Address
-              </a>
+                address
+              </RouterLink>
             </li>
             <li>
               <RouterLink

@@ -116,7 +116,7 @@
             <div class="col-span-6">
               <p class="text-sm text-gray-500">
                 By creating an account, you agree to our
-                <a href="#" class="text-gray-700 underline"> terms and conditions </a>
+                <a href="#" class="text-gray-700 underline"> terms and conditions</a>
                 and
                 <a href="#" class="text-gray-700 underline">privacy policy</a>.
               </p>

@@ -17,6 +17,7 @@ class AddressResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
