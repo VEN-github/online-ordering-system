@@ -9,6 +9,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Frontend\Order\OrderRequest;
 use App\Http\Resources\Api\Backend\OrderResource;
 use App\Models\Order\Order;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
@@ -71,6 +72,22 @@ class OrderController extends BaseController
             DB::rollBack();
 
             return $this->error($e->getMessage());
+        }
+    }
+
+    public function show(string $id)
+    {
+        try {
+            $order = Order::find($id);
+
+            return $order ?
+                $this->success(
+                    config('general.messages.request.success'),
+                    OrderResource::make($order)
+                )
+                : $this->error(config('general.messages.model.not_found'));
+        } catch (Exception $e) {
+            $this->error();
         }
     }
 }
