@@ -21,7 +21,13 @@
           <dd class="sm:mt-1">{{ order.total_price }}</dd>
         </div>
       </dl>
-      <BaseButton mode="primary" size="xl" is-link link="#" class="mt-6 w-full sm:mt-0 sm:w-auto">
+      <BaseButton
+        mode="primary"
+        size="xl"
+        is-link
+        :link="`/order/${order.ref_id}`"
+        class="mt-6 w-full sm:mt-0 sm:w-auto"
+      >
         Track Order
       </BaseButton>
     </div>

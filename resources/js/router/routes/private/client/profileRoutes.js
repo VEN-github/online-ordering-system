@@ -21,6 +21,15 @@ const routes = [
         }
       },
       {
+        path: '/order/:id',
+        name: 'order',
+        component: () => import('@/views/client/OrderTracking.vue'),
+        meta: {
+          title: 'Order'
+        },
+        props: true
+      },
+      {
         path: '/address',
         name: 'address',
         component: () => import('@/views/client/AddressView.vue'),

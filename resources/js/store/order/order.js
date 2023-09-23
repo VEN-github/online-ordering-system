@@ -8,6 +8,7 @@ export const useOrderStore = defineStore('order', {
   state: () => {
     return {
       orders: [],
+      order: null,
       newOrder: null
     }
   },
@@ -18,6 +19,16 @@ export const useOrderStore = defineStore('order', {
           data: { data }
         } = await api.get(`/api/orders?page=${page}`)
         this.orders = data
+      } catch ({ response }) {
+        handleError(response)
+      }
+    },
+    async getOrder(id) {
+      try {
+        const {
+          data: { data }
+        } = await api.get(`/api/orders/${id}`)
+        this.order = data
       } catch ({ response }) {
         handleError(response)
       }

@@ -87,14 +87,19 @@
               <dd class="mt-2 space-y-2 sm:flex sm:space-x-4 sm:space-y-0">
                 <div class="flex-none">
                   <Icon
-                    v-if="order.payment_method == 'paypal'"
+                    v-if="order.payment_method == 'paypal' || order.payment_method == 'credit card'"
                     icon="logos:paypal"
                     class="h-6 w-auto"
                   />
                   <Icon v-else icon="icon-park-solid:delivery" class="h-6 w-auto" />
                 </div>
                 <div class="flex-auto">
-                  <p v-if="order.payment_method == 'paypal'" class="text-gray-900">PayPal</p>
+                  <p
+                    v-if="order.payment_method == 'paypal' || order.payment_method == 'credit card'"
+                    class="text-gray-900"
+                  >
+                    PayPal
+                  </p>
                   <p v-else class="text-gray-900">Cash on Delivery</p>
                 </div>
               </dd>
