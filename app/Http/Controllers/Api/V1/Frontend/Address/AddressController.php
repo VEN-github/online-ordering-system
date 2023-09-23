@@ -47,13 +47,13 @@ class AddressController extends BaseController
         }
     }
 
-    public function update(AddressRequest $request)
+    public function update(AddressRequest $request, string $id)
     {
         try {
             $data = $request->validated();
-            $data['user_id'] = auth()->user()->id;
 
-            $address = Address::create($data);
+            $address = Address::find($id);
+            $address->update($data);
 
             return $this->success(
                     config('general.messages.model.updated'),
