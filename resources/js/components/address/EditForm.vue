@@ -230,7 +230,7 @@ function initModels() {
   models.address = props.modelValue?.address || ''
   models.city = props.modelValue?.city || ''
   models.country = props.modelValue?.country || ''
-  models.province = props.modelValue?.state ||''
+  models.province = props.modelValue?.state || ''
   models.postalCode = props.modelValue?.postal_code || ''
   models.phone = props.modelValue?.phone || ''
   models.saveInfo = props.modelValue?.is_primary || 0

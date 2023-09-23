@@ -1,21 +1,8 @@
 <template>
-  <div class="ml-auto w-fit">
-    <BaseButton mode="primary" size="xl" @click="showAddForm = true">Add New Address</BaseButton>
-  </div>
-  <ul
-    v-if="addressLists.length"
-    role="list"
-    class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+  <div
+    v-if="!isLoading && addressLists.length == 0"
+    class="flex flex-col items-center justify-center gap-4"
   >
-    <AddressCard
-      v-for="address in addressLists"
-      :key="address"
-      :address="address"
-      @on-edit="toggleEditModal"
-      @on-delete="toggleDeleteModal"
-    />
-  </ul>
-  <div v-else class="flex flex-col items-center justify-center gap-4">
     <img
       class="w-96 max-w-full"
       src="../../../assets/images/illustrations/address.svg"
@@ -24,6 +11,24 @@
     <p class="text-lg font-semibold text-slate-800">No address yet</p>
     <BaseButton mode="primary" size="xl" @click="showAddForm = true">Add Address</BaseButton>
   </div>
+  <template v-else>
+    <div class="ml-auto w-fit">
+      <BaseButton mode="primary" size="xl" @click="showAddForm = true">Add New Address</BaseButton>
+    </div>
+    <ul
+      v-if="addressLists.length"
+      role="list"
+      class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
+    >
+      <AddressCard
+        v-for="address in addressLists"
+        :key="address"
+        :address="address"
+        @on-edit="toggleEditModal"
+        @on-delete="toggleDeleteModal"
+      />
+    </ul>
+  </template>
   <AddForm :is-show="showAddForm" @on-close="showAddForm = false" @on-success="onSuccess" />
   <EditForm
     :is-show="showEditForm"
@@ -61,9 +66,12 @@ const showEditForm = ref(false)
 const showDeleteModal = ref(false)
 const addressId = ref(null)
 const models = ref(null)
+const isLoading = ref(false)
 
 onMounted(async () => {
+  isLoading.value = true
   await getAddress()
+  isLoading.value = false
 })
 
 async function onSuccess() {
