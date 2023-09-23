@@ -12,11 +12,11 @@ export const useOrderStore = defineStore('order', {
     }
   },
   actions: {
-    async getOrders() {
+    async getOrders(page = 1) {
       try {
         const {
           data: { data }
-        } = await api.get('/api/orders')
+        } = await api.get(`/api/orders?page=${page}`)
         this.orders = data
       } catch ({ response }) {
         handleError(response)
