@@ -22,11 +22,7 @@ class OrderController extends BaseController
             $orders = OrderResource::collection(
                 Order::query()
                 ->whereUserId(auth()->user()->id)
-                // ->eagerLoadRelationships()
-                ->with([
-                    'user',
-                    'items.product.highlightImages'
-                ])
+                ->eagerLoadRelationships()
                 ->latest()
                 ->get()
             );
@@ -81,10 +77,12 @@ class OrderController extends BaseController
         }
     }
 
-    public function show(string $id)
+    public function show(string $refId)
     {
         try {
-            $order = Order::find($id);
+            $order = Order::query()
+                ->whereRefId($refId)
+                ->first();
 
             return $order ?
                 $this->success(
