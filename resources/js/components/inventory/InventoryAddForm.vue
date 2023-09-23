@@ -89,7 +89,7 @@ const props = defineProps({
     }
   }
 })
-const emit = defineEmits(['onClose', 'onSuccess', 'submitForm'])
+const emit = defineEmits(['onClose', 'submitForm'])
 
 const models = reactive({
   product_id: '',
@@ -130,15 +130,23 @@ watch(
   }
 )
 
+watch(
+  () => props.isShow,
+  (value) => {
+    if (value) {
+      resetForm()
+      return
+    }
+  },
+  { immediate: true }
+)
+
 async function addInventory() {
   const isFormCorrect = await v$.value.$validate()
 
   if (!isFormCorrect) return
 
   emit('submitForm', models)
-  setTimeout(() => {
-    resetForm()
-  }, 1000)
 }
 
 function resetForm() {
