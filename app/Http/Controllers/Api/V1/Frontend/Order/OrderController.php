@@ -27,7 +27,7 @@ class OrderController extends BaseController
 
             return $this->success(
                 config('general.messages.request.success'),
-                $orders
+                OrderResource::collection($orders)
             );
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
