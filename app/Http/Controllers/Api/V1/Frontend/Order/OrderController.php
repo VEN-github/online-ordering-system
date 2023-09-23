@@ -19,15 +19,17 @@ class OrderController extends BaseController
     public function index()
     {
         try {
-            $orders = Order::query()
+            $orders = OrderResource::collection(
+                Order::query()
                 ->whereUserId(auth()->user()->id)
                 ->eagerLoadRelationships()
                 ->latest()
-                ->paginate(2);
+                ->get()
+            );
 
             return $this->success(
                 config('general.messages.request.success'),
-                OrderResource::collection($orders)
+                $orders->paginate(2)
             );
         } catch (\Exception $e) {
             return $this->error($e->getMessage());
