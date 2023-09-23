@@ -26,7 +26,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'ref_id' => 123,
+            'ref_id' => GenerateRefId::run(),
             'email' => fake()->email(),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
