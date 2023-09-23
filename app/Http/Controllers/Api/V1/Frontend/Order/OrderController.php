@@ -22,7 +22,11 @@ class OrderController extends BaseController
             $orders = OrderResource::collection(
                 Order::query()
                 ->whereUserId(auth()->user()->id)
-                ->eagerLoadRelationships()
+                // ->eagerLoadRelationships()
+                ->with([
+                    'user',
+                    'items.product.highlightImages'
+                ])
                 ->latest()
                 ->get()
             );
