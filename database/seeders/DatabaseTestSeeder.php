@@ -59,8 +59,7 @@ class DatabaseTestSeeder extends Seeder
         $this->command->info('User Seeded Successfully.');
 
         $this->command->info('Running Order Seeder...');
-        Order::factory()->create();
-        Order::factory()->create();
+        Order::factory()->count(100)->create();
         $this->command->info('Order Seeded Successfully.');
 
         $this->command->info('Running Item Seeder...');

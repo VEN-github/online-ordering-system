@@ -26,7 +26,7 @@ class OrderFactory extends Factory
     public function definition(): array
     {
         return [
-            'ref_id' => GenerateRefId::run(),
+            'ref_id' => 123,
             'email' => fake()->email(),
             'first_name' => fake()->firstName(),
             'last_name' => fake()->lastName(),
@@ -39,7 +39,7 @@ class OrderFactory extends Factory
             'postal_code' => fake()->numerify('####'),
             'phone' => fake()->phoneNumber(),
             'is_saved' => false,
-            'user_id' => fake()->unique()->numberBetween(1, User::count()),
+            'user_id' => fake()->numberBetween(1, User::count()),
             'payment_method' => fake()->randomElement(PaymentMethod::toArray()),
             'payment_status' => fake()->randomElement(PaymentStatus::toArray()),
             'status' => fake()->randomElement(OrderStatus::toArray()),

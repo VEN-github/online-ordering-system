@@ -20,6 +20,7 @@ return new class () extends Migration {
             $table->longText('description')->nullable();
             $table->unsignedBigInteger('category_id')->nullable();
             $table->bigInteger('orig_price')->nullable();
+            $table->bigInteger('selling_price')->nullable();
             $table->bigInteger('discounted_price')->nullable();
             $table->bigInteger('standard_shipping_price')->nullable();
             $table->bigInteger('express_shipping_price')->nullable();

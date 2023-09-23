@@ -11,11 +11,15 @@ class GenerateRefId
 {
     use AsAction;
 
-    public function handle(): string
+    public function handle(): int
     {
-        $latestOrder = Order::orderBy('created_at', 'DESC')->first();
-        $count = $latestOrder ? $latestOrder->id : 0;
+        $orders = Order::get();
+        $random = rand(50000, 99999);
 
-        return '#'.str_pad($count + 1, 8, "0", STR_PAD_LEFT);
+        if ($orders->where('ref_id', $random)->first()) {
+            $random .= count($orders);
+        }
+
+        return (int) $random;
     }
 }
