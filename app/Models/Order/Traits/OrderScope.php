@@ -8,6 +8,6 @@ trait OrderScope
 {
     public function scopeEagerLoadRelationships(Builder $query): Builder
     {
-        return $query->with(array_merge(get_class_methods(OrderRelationship::class), ['items.product']));
+        return $query->with(array_merge(get_class_methods(OrderRelationship::class), ['items.product.highlightImages']));
     }
 }

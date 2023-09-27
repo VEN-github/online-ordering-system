@@ -28,6 +28,7 @@ class ProductFactory extends Factory
             'description' => fake()->paragraph,
             'category_id' => fake()->numberBetween(1, 10),
             'orig_price' => fake()->numberBetween(1000, 10000),
+            'selling_price' => fake()->numberBetween(1000, 10000),
             'discounted_price' => fake()->numberBetween(100, 9000),
             'standard_shipping_price' => fake()->numberBetween(100, 500),
             'express_shipping_price' => fake()->numberBetween(600, 1000),

@@ -46,4 +46,36 @@ class AddressController extends BaseController
             return $this->error($e->getMessage());
         }
     }
+
+    public function update(AddressRequest $request, string $id)
+    {
+        try {
+            $data = $request->validated();
+
+            $address = Address::find($id);
+            $address->update($data);
+
+            return $this->success(
+                    config('general.messages.model.updated'),
+                    AddressResource::make($address)
+                );
+        } catch (Exception $e) {
+            return $this->error();
+        }
+    }
+
+    public function destroy(string $id)
+    {
+        try {
+            $address = Address::find($id);
+
+            if ($address) {
+                $address->delete();
+            }
+
+            return $this->success(config('general.messages.model.deleted'));
+        } catch (\Exception $e) {
+            return $this->error();
+        }
+    }
 }

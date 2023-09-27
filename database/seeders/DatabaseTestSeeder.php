@@ -10,7 +10,7 @@ use App\Models\Item\Item;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\Supplier\Supplier;
-use App\Models\User;
+use App\Models\User\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Artisan;
 
@@ -36,12 +36,30 @@ class DatabaseTestSeeder extends Seeder
         $this->command->info('Faq Seeded Successfully.');
 
         $this->command->info('Running User Seeder...');
+
         User::factory()->count(10)->create();
+
+        $users = User::with('cart')->get();
+
+        foreach ($users as $user) {
+            $user->cart
+                ->products()
+                ->attach(
+                    [
+                        Product::get()->first()->id
+                    ],
+                    [
+                        'variation_id' => null,
+                        'quantity' => fake()->numberBetween(1, 10),
+                        'total' => fake()->numberBetween(600, 1000)
+                    ]
+                );
+        }
+
         $this->command->info('User Seeded Successfully.');
 
         $this->command->info('Running Order Seeder...');
-        Order::factory()->create();
-        Order::factory()->create();
+        Order::factory()->count(100)->create();
         $this->command->info('Order Seeded Successfully.');
 
         $this->command->info('Running Item Seeder...');

@@ -33,6 +33,7 @@ class OrderRequest extends FormRequest
             'state' => [],
             'postal_code' => [],
             'phone' => [],
+            'is_saved' => ['required'],
             'payment_method' => ['required', 'string'],
             'payment_status' => ['required', 'string'],
             'status' => ['required', 'string'],

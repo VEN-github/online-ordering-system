@@ -1,4 +1,9 @@
+import { useAuthStore } from '@/store/auth/auth'
+import { useProductStore } from '@/store/products/product'
+import { useOrderStore } from '@/store/order/order'
+
 import ClientLayout from '@/layouts/client/ClientLayout.vue'
+import profileRoutes from '../../private/client/profileRoutes'
 
 const routes = [
   {
@@ -75,8 +80,20 @@ const routes = [
         component: () => import('@/views/client/CheckoutView.vue'),
         meta: {
           title: 'Checkout'
+        },
+        beforeEnter: (_, _2, next) => {
+          const authStore = useAuthStore()
+          const productStore = useProductStore()
+          if (authStore.isUserAuthenticated && productStore.cartItems.length > 0) {
+            next()
+          } else if (authStore.isUserAuthenticated) {
+            next('/')
+          } else {
+            next('/login')
+          }
         }
-      }
+      },
+      ...profileRoutes
     ]
   },
   {
@@ -85,6 +102,14 @@ const routes = [
     component: () => import('@/views/client/LoginView.vue'),
     meta: {
       title: 'Login'
+    },
+    beforeEnter: (_, _2, next) => {
+      const store = useAuthStore()
+      if (!store.isUserAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
     }
   },
   {
@@ -93,6 +118,14 @@ const routes = [
     component: () => import('@/views/client/RegisterView.vue'),
     meta: {
       title: 'Register'
+    },
+    beforeEnter: (_, _2, next) => {
+      const store = useAuthStore()
+      if (!store.isUserAuthenticated) {
+        next()
+      } else {
+        next('/')
+      }
     }
   },
   {
@@ -101,6 +134,17 @@ const routes = [
     component: () => import('@/views/client/OrderSuccessView.vue'),
     meta: {
       title: 'Order Confirmed'
+    },
+    beforeEnter: (_, _2, next) => {
+      const authStore = useAuthStore()
+      const orderStore = useOrderStore()
+      if (authStore.isUserAuthenticated && orderStore.newOrder) {
+        next()
+      } else if (authStore.isUserAuthenticated) {
+        next('/')
+      } else {
+        next('/login')
+      }
     }
   }
 ]

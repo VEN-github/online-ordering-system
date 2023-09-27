@@ -30,22 +30,22 @@ trait OrderMethod
         );
     }
 
-    protected function refId(): Attribute
-    {
-        $random = rand(50000, 99999);
+    // protected function refId(): Attribute
+    // {
+    //     $random = rand(50000, 99999);
 
-        if (static::whereRefId($random)->first()) {
-            $random = rand(100000, 1000000000);
-        }
+    //     if (static::whereRefId($random)->first()) {
+    //         $random = rand(100000, 1000000000);
+    //     }
 
-        // $latestOrder = static::orderBy('id', 'DESC')->first();
-        // $count = $latestOrder ? $latestOrder->id : 0;
+    //     // $latestOrder = static::orderBy('id', 'DESC')->first();
+    //     // $count = $latestOrder ? $latestOrder->id : 0;
 
-        return Attribute::make(
-            // get: fn ($value) => '#'. (string) $value,
-            set: fn ($value) => $random
-            // set: fn ($value) => '#'.str_pad($count + 1, 8, "0", STR_PAD_LEFT),
-            // set: fn ($value) => $value . now()->toDateString(),
-        );
-    }
+    //     return Attribute::make(
+    //         // get: fn ($value) => '#'. (string) $value,
+    //         set: fn ($value) => $random
+    //         // set: fn ($value) => '#'.str_pad($count + 1, 8, "0", STR_PAD_LEFT),
+    //         // set: fn ($value) => $value . now()->toDateString(),
+    //     );
+    // }
 }

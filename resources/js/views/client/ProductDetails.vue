@@ -84,44 +84,34 @@
                     <legend class="block text-sm font-medium text-gray-700">Options</legend>
                     <div class="mt-1 grid grid-cols-1 gap-4 sm:grid-cols-2">
                       <div
-                        class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 ring-2 ring-emerald-500 focus:outline-none"
-                      >
-                        <input
-                          type="radio"
-                          name="size-choice"
-                          value="18L"
-                          class="sr-only"
-                          aria-labelledby="size-choice-0-label"
-                          aria-describedby="size-choice-0-description"
-                        />
-                        <p id="size-choice-0-label" class="text-base font-medium text-gray-900">
-                          Small
-                        </p>
-                        <p id="size-choice-0-description" class="mt-1 text-sm text-gray-500">Red</p>
-                        <div
-                          class="pointer-events-none absolute -inset-px rounded-lg border-2 border-emerald-500"
-                          aria-hidden="true"
-                        ></div>
-                      </div>
-                      <div
+                        v-for="variation in product?.variations"
+                        :key="variation.id"
                         class="relative block cursor-pointer rounded-lg border border-gray-300 p-4 focus:outline-none"
+                        :class="[
+                          variation.id == selectedVariation ? 'ring-2 ring-emerald-500' : ''
+                        ]"
+                        @click="selectVariation(variation)"
                       >
                         <input
+                          v-model="selectedVariation"
                           type="radio"
-                          name="size-choice"
-                          value="20L"
+                          name="variation"
+                          :value="variation.id"
                           class="sr-only"
-                          aria-labelledby="size-choice-1-label"
-                          aria-describedby="size-choice-1-description"
                         />
-                        <p id="size-choice-1-label" class="text-base font-medium text-gray-900">
-                          Large
+                        <p class="text-base font-medium text-gray-900">
+                          {{ variation.size }}
                         </p>
-                        <p id="size-choice-1-description" class="mt-1 text-sm text-gray-500">
-                          Blue
+                        <p class="mt-1 text-sm text-gray-500">
+                          {{ variation.color }}
                         </p>
                         <div
-                          class="pointer-events-none absolute -inset-px rounded-lg border-2 border-transparent"
+                          class="pointer-events-none absolute -inset-px rounded-lg border-2"
+                          :class="[
+                            variation.id == selectedVariation
+                              ? 'border-emerald-500'
+                              : 'border-transparent'
+                          ]"
                           aria-hidden="true"
                         ></div>
                       </div>
@@ -132,8 +122,20 @@
             </section>
           </div>
           <div class="mt-6">
-            <div class="mt-10">
-              <BaseButton mode="primary" size="xl" is-full @click="addToCart">
+            <div class="mt-10 flex items-center gap-8">
+              <QuantityInput
+                v-model="quantity"
+                :max-value="maxValue"
+                @add="quantity++"
+                @subtract="quantity--"
+              />
+              <BaseButton
+                mode="primary"
+                size="xl"
+                is-full
+                :disabled="isDisabled"
+                @click="addToCart"
+              >
                 <Icon class="h-5 w-5 text-white" icon="heroicons:shopping-bag" />
                 <span> Add to Cart </span>
               </BaseButton>
@@ -173,13 +175,14 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductStore } from '@/store/products/product'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 
 import BaseButton from '@/components/UI/button/BaseButton.vue'
+import QuantityInput from '@/components/UI/forms/QuantityInput.vue'
 
 const props = defineProps({
   slug: {
@@ -195,6 +198,9 @@ const productStore = useProductStore()
 const product = ref(null)
 const highlightImage = ref(null)
 const galleryImages = ref([])
+const selectedVariation = ref('')
+const quantity = ref(1)
+const maxValue = ref(1)
 
 const formattedPrice = computed(() => {
   return new Intl.NumberFormat('en-PH', {
@@ -224,6 +230,20 @@ const formattedExpressShippingPrice = computed(() => {
   }).format(product.value?.express_shipping_price)
 })
 
+const isDisabled = computed(() => {
+  if (!product.value?.variations.length) return false
+  return !selectedVariation.value
+})
+
+watch(
+  () => product.value?.variations,
+  (variations) => {
+    if (variations.length === 1) {
+      selectVariation(variations[0])
+    }
+  }
+)
+
 onMounted(async () => {
   await getGuestProduct()
 })
@@ -233,6 +253,7 @@ async function getGuestProduct() {
     await productStore.getGuestProduct(props.slug)
     product.value = productStore.guestProduct
     highlightImage.value = product.value.highlight_image
+    maxValue.value = product.value.stocks ?? 1
     if (!product.value.images.length) return
     galleryImages.value = [product.value.highlight_image, ...product.value.images]
   } catch ({ message }) {
@@ -240,8 +261,20 @@ async function getGuestProduct() {
   }
 }
 
+function selectVariation(variation) {
+  quantity.value = 1
+  selectedVariation.value = variation.id
+  maxValue.value = variation.stock
+}
+
 function addToCart() {
-  productStore.addToCart(product.value)
+  productStore.addToCart({
+    quantity: quantity.value,
+    selectedVariation: product.value?.variations.find(
+      (variation) => variation.id == selectedVariation.value
+    ),
+    ...product.value
+  })
   toast(`${product.value?.name} added to cart.`, {
     type: 'success',
     theme: 'colored',

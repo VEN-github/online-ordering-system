@@ -8,5 +8,6 @@ Route::namespace('Order')
     ->name('order.')
     ->group(function () {
         Route::get('/', 'OrderController@index')->name('index');
+        Route::get('/{refId}', 'OrderController@show')->name('show');
         Route::post('/', 'OrderController@store')->name('store');
     });

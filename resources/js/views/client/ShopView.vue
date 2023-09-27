@@ -45,7 +45,9 @@
                   <h3 class="sr-only">Categories</h3>
                   <ul role="list" class="px-2 py-3 font-medium text-gray-900">
                     <li v-for="item in categories" :key="item.id">
-                      <RouterLink :to="`/shop/${item.slug}`">{{ item.name }}</RouterLink>
+                      <RouterLink :to="`/shop/${item.slug}`" @click="showFilters = false">
+                        {{ item.name }}
+                      </RouterLink>
                     </li>
                   </ul>
                 </form>

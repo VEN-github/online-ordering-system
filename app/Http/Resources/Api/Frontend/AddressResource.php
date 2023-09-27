@@ -17,12 +17,13 @@ class AddressResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user' => UserResource::make($this->whenLoaded('user')),
             'first_name' => $this->first_name,
             'last_name' => $this->last_name,
-            'company' => $this->company,
+            // 'company' => $this->company,
             'address' => $this->address,
-            'unit' => $this->unit,
+            // 'unit' => $this->unit,
             'city' => $this->city,
             'country' => $this->country,
             'state' => $this->state,
