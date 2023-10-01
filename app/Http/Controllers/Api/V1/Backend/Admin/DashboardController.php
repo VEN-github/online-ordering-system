@@ -14,18 +14,43 @@ class DashboardController extends BaseController
 {
     public function index()
     {
+        $month = now()->month;
+        $year = now()->year;
+
         try {
-            $numberOfTotalSalesPerMonth = Order::select(
+            $numberOfTotalSalesPerMonth = Order::query()
+                ->select(
                     DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
                     DB::raw('CAST(SUM(total_price) AS SIGNED) as total_sales')
                 )
                 ->whereStatus(OrderStatus::COMPLETED)
-                ->whereYear('created_at', now()->year)
+                ->whereYear('created_at', $year)
                 ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
                 ->get()
                 ->toArray();
-            $numberOfTotalIncomeCurrentMonth = 0;
-            $numberOfPendingOrders = Order::whereStatus(OrderStatus::PENDING->value)->count();
+            $numberOfTotalIncomeCurrentMonth = Order::query()
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->whereStatus(OrderStatus::COMPLETED)
+                ->with('items')
+                ->get()
+                ->flatMap(function ($order) {
+                    return $order->items->map(function ($item) {
+                        $origPrice = $item->orig_price;
+                        $sellingPrice = $item->selling_price;
+                        $discountedPrice = $item->discounted_price;
+
+                        if (!is_null($discountedPrice)) {
+                            $totalPrice = $origPrice - $discountedPrice;
+                        } else {
+                            $totalPrice = $origPrice - $sellingPrice;
+                        }
+
+                        return abs($totalPrice);
+                    });
+                })
+                ->sum();
+            $numberOfPendingOrders = Order::whereStatus(OrderStatus::PENDING)->count();
             $numberOfRegisteredUsers = User::count();
 
             return $this->success(
