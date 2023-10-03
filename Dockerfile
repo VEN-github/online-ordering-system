@@ -18,11 +18,15 @@ ENV LOG_CHANNEL stderr
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
 # Install required dependencies
-RUN apt-get update && apt-get install -y curl
+RUN apk update
 
-# Install node
-RUN curl -sL https://deb.nodesource.com/setup_16.20.2 | bash -
-RUN apt-get install -y nodejs
-RUN npm install && npm run build
+# Install the `npm` package
+RUN apk add --no-cache npm
+
+# Install NPM dependencies
+RUN npm install
+
+# Build Vite assets
+RUN npm run build
 
 CMD ["/start.sh"]
