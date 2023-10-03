@@ -17,7 +17,7 @@ ENV LOG_CHANNEL stderr
 # Allow composer to run as root
 ENV COMPOSER_ALLOW_SUPERUSER 1
 
-RUN curl -sL https://deb.nodesource.com/setup_16.20.2| bash -
+RUN curl -sL https://deb.nodesource.com/setup_16.20.2| bash - &&\
 RUN apt-get install -y nodejs
 RUN npm install && npm run build
 
