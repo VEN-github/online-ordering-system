@@ -2,9 +2,6 @@
 echo "Running composer"
 composer install --working-dir=/var/www/html
 
-echo "Running npm install..."
-npm install
-
 echo "Clearing caches..."
 php artisan optimize:clear
 
