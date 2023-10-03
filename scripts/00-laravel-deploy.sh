@@ -1,8 +1,11 @@
 #!/usr/bin/env bash
 echo "Running composer"
-cp /etc/secrets/.env .env
+#cp /etc/secrets/.env .env
 composer global require hirak/prestissimo
 composer install --no-dev --working-dir=/var/www/html
+
+echo "Running npm install..."
+npm install --prefix /var/www/html
 
 echo "Clearing caches..."
 php artisan optimize:clear
