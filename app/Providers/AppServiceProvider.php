@@ -21,9 +21,11 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict();
 
-        if($this->app->environment('production')) {
+        if (!$this->app->environment('local')) {
             URL::forceScheme('https');
+        }
 
+        if($this->app->environment('production')) {
             Model::handleLazyLoadingViolationUsing(function ($model, $relation) {
                 $class = get_class($model);
 
