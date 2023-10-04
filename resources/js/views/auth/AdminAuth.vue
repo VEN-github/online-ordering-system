@@ -1,5 +1,5 @@
 <template>
-  <div class="flex min-h-screen flex-col justify-center px-1 sm:px-0">
+  <div class="flex min-h-screen flex-col justify-center px-4 sm:px-0">
     <div class="sm:mx-auto sm:w-full sm:max-w-md">
       <img class="mx-auto h-12 w-auto" src="../../../assets/images/logo/logo.svg" alt="Logo" />
       <h2 class="mt-6 text-center text-3xl font-bold tracking-tight text-gray-900">

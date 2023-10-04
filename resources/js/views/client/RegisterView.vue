@@ -21,12 +21,12 @@
             Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
             quibusdam aperiam voluptatum.
           </p>
+          <Transition name="fade">
+            <BaseAlert v-if="isError" mode="error" class="my-5 shadow">
+              {{ errorMessage }}
+            </BaseAlert>
+          </Transition>
           <form class="mt-8 grid grid-cols-6 gap-6" @submit.prevent="register">
-            <Transition name="fade">
-              <BaseAlert v-if="isError" mode="error" class="mb-5 shadow">
-                {{ errorMessage }}
-              </BaseAlert>
-            </Transition>
             <div class="col-span-6 sm:col-span-3">
               <FormLabel label-id="first-name" :is-invalid="v$.first_name.$error">
                 First Name
