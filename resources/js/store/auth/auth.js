@@ -95,10 +95,12 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     encryptData(data) {
-      return AES.encrypt(JSON.stringify(data), this.ENCRYPTION_KEY).toString()
+      console.log(this.ENCRYPTION_KEY)
+      return AES.encrypt(JSON.stringify(data), '12345678').toString()
     },
     decryptData(data) {
-      var bytes = AES.decrypt(data, this.ENCRYPTION_KEY)
+      console.log(this.ENCRYPTION_KEY)
+      var bytes = AES.decrypt(data, '12345678')
       return JSON.parse(bytes.toString(enc.Utf8))
     }
   },
