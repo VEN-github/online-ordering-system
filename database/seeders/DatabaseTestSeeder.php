@@ -20,19 +20,19 @@ class DatabaseTestSeeder extends Seeder
     public function run(): void
     {
         $this->command->info('Running Supplier Seeder...');
-        Supplier::factory()->count(100)->create();
+        Supplier::factory()->count(10)->create();
         $this->command->info('Supplier Seeded Successfully.' . "\n");
 
         $this->command->info('Running Category Seeder...');
-        Category::factory()->count(100)->create();
+        Category::factory()->count(10)->create();
         $this->command->info('Category Seeded Successfully.' . "\n");
 
         $this->command->info('Running Faq Seeder...');
-        Faq::factory()->count(100)->create();
+        Faq::factory()->count(10)->create();
         $this->command->info('Faq Seeded Successfully.');
 
         $this->command->info('Running Product Seeder...');
-        Product::factory()->count(100)->create();
+        Product::factory()->count(10)->create();
         $this->command->info('Faq Seeded Successfully.');
 
         $this->command->info('Running User Seeder...');
@@ -59,11 +59,11 @@ class DatabaseTestSeeder extends Seeder
         $this->command->info('User Seeded Successfully.');
 
         $this->command->info('Running Order Seeder...');
-        Order::factory()->count(100)->create();
+        Order::factory()->count(10)->create();
         $this->command->info('Order Seeded Successfully.');
 
         $this->command->info('Running Item Seeder...');
-        Item::factory()->count(25)->create();
+        Item::factory()->count(5)->create();
         $this->command->info('Item Seeded Successfully.');
     }
 }
