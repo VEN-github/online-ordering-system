@@ -67,9 +67,9 @@ export const useAuthStore = defineStore('auth', {
         console.log(this.encryptData(token))
         this.loggedUser = this.encryptData(user)
         this.userToken = this.encryptData(token)
-      } catch ({ response }) {
-        console.log(response)
-        handleError(response)
+      } catch (error) {
+        console.log(error)
+        // handleError(response)
       }
     },
     async userLogin(formData) {
