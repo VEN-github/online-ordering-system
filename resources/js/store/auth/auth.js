@@ -63,9 +63,12 @@ export const useAuthStore = defineStore('auth', {
             data: { user, token }
           }
         } = await api.post('/api/register', formData)
+        console.log(this.encryptData(user))
+        console.log(this.encryptData(token))
         this.loggedUser = this.encryptData(user)
         this.userToken = this.encryptData(token)
       } catch ({ response }) {
+        console.log(response)
         handleError(response)
       }
     },
