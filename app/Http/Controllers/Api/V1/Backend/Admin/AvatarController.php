@@ -26,7 +26,7 @@ class AvatarController extends BaseController
 
             return $this->success(config('general.messages.model.updated'));
         } catch (Exception $e) {
-            return $this->error($e);
+            return $this->error($e->getMessage());
         }
     }
 
