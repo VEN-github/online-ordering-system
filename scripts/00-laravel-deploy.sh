@@ -12,6 +12,7 @@ echo "Running migrations..."
 php artisan migrate:fresh --seed --force
 
 echo "Storage link..."
+chmod a+rwx storage
 php artisan storage:link --force
 
 echo "done deploying"
