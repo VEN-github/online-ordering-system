@@ -15,11 +15,6 @@ RUN npm install
 RUN npm run build
 
 # Storage
-RUN cd storage/app
-RUN ls -la
-RUN cd app
-RUN ls -la
-RUN mkdir public
-RUN chmod -R 777 storage/app/public
+RUN chmod -R 777 storage
 
 CMD ["/start.sh"]
