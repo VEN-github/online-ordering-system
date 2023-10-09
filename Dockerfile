@@ -15,6 +15,7 @@ RUN npm install
 RUN npm run build
 
 # Storage
-RUN chmod -R 777 storage
+RUN chmod -R 777 /var/www/html/storage
+RUN chown -R nginx:nginx /var/www/html/storage
 
 CMD ["/start.sh"]
