@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
       accessToken: null,
       loggedUser: null,
       userToken: null,
-      ENCRYPTION_KEY: import.meta.env.VITE_ENCRYPTION_KEY
+      ENCRYPTION_KEY: '12345678'
     }
   },
   getters: {
@@ -63,13 +63,10 @@ export const useAuthStore = defineStore('auth', {
             data: { user, token }
           }
         } = await api.post('/api/register', formData)
-        console.log(this.encryptData(user))
-        console.log(this.encryptData(token))
         this.loggedUser = this.encryptData(user)
         this.userToken = this.encryptData(token)
-      } catch (error) {
-        console.log(error)
-        // handleError(response)
+      } catch ({ response }) {
+        handleError(response)
       }
     },
     async userLogin(formData) {
@@ -95,12 +92,10 @@ export const useAuthStore = defineStore('auth', {
       }
     },
     encryptData(data) {
-      console.log(this.ENCRYPTION_KEY)
-      return AES.encrypt(JSON.stringify(data), '12345678').toString()
+      return AES.encrypt(JSON.stringify(data), this.ENCRYPTION_KEY).toString()
     },
     decryptData(data) {
-      console.log(this.ENCRYPTION_KEY)
-      var bytes = AES.decrypt(data, '12345678')
+      var bytes = AES.decrypt(data, this.ENCRYPTION_KEY)
       return JSON.parse(bytes.toString(enc.Utf8))
     }
   },

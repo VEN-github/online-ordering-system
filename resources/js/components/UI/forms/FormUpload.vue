@@ -4,6 +4,7 @@
     accepted-file-types="image/jpeg, image/png"
     :allow-multiple="allowMultiple"
     :max-files="maxFiles"
+    max-file-size="2"
     :class="{ 'filepond--single': !allowMultiple }"
     @addfile="handleFilePondAddFile"
     @removefile="handleFilePondRemoveFile"
@@ -16,6 +17,7 @@ import 'filepond/dist/filepond.min.css'
 import FilePondPluginImagePreview from 'filepond-plugin-image-preview'
 import 'filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css'
 import FilePondPluginFileValidateType from 'filepond-plugin-file-validate-type'
+import FilePondPluginFileValidateSize from 'filepond-plugin-file-validate-size'
 
 defineProps({
   files: {
@@ -39,7 +41,11 @@ defineProps({
 })
 const emit = defineEmits(['onUpload', 'onRemove'])
 
-const FilePond = vueFilePond(FilePondPluginFileValidateType, FilePondPluginImagePreview)
+const FilePond = vueFilePond(
+  FilePondPluginFileValidateType,
+  FilePondPluginImagePreview,
+  FilePondPluginFileValidateSize
+)
 
 function handleFilePondAddFile(error, file) {
   if (error) {
