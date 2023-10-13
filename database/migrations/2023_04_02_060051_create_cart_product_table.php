@@ -2,6 +2,9 @@
 
 declare(strict_types=1);
 
+use App\Models\Cart\Cart;
+use App\Models\Product\Product;
+use App\Models\Variation\Variation;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -10,13 +13,15 @@ return new class () extends Migration {
     /** Run the migrations. */
     public function up(): void
     {
-        Schema::create('cart_product', function (Blueprint $table) {
+        Schema::create('cart_products', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('cart_id');
-            $table->unsignedBigInteger('product_id');
-            $table->unsignedBigInteger('variation_id')->nullable();
-            $table->bigInteger('quantity');
-            $table->bigInteger('total');
+            $table->foreignIdFor(Cart::class);
+            $table->foreignIdFor(Product::class);
+            $table->foreignIdFor(Variation::class)->nullable();
+
+            $table->unsignedBigInteger('quantity');
+            $table->unsignedBigInteger('total');
+
             $table->timestamps();
         });
     }
@@ -24,6 +29,6 @@ return new class () extends Migration {
     /** Reverse the migrations. */
     public function down(): void
     {
-        Schema::dropIfExists('carts_products');
+        Schema::dropIfExists('cart_products');
     }
 };

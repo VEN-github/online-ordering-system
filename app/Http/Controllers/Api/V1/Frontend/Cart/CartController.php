@@ -10,6 +10,7 @@ use App\Http\Requests\Api\Frontend\Cart\CartRequest;
 use App\Http\Resources\Api\Frontend\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Product\Product;
+use App\Models\Variation\Variation;
 use Exception;
 
 class CartController extends BaseController
@@ -17,31 +18,43 @@ class CartController extends BaseController
     public function store(CartRequest $request)
     {
         try {
+            /** @var \App\Models\Cart\Cart $cart */
             $cart = auth()->user()->cart;
-            $product = Product::findOrFail($request->id);
+
+            /** @var \App\Models\Product\Product $product */
+            $product = Product::findOrFail($request->input('id'));
+
+            /** @var \App\Models\Variantion\Variantion|null $variation */
+            $variation = Variation::find($request->input('variation_id', null));
 
             StoreProduct::run(
                 $cart,
                 $product,
-                $request->input('quantity', 1),
-                $request->input('variation_id', null)
+                $variation,
+                $request->input('quantity', 1)
             );
 
-            $cart = $cart->loadMissingRelationships();
+            $cart = $cart->loadMissing([
+                'user',
+                'products'
+            ]);
 
             return $this->success(
                 config('general.messages.request.success'),
                 CartResource::make($cart)
             );
         } catch (Exception $e) {
-            return $this->error($e->getMessage());
+            return $this->error();
         }
     }
 
     public function show()
     {
         try {
-            $cart = Cart::with('products')->find(auth()->user()->id);
+            /** @var \App\Models\Cart\Cart $cart */
+            $cart = auth()->user()
+                ->cart
+                ->load('products');
 
             return $cart
                 ? $this->success(

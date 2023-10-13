@@ -17,18 +17,22 @@ class StoreProduct
     public function handle(
         Cart $cart,
         Product $product,
+        ?Variation $variation,
         int $quantity = 1,
-        ?int $variationId = null
-    ) {
+    ): void
+    {
         $existingProduct = $cart->products()
             ->where('product_id', $product->id)
-            ->where('variation_id', $variationId)
+            ->when(
+                filled($variation),
+                fn ($query) => $query->where('variation_id', $variation->id)
+            )
             ->first();
 
         if ($existingProduct) {
-            return $cart->products()->updateExistingPivot($existingProduct->id, [
-                'quantity' => $existingProduct->pivot->quantity + $quantity,
-                'total' => $existingProduct->pivot->total + $existingProduct->orig_price,
+            $existingProduct->update([
+                'quantity' => (int) $existingProduct->pivot->quantity + $quantity,
+                'total' => (int) $existingProduct->pivot->total + (int) $existingProduct->orig_price,
             ]);
         }
 
