@@ -19,7 +19,7 @@ class ProductController extends BaseController
                 ->whereSlug($category)
                 ->first();
 
-            if (! $category) {
+            if ( ! $category) {
                 return $this->error(config('general.messages.model.not_found'));
             }
 

@@ -1,14 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Controllers\Controller;
 use App\Models\Order\Order;
 use App\Models\User\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class DashboardController extends BaseController
 {
@@ -40,7 +41,7 @@ class DashboardController extends BaseController
                         $sellingPrice = $item->selling_price;
                         $discountedPrice = $item->discounted_price;
 
-                        if (!is_null($discountedPrice)) {
+                        if ( ! is_null($discountedPrice)) {
                             $totalPrice = $origPrice - $discountedPrice;
                         } else {
                             $totalPrice = $origPrice - $sellingPrice;
@@ -59,10 +60,10 @@ class DashboardController extends BaseController
                     'total_sales_per_month' => $numberOfTotalSalesPerMonth,
                     'total_income_current_month' => $numberOfTotalIncomeCurrentMonth,
                     'total_pending_orders' => $numberOfPendingOrders,
-                    'total_registered_users' => $numberOfRegisteredUsers
+                    'total_registered_users' => $numberOfRegisteredUsers,
                 ])
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e);
         }
     }

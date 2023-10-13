@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend\Inventory;
 
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Product\Product;
+use Exception;
 
 class ProductController extends BaseController
 {
@@ -12,17 +15,17 @@ class ProductController extends BaseController
     {
         try {
             $products = ProductResource::collection(
-                    Product::query()
-                        ->with('variations')
-                        ->latest()
-                        ->get()
-                );
+                Product::query()
+                    ->with('variations')
+                    ->latest()
+                    ->get()
+            );
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    $products
-                );
-        } catch (\Exception $e) {
+                config('general.messages.request.success'),
+                $products
+            );
+        } catch (Exception $e) {
             return $this->error();
         }
     }

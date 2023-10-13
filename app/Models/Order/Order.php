@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Order;
 
 use App\Models\Order\Traits\OrderMethod;
@@ -33,6 +35,6 @@ class Order extends Model
         'status',
         'shipping_method',
         'shipping_price',
-        'total_price'
+        'total_price',
     ];
 }

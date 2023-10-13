@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Product;
 
 use App\Models\Order\Order;
-use App\Models\Product\Product;
-use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class GenerateRefId

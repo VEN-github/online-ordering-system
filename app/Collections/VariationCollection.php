@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Collections;
 
 use App\Models\Variation\Variation;
@@ -8,9 +10,7 @@ use Illuminate\Support\Collection;
 
 class VariationCollection
 {
-    /**
-     * @param AnonymousResourceCollection|Variation[] $variations
-     */
+    /** @param AnonymousResourceCollection|Variation[] $variations */
     public static function make(AnonymousResourceCollection $variations): Collection
     {
         $collection = [];

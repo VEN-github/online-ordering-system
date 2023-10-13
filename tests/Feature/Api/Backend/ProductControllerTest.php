@@ -51,7 +51,7 @@ it('can_create_a_record', function () {
                 [
                     $highlight => $highlightImage,
                     $collection => $images,
-                    'variations' => $variations
+                    'variations' => $variations,
                 ]
             )
         );

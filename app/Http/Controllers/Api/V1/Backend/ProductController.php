@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend;
 
 use App\Actions\StoreImages;
@@ -8,6 +10,7 @@ use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Backend\ProductRequest;
 use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Product\Product;
+use Exception;
 
 class ProductController extends BaseController
 {
@@ -15,17 +18,17 @@ class ProductController extends BaseController
     {
         try {
             $products = ProductResource::collection(
-                    Product::query()
-                        ->eagerLoadRelationships()
-                        ->latest()
-                        ->get()
-                );
+                Product::query()
+                    ->eagerLoadRelationships()
+                    ->latest()
+                    ->get()
+            );
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    $products->paginate($this->paginate)
-                );
-        } catch (\Exception $e) {
+                config('general.messages.request.success'),
+                $products->paginate($this->paginate)
+            );
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -58,10 +61,10 @@ class ProductController extends BaseController
             $product = $product->loadMissingRelationships();
 
             return $this->success(
-                    config('general.messages.model.created'),
-                    ProductResource::make($product)
-                );
-        } catch (\Exception $e) {
+                config('general.messages.model.created'),
+                ProductResource::make($product)
+            );
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
     }
@@ -76,11 +79,11 @@ class ProductController extends BaseController
 
             return $product
                 ? $this->success(
-                        config('general.messages.request.success'),
-                        ProductResource::make($product)
-                    )
+                    config('general.messages.request.success'),
+                    ProductResource::make($product)
+                )
                 : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }
@@ -121,10 +124,10 @@ class ProductController extends BaseController
                 ->loadMissingRelationships();
 
             return $this->success(
-                    config('general.messages.model.updated'),
-                    ProductResource::make($product)
-                );
-        } catch (\Exception $e) {
+                config('general.messages.model.updated'),
+                ProductResource::make($product)
+            );
+        } catch (Exception $e) {
             return $this->error($e);
         }
     }
@@ -156,7 +159,7 @@ class ProductController extends BaseController
             $product->delete();
 
             return $this->success(config('general.messages.model.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

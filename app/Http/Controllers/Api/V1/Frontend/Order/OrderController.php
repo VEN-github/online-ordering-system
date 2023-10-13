@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Frontend\Order;
 
 use App\Actions\Order\StoreAddress;
@@ -10,7 +12,6 @@ use App\Http\Requests\Api\Frontend\Order\OrderRequest;
 use App\Http\Resources\Api\Backend\OrderResource;
 use App\Models\Order\Order;
 use Exception;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\ValidationException;
 
@@ -21,17 +22,17 @@ class OrderController extends BaseController
         try {
             $orders = OrderResource::collection(
                 Order::query()
-                ->whereUserId(auth()->user()->id)
-                ->eagerLoadRelationships()
-                ->latest()
-                ->get()
+                    ->whereUserId(auth()->user()->id)
+                    ->eagerLoadRelationships()
+                    ->latest()
+                    ->get()
             );
 
             return $this->success(
                 config('general.messages.request.success'),
                 $orders->paginate(2)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
     }
@@ -41,7 +42,7 @@ class OrderController extends BaseController
         DB::beginTransaction();
 
         try {
-            if (! $request->has('items')
+            if ( ! $request->has('items')
                 || (is_array($request->items) && count($request->items) === 0)) {
                 throw ValidationException::withMessages(['No items detected.']);
             }
@@ -67,10 +68,10 @@ class OrderController extends BaseController
             $order = $order->loadMissing('items');
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    OrderResource::make($order)
-                );
-        } catch (\Exception $e) {
+                config('general.messages.request.success'),
+                OrderResource::make($order)
+            );
+        } catch (Exception $e) {
             DB::rollBack();
 
             return $this->error($e->getMessage());

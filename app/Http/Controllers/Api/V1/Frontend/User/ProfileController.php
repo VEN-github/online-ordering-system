@@ -37,9 +37,9 @@ class ProfileController extends BaseController
             $user->update($request->validated());
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    UserResource::make($user)
-                );
+                config('general.messages.request.success'),
+                UserResource::make($user)
+            );
         } catch (Exception $e) {
             return $this->error();
         }

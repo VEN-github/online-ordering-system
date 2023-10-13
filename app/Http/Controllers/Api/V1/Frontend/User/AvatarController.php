@@ -26,9 +26,9 @@ class AvatarController extends BaseController
                 ->toMediaCollection(User::AVATAR_MEDIA_ATTRIBUTE);
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    UserResource::make($user)
-                );
+                config('general.messages.request.success'),
+                UserResource::make($user)
+            );
         } catch (Exception $e) {
             return $this->error();
         }

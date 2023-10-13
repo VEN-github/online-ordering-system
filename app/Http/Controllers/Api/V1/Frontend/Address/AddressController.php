@@ -39,9 +39,9 @@ class AddressController extends BaseController
             $address = Address::create($data);
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    AddressResource::make($address)
-                );
+                config('general.messages.request.success'),
+                AddressResource::make($address)
+            );
         } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
@@ -56,9 +56,9 @@ class AddressController extends BaseController
             $address->update($data);
 
             return $this->success(
-                    config('general.messages.model.updated'),
-                    AddressResource::make($address)
-                );
+                config('general.messages.model.updated'),
+                AddressResource::make($address)
+            );
         } catch (Exception $e) {
             return $this->error();
         }
@@ -74,7 +74,7 @@ class AddressController extends BaseController
             }
 
             return $this->success(config('general.messages.model.deleted'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

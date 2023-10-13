@@ -68,7 +68,7 @@ class AuthController extends BaseController
                 'first_name' => $request->first_name,
                 'last_name' => $request->last_name,
                 'email' => $request->email,
-                'password' => Hash::make($request->password)
+                'password' => Hash::make($request->password),
             ]);
 
             if ( ! Auth::guard('web')->attempt([

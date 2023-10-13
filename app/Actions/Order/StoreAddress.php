@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Order;
 
 use App\Models\Order\Order;
@@ -22,7 +24,7 @@ class StoreAddress
                 'state' => $order->state,
                 'postal_code' => $order->postal_code,
                 'phone' => $order->phone,
-                'is_primary' => 0
+                'is_primary' => 0,
             ]);
         }
     }

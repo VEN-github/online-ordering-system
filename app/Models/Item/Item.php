@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Item;
 
 use App\Models\Item\Traits\ItemMethod;
@@ -15,6 +17,6 @@ class Item extends Model
         'order_id',
         'product_id',
         'quantity',
-        'total_price'
+        'total_price',
     ];
 }

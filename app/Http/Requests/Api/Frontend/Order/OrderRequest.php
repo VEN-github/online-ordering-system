@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Frontend\Order;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class OrderRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
     {
         return true;
@@ -39,7 +39,7 @@ class OrderRequest extends FormRequest
             'status' => ['required', 'string'],
             'shipping_method' => ['required', 'string'],
             'shipping_price' => ['required'],
-            'total_price' => ['required']
+            'total_price' => ['required'],
         ];
     }
 }
