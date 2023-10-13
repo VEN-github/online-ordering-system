@@ -1,10 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -19,7 +20,7 @@ class StoreImages
         $this->request = $request;
     }
 
-    public function handle (Model $model, string $collection): void
+    public function handle(Model $model, string $collection): void
     {
         $registeredMediaCollections = $model->getRegisteredMediaCollections();
 
@@ -35,7 +36,7 @@ class StoreImages
             }
         }
 
-        if (! $this->request->has($collection)) {
+        if ( ! $this->request->has($collection)) {
             return;
         }
 
@@ -44,7 +45,7 @@ class StoreImages
         if ($this->request->hasFile($collection)) {
             if (is_array($this->request->file($collection))) {
                 foreach ($this->request->file($collection) as $file) {
-                    $folder =  '/images';
+                    $folder = '/images';
                     $filename = uniqid() . '.jpg';
                     $storage = 'local';
                     $path = $file->storeAs('public' . $folder, $filename, $storage);
@@ -57,7 +58,7 @@ class StoreImages
                 }
             } else {
                 $file = $this->request->file($collection);
-                $folder =  '/images';
+                $folder = '/images';
                 $filename = uniqid() . '.jpg';
                 $storage = 'local';
                 $path = $file->storeAs('public' . $folder, $filename, $storage);

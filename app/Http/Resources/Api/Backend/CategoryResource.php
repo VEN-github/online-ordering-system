@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Api\Backend;
 
 use Illuminate\Http\Request;
@@ -17,7 +19,7 @@ class CategoryResource extends JsonResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'slug'=> $this->slug,
+            'slug' => $this->slug,
             'image' => $this->when(
                 $this->relationLoaded('image'),
                 function () {

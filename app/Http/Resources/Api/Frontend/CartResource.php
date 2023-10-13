@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Resources\Api\Frontend;
 
 use Illuminate\Http\Request;
@@ -16,7 +18,7 @@ class CartResource extends JsonResource
     {
         return [
             'user_id' => $this->user_id,
-            'products' => $this->whenLoaded('products')
+            'products' => $this->whenLoaded('products'),
         ];
     }
 }

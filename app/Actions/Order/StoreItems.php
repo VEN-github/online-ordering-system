@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Order;
 
 use App\Models\Item\Item;
 use App\Models\Order\Order;
-use App\Models\Product\Product;
-use Illuminate\Support\Facades\DB;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreItems

@@ -21,7 +21,7 @@ class AppServiceProvider extends ServiceProvider
     {
         Model::shouldBeStrict();
 
-        if (!$this->app->environment('local')) {
+        if ( ! $this->app->environment('local')) {
             URL::forceScheme('https');
         }
 

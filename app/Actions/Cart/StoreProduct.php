@@ -1,12 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Actions\Cart;
 
 use App\Models\Cart\Cart;
 use App\Models\Product\Product;
-use App\Models\User\User;
 use App\Models\Variation\Variation;
 use Lorisleiva\Actions\Concerns\AsAction;
+use Exception;
 
 class StoreProduct
 {
@@ -26,22 +28,22 @@ class StoreProduct
         if ($existingProduct) {
             return $cart->products()->updateExistingPivot($existingProduct->id, [
                 'quantity' => $existingProduct->pivot->quantity + $quantity,
-                'total' => $existingProduct->pivot->total + $existingProduct->orig_price
+                'total' => $existingProduct->pivot->total + $existingProduct->orig_price,
             ]);
         }
 
         if ($variationId) {
             $variation = Variation::find($variationId);
 
-            if (! $variation) {
-                throw new \Exception('Ooops! Product not found.');
+            if ( ! $variation) {
+                throw new Exception('Ooops! Product not found.');
             }
         }
 
         $cart->products()->attach($product, [
             'variation_id' => $variationId,
             'quantity' => $quantity,
-            'total' => $product->orig_price * $quantity
+            'total' => $product->orig_price * $quantity,
         ]);
     }
 }

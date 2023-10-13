@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Frontend\Address;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class AddressRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
     {
         return true;
@@ -32,7 +32,7 @@ class AddressRequest extends FormRequest
             'state' => ['required'],
             'postal_code' => ['required'],
             'phone' => ['required'],
-            'is_primary' => ['required', 'boolean']
+            'is_primary' => ['required', 'boolean'],
         ];
     }
 }

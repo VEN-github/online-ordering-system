@@ -1,14 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Requests\Api\Frontend\Cart;
 
 use Illuminate\Foundation\Http\FormRequest;
 
 class CartRequest extends FormRequest
 {
-    /**
-     * Determine if the user is authorized to make this request.
-     */
+    /** Determine if the user is authorized to make this request. */
     public function authorize(): bool
     {
         return true;
@@ -24,7 +24,7 @@ class CartRequest extends FormRequest
         return [
             'id' => ['required'],
             'variation_id' => ['nullable'],
-            'quantity' => ['required']
+            'quantity' => ['required'],
         ];
     }
 }

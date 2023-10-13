@@ -12,7 +12,6 @@ use App\Models\Product\Product;
 use App\Models\Supplier\Supplier;
 use App\Models\User\User;
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Artisan;
 
 class DatabaseTestSeeder extends Seeder
 {
@@ -46,12 +45,12 @@ class DatabaseTestSeeder extends Seeder
                 ->products()
                 ->attach(
                     [
-                        Product::get()->first()->id
+                        Product::get()->first()->id,
                     ],
                     [
                         'variation_id' => null,
                         'quantity' => fake()->numberBetween(1, 10),
-                        'total' => fake()->numberBetween(600, 1000)
+                        'total' => fake()->numberBetween(600, 1000),
                     ]
                 );
         }

@@ -18,9 +18,9 @@ class CategoryController extends BaseController
         try {
             $categories = CategoryResource::collection(
                 Category::query()
-                ->with('image')
-                ->latest()
-                ->get()
+                    ->with('image')
+                    ->latest()
+                    ->get()
             );
 
             return $this->success(

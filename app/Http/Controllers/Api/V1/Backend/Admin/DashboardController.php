@@ -1,18 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend\Admin;
 
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\Backend\DashboardProductResource;
-use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Item\Item;
 use App\Models\Order\Order;
 use App\Models\Product\Product;
 use App\Models\User\User;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Exception;
 
 class DashboardController extends BaseController
 {
@@ -44,7 +44,7 @@ class DashboardController extends BaseController
                         $sellingPrice = $item->product->selling_price;
                         $discountedPrice = $item->product->discounted_price;
 
-                        if (!is_null($discountedPrice)) {
+                        if ( ! is_null($discountedPrice)) {
                             $totalPrice = $origPrice - $discountedPrice;
                         } else {
                             $totalPrice = $origPrice - $sellingPrice;
@@ -104,7 +104,7 @@ class DashboardController extends BaseController
                     'top_selling_products' => $topSellingProducts,
                 ])
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e);
         }
     }

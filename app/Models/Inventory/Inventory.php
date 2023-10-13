@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Inventory;
 
 use App\Models\Inventory\Traits\InventoryMethod;
@@ -19,6 +21,6 @@ class Inventory extends Model
         'product_id',
         'variation_id',
         'added_stock',
-        'added_by'
+        'added_by',
     ];
 }

@@ -6,6 +6,6 @@ Route::middleware(['auth:api_admins'])
     ->namespace('Product')
     ->prefix('product/categories')
     ->name('product.categories.')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'CategoryController@index')->name('index');
     });

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Models\Address;
 
 use App\Models\Address\Traits\AddressMethod;
@@ -27,6 +29,6 @@ class Address extends Model
         'state',
         'postal_code',
         'phone',
-        'is_primary'
+        'is_primary',
     ];
 }

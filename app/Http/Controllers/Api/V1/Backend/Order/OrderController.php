@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Backend\Order;
 
 use App\Http\Controllers\Api\BaseController;
-use App\Http\Requests\Api\Frontend\Order\OrderRequest;
 use App\Http\Requests\Api\Frontend\Order\UpdateOrderStatusRequest;
 use App\Http\Resources\Api\Backend\OrderResource;
 use App\Models\Order\Order;
-use Illuminate\Http\Request;
+use Exception;
 
 class OrderController extends BaseController
 {
@@ -15,17 +16,17 @@ class OrderController extends BaseController
     {
         try {
             $orders = OrderResource::collection(
-                    Order::query()
-                        ->eagerLoadRelationships()
-                        ->latest()
-                        ->get()
-                );
+                Order::query()
+                    ->eagerLoadRelationships()
+                    ->latest()
+                    ->get()
+            );
 
             return $this->success(
-                    config('general.messages.request.success'),
-                    $orders->paginate($this->paginate)
-                );
-        } catch (\Exception $e) {
+                config('general.messages.request.success'),
+                $orders->paginate($this->paginate)
+            );
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
     }
@@ -48,7 +49,7 @@ class OrderController extends BaseController
                 config('general.messages.model.updated'),
                 OrderResource::make($order)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
     }

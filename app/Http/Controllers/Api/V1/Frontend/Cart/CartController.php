@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Http\Controllers\Api\V1\Frontend\Cart;
 
 use App\Actions\Cart\StoreProduct;
@@ -8,8 +10,7 @@ use App\Http\Requests\Api\Frontend\Cart\CartRequest;
 use App\Http\Resources\Api\Frontend\CartResource;
 use App\Models\Cart\Cart;
 use App\Models\Product\Product;
-use App\Models\Variation\Variation;
-use Illuminate\Http\Request;
+use Exception;
 
 class CartController extends BaseController
 {
@@ -32,7 +33,7 @@ class CartController extends BaseController
                 config('general.messages.request.success'),
                 CartResource::make($cart)
             );
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error($e->getMessage());
         }
     }
@@ -48,7 +49,7 @@ class CartController extends BaseController
                     CartResource::make($cart)
                 )
                 : $this->error(config('general.messages.model.not_found'));
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return $this->error();
         }
     }

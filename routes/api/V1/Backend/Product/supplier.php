@@ -6,6 +6,6 @@ Route::middleware(['auth:api_admins'])
     ->namespace('Product')
     ->prefix('product/suppliers')
     ->name('product.suppliers.')
-    ->group(function() {
+    ->group(function () {
         Route::get('/', 'SupplierController@index')->name('index');
     });
