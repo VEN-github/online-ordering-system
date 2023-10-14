@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Frontend\Cart;
 
-use App\Actions\Cart\StoreProductAction;
+use App\Actions\Cart\AddCartItemAction;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Frontend\Cart\CartRequest;
 use App\Http\Resources\Api\Frontend\CartResource;
@@ -24,7 +24,7 @@ class CartController extends BaseController
             $variation = Variation::find($request->input('variation_id', null));
 
             /** @var \App\Models\Cart\Cart $cart */
-            $cart = StoreProductAction::run(
+            $cart = AddCartItemAction::run(
                 $product,
                 $variation,
                 $request->input('quantity', 1)
