@@ -32,13 +32,13 @@ class AddCartItemAction
             ->first();
 
         /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $CartItemData */
-        $CartItemData = GetItemQuantityAndTotalPriceAction::run(
+        $cartItemData = GetItemQuantityAndTotalPriceAction::run(
             $cartItem ?? $product,
             $quantity
         );
 
         if (filled($cartItem)) {
-            $cartItem->update($CartItemData->toArray());
+            $cartItem->update($cartItemData->toArray());
 
             return $cart;
         }
@@ -49,8 +49,8 @@ class AddCartItemAction
                 variation_id: filled($variation)
                     ? $variation->id
                     : null,
-                quantity: $CartItemData->quantity,
-                total: $CartItemData->total
+                quantity: $cartItemData->quantity,
+                total: $cartItemData->total
             ))->toArray()
         );
 
