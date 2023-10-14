@@ -26,11 +26,7 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasMedia
     public const ACCESS_TOKEN = 'api-user';
     public const AVATAR_MEDIA_ATTRIBUTE = 'avatar';
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     protected $fillable = [
         'first_name',
         'last_name',
@@ -38,21 +34,13 @@ class User extends Authenticatable implements CipherSweetEncrypted, HasMedia
         'password',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var array<int, string>
-     */
+    /** @var array<int, string> */
     protected $hidden = [
         'password',
         'remember_token',
     ];
 
-    /**
-     * The attributes that should be cast.
-     *
-     * @var array<string, string>
-     */
+    /** @var array<string, string> */
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Cart;
 
-use App\Actions\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData;
+use App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData;
 use App\Models\Cart\CartProduct;
 use App\Models\Product\Product;
 use Lorisleiva\Actions\Concerns\AsAction;
