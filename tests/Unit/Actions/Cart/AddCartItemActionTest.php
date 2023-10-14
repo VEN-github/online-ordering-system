@@ -49,11 +49,51 @@ it('can update an item', function () {
                 variation_id: null,
                 quantity: $quantity,
                 total: $productOrigPrice * $quantity
-            ))
-                ->toArray()
+            ))->toArray()
         );
 
     $cart = AddCartItemAction::run($this->product);
+
+    assertInstanceOf(Cart::class, $cart);
+
+    $items = $cart->products;
+
+    expect($items->count())->toBe(1);
+
+    $totalQuantity = $quantity + 1;
+
+    expect($items->first()->quantity)->toBe($totalQuantity);
+
+    expect($items->first()->total)->toBe($productOrigPrice * $totalQuantity);
+});
+
+it('can update an item with variation', function () {
+    $this->product = ProductFactory::new()
+        ->has(VariationFactory::new())
+        ->createOne();
+
+    $variation = $this->product->variations->first();
+
+    $quantity = 5;
+
+    $productOrigPrice = (int) $this->product->orig_price;
+
+    auth()->user()
+        ->cart
+        ->products()
+        ->create(
+            (new CartProductData(
+                product_id: $this->product->id,
+                variation_id: $variation->id,
+                quantity: $quantity,
+                total: $productOrigPrice * $quantity
+            ))->toArray()
+        );
+
+    $cart = AddCartItemAction::run(
+        $this->product,
+        $variation
+    );
 
     assertInstanceOf(Cart::class, $cart);
 
