@@ -45,12 +45,12 @@ class AddCartItemAction
 
         $cart->items()->create(
             (new CartItemData(
-                item_id: $product->id,
-                variation_id: filled($variation)
+                $product->id,
+                filled($variation)
                     ? $variation->id
                     : null,
-                quantity: $cartItemData->quantity,
-                total: $cartItemData->total
+                $cartItemData->quantity,
+                $cartItemData->total
             ))->toArray()
         );
 
