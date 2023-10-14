@@ -23,13 +23,13 @@ beforeEach(function () {
     $this->product = ProductFactory::new()->createOne();
 });
 
-it('can store', function () {
+it('can add', function () {
     $cart = AddCartItemAction::run($this->product, VariationFactory::new()->createOne());
 
     assertInstanceOf(Cart::class, $cart);
 });
 
-it('can store non-variant', function () {
+it('can add non-variant', function () {
     $cart = AddCartItemAction::run($this->product);
 
     assertInstanceOf(Cart::class, $cart);
