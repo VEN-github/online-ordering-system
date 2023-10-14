@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 /**
  * App\Models\Cart\CartProduct
- * 
+ *
  * @property int $cart_id
  * @property int $product_id
  * @property int $variation_id

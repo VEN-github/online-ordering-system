@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Api\V1\Frontend\Cart;
 
-use App\Actions\Cart\StoreProduct;
+use App\Actions\Cart\StoreProductAction;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Requests\Api\Frontend\Cart\CartRequest;
 use App\Http\Resources\Api\Frontend\CartResource;
-use App\Models\Cart\Cart;
 use App\Models\Product\Product;
 use App\Models\Variation\Variation;
 use Exception;
@@ -27,7 +26,7 @@ class CartController extends BaseController
             /** @var \App\Models\Variantion\Variantion|null $variation */
             $variation = Variation::find($request->input('variation_id', null));
 
-            StoreProduct::run(
+            StoreProductAction::run(
                 $cart,
                 $product,
                 $variation,
@@ -36,7 +35,7 @@ class CartController extends BaseController
 
             $cart = $cart->loadMissing([
                 'user',
-                'products'
+                'products',
             ]);
 
             return $this->success(
