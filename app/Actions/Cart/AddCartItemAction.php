@@ -10,7 +10,7 @@ use App\Models\Product\Product;
 use App\Models\Variation\Variation;
 use Lorisleiva\Actions\Concerns\AsAction;
 
-class StoreProductAction
+class AddCartItemAction
 {
     use AsAction;
 
@@ -51,8 +51,7 @@ class StoreProductAction
                     : null,
                 quantity: $cartProductData->quantity,
                 total: $cartProductData->total
-            ))
-                ->toArray()
+            ))->toArray()
         );
 
         return $cart;

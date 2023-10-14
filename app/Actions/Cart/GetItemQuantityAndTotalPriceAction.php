@@ -19,7 +19,7 @@ class GetItemQuantityAndTotalPriceAction
             $total = (int) $item->orig_price * $quantity;
         } else {
             $quantity = (int) $item->quantity + $quantity;
-            $total = (int) $item->total + ((int) $item->product->orig_price * $quantity);
+            $total = (int) $item->total + (int) $item->product->orig_price;
         }
 
         return new GetItemQuantityAndTotalPriceData(
