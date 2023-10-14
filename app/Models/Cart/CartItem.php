@@ -21,11 +21,11 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  * @property-read \App\Models\Product\Product|null $product
  * @property-read \App\Models\Variation\Variation|null $variation
  */
-class CartProduct extends Model
+class CartItem extends Model
 {
     protected $fillable = [
         'cart_id',
-        'product_id',
+        'item_id',
         'variation_id',
         'quantity',
         'total',
@@ -38,7 +38,7 @@ class CartProduct extends Model
 
     public function product(): BelongsTo
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class, 'item_id', 'id');
     }
 
     public function variation(): BelongsTo

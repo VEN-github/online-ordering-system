@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Actions\Cart;
 
 use App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData;
-use App\Models\Cart\CartProduct;
+use App\Models\Cart\CartItem;
 use App\Models\Product\Product;
 use Lorisleiva\Actions\Concerns\AsAction;
 
@@ -13,7 +13,7 @@ class GetItemQuantityAndTotalPriceAction
 {
     use AsAction;
 
-    public function handle(Product|CartProduct $item, int $quantity): GetItemQuantityAndTotalPriceData
+    public function handle(Product|CartItem $item, int $quantity): GetItemQuantityAndTotalPriceData
     {
         if ($item instanceof Product) {
             $total = (int) $item->orig_price * $quantity;

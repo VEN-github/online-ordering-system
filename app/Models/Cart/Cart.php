@@ -17,7 +17,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
  *
  * @property int $user_id
  * @property-read \App\Models\User\User|null $user
- * @property-read \Illuminate\Database\Eloquent\Collection<int, CartProduct> $products
+ * @property-read \Illuminate\Database\Eloquent\Collection<int, CartItem> $items
  */
 class Cart extends Model
 {
@@ -37,8 +37,8 @@ class Cart extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function products(): HasMany
+    public function items(): HasMany
     {
-        return $this->hasMany(CartProduct::class);
+        return $this->hasMany(CartItem::class);
     }
 }
