@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Cart;
 
-use App\DataTransferObjects\Cart\CartProductData;
+use App\DataTransferObjects\Cart\CartItemData;
 use App\Models\Cart\Cart;
 use App\Models\Product\Product;
 use App\Models\Variation\Variation;
@@ -22,35 +22,35 @@ class AddCartItemAction
         /** @var \App\Models\Cart\Cart $cart */
         $cart = auth()->user()->cart;
 
-        /** @var \App\Models\Cart\CartProduct|null $existingProduct */
-        $existingProduct = $cart->products()
-            ->where('product_id', $product->id)
+        /** @var \App\Models\Cart\CartItem|null $cartItem */
+        $cartItem = $cart->items()
+            ->where('item_id', $product->id)
             ->when(
                 filled($variation),
                 fn ($query) => $query->where('variation_id', $variation->id)
             )
             ->first();
 
-        /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $cartProductData */
-        $cartProductData = GetItemQuantityAndTotalPriceAction::run(
-            $existingProduct ?? $product,
+        /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $CartItemData */
+        $CartItemData = GetItemQuantityAndTotalPriceAction::run(
+            $cartItem ?? $product,
             $quantity
         );
 
-        if (filled($existingProduct)) {
-            $existingProduct->update($cartProductData->toArray());
+        if (filled($cartItem)) {
+            $cartItem->update($CartItemData->toArray());
 
             return $cart;
         }
 
-        $cart->products()->create(
-            (new CartProductData(
-                product_id: $product->id,
+        $cart->items()->create(
+            (new CartItemData(
+                item_id: $product->id,
                 variation_id: filled($variation)
                     ? $variation->id
                     : null,
-                quantity: $cartProductData->quantity,
-                total: $cartProductData->total
+                quantity: $CartItemData->quantity,
+                total: $CartItemData->total
             ))->toArray()
         );
 

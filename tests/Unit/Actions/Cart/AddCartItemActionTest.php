@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use App\Actions\Cart\AddCartItemAction;
-use App\DataTransferObjects\Cart\CartProductData;
+use App\DataTransferObjects\Cart\CartItemData;
 use App\Models\Cart\Cart;
 use Database\Factories\CartFactory;
 use Database\Factories\ProductFactory;
@@ -42,10 +42,10 @@ it('can update an item', function () {
 
     auth()->user()
         ->cart
-        ->products()
+        ->items()
         ->create(
-            (new CartProductData(
-                product_id: $this->product->id,
+            (new CartItemData(
+                item_id: $this->product->id,
                 variation_id: null,
                 quantity: $quantity,
                 total: $productOrigPrice * $quantity
@@ -56,7 +56,7 @@ it('can update an item', function () {
 
     assertInstanceOf(Cart::class, $cart);
 
-    $items = $cart->products;
+    $items = $cart->items;
 
     expect($items->count())->toBe(1);
 
@@ -80,10 +80,10 @@ it('can update an item with variation', function () {
 
     auth()->user()
         ->cart
-        ->products()
+        ->items()
         ->create(
-            (new CartProductData(
-                product_id: $this->product->id,
+            (new CartItemData(
+                item_id: $this->product->id,
                 variation_id: $variation->id,
                 quantity: $quantity,
                 total: $productOrigPrice * $quantity
@@ -97,7 +97,7 @@ it('can update an item with variation', function () {
 
     assertInstanceOf(Cart::class, $cart);
 
-    $items = $cart->products;
+    $items = $cart->items;
 
     expect($items->count())->toBe(1);
 

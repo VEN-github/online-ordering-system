@@ -13,10 +13,10 @@ return new class () extends Migration {
     /** Run the migrations. */
     public function up(): void
     {
-        Schema::create('cart_products', function (Blueprint $table) {
+        Schema::create('cart_items', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Cart::class);
-            $table->foreignIdFor(Product::class);
+            $table->foreignIdFor(Product::class, 'item_id');
             $table->foreignIdFor(Variation::class)->nullable();
 
             $table->unsignedBigInteger('quantity');
@@ -29,6 +29,6 @@ return new class () extends Migration {
     /** Reverse the migrations. */
     public function down(): void
     {
-        Schema::dropIfExists('cart_products');
+        Schema::dropIfExists('cart_items');
     }
 };
