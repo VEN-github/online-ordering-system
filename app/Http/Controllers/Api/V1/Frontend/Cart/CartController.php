@@ -30,6 +30,7 @@ class CartController extends BaseController
                 $request->input('quantity', 1)
             );
 
+            /** TODO: switch params places */
             return $this->success(
                 config('general.messages.request.success'),
                 CartResource::make(
