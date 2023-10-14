@@ -36,7 +36,7 @@ class CartController extends BaseController
                 CartResource::make(
                     $cart->loadMissing([
                         'user',
-                        'products'
+                        'products',
                     ])
                 )
             );

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Cart;
 
+use App\DataTransferObjects\Cart\CartProductData;
 use App\Models\Cart\Cart;
 use App\Models\Product\Product;
 use App\Models\Variation\Variation;
@@ -17,8 +18,7 @@ class StoreProductAction
         Product $product,
         ?Variation $variation = null,
         int $quantity = 1,
-    ): Cart
-    {
+    ): Cart {
         /** @var \App\Models\Cart\Cart $cart */
         $cart = auth()->user()->cart;
 
@@ -31,20 +31,29 @@ class StoreProductAction
             )
             ->first();
 
-        /** @var array<string, int> $cartProductData */
+        /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $cartProductData */
         $cartProductData = GetItemQuantityAndTotalPriceAction::run(
-                $existingProduct ?? $product,
-                $quantity
-            )
-            ->toArray();
+            $existingProduct ?? $product,
+            $quantity
+        );
 
-        if ($existingProduct) {
-            $existingProduct->update($cartProductData);
-        } else {
-            $cart->products()->create(
-                array_merge(['variation_id' => $variation->id], $cartProductData)
-            );
+        if (filled($existingProduct)) {
+            $existingProduct->update($cartProductData->toArray());
+
+            return $cart;
         }
+
+        $cart->products()->create(
+            (new CartProductData(
+                product_id: $product->id,
+                variation_id: filled($variation)
+                    ? $variation->id
+                    : null,
+                quantity: $cartProductData->quantity,
+                total: $cartProductData->total
+            ))
+                ->toArray()
+        );
 
         return $cart;
     }

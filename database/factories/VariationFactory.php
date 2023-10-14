@@ -14,20 +14,10 @@ class VariationFactory extends Factory
 {
     protected $model = Variation::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function definition(): array
     {
         return [
-            'name' => $this->faker->name,
-            'slug' => $this->faker->slug,
-            'options' => [
-                'option_1' => $this->faker->name,
-                'option_2' => $this->faker->name,
-            ],
             'stock' => $this->faker->numberBetween(1, 100),
             'sku' => $this->faker->slug,
             'order' => $this->faker->numberBetween(1, 100),
