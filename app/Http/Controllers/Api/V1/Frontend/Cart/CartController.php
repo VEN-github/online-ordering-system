@@ -17,30 +17,27 @@ class CartController extends BaseController
     public function store(CartRequest $request)
     {
         try {
-            /** @var \App\Models\Cart\Cart $cart */
-            $cart = auth()->user()->cart;
-
             /** @var \App\Models\Product\Product $product */
             $product = Product::findOrFail($request->input('id'));
 
             /** @var \App\Models\Variantion\Variantion|null $variation */
             $variation = Variation::find($request->input('variation_id', null));
 
-            StoreProductAction::run(
-                $cart,
+            /** @var \App\Models\Cart\Cart $cart */
+            $cart = StoreProductAction::run(
                 $product,
                 $variation,
                 $request->input('quantity', 1)
             );
 
-            $cart = $cart->loadMissing([
-                'user',
-                'products',
-            ]);
-
             return $this->success(
                 config('general.messages.request.success'),
-                CartResource::make($cart)
+                CartResource::make(
+                    $cart->loadMissing([
+                        'user',
+                        'products'
+                    ])
+                )
             );
         } catch (Exception $e) {
             return $this->error();
