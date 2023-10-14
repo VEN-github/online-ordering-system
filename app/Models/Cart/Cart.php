@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 /**
  * App\Models\Cart\Cart
- * 
+ *
  * @property int $user_id
  * @property-read \App\Models\User\User|null $user
  * @property-read \Illuminate\Database\Eloquent\Collection<int, CartProduct> $products

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Api\Frontend\Cart;
 
+use App\Rules\CheckVariationExistsRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class CartRequest extends FormRequest
@@ -13,8 +14,8 @@ class CartRequest extends FormRequest
     {
         return [
             'id' => 'required',
-            'variation_id' => 'nullable',
-            'quantity' => 'required',
+            'variation_id' => ['nullable', new CheckVariationExistsRule()],
+            'quantity' => ['required', 'numeric'],
         ];
     }
 }
