@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace App\Models\Product\Traits;
 
-use App\Models\Cart\Cart;
 use App\Models\Category\Category;
 use App\Models\Supplier\Supplier;
 use App\Models\Variation\Variation;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Spatie\MediaLibrary\MediaCollections\Models\Media;
 

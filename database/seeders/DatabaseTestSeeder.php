@@ -45,7 +45,7 @@ class DatabaseTestSeeder extends Seeder
                 ->items()
                 ->create(
                     [
-                        'item_id' =>Product::get()->first()->id,
+                        'item_id' => Product::get()->first()->id,
                         'variation_id' => null,
                         'quantity' => fake()->numberBetween(1, 10),
                         'total' => fake()->numberBetween(600, 1000),
