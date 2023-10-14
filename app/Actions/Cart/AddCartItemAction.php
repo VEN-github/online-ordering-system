@@ -31,7 +31,7 @@ class AddCartItemAction
             )
             ->first();
 
-        /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $CartItemData */
+        /** @var \App\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData $cartItemData */
         $cartItemData = GetItemQuantityAndTotalPriceAction::run(
             $cartItem ?? $product,
             $quantity
