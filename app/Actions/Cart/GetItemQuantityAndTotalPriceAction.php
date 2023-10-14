@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Actions\Cart;
 
+use App\Actions\DataTransferObjects\Cart\GetItemQuantityAndTotalPriceData;
 use App\Models\Cart\CartProduct;
 use App\Models\Product\Product;
 use Lorisleiva\Actions\Concerns\AsAction;
@@ -18,7 +19,7 @@ class GetItemQuantityAndTotalPriceAction
             $total = (int) $item->orig_price * $quantity;
         } else {
             $quantity = (int) $item->quantity + $quantity;
-            $total = (int) $item->total + ((int) $item->orig_price * $quantity);
+            $total = (int) $item->total + ((int) $item->product->orig_price * $quantity);
         }
 
         return new GetItemQuantityAndTotalPriceData(

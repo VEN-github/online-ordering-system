@@ -23,7 +23,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
  */
 class CartProduct extends Model
 {
-    protected array $fillable = [
+    protected $fillable = [
         'cart_id',
         'product_id',
         'variation_id',

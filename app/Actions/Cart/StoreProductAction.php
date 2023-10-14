@@ -18,7 +18,8 @@ class StoreProductAction
         Product $product,
         ?Variation $variation = null,
         int $quantity = 1,
-    ): mixed {
+    ): mixed
+    {
         $existingProduct = $cart->products()
             ->where('product_id', $product->id)
             ->when(
@@ -28,17 +29,16 @@ class StoreProductAction
             ->first();
 
         $cartProductData = GetItemQuantityAndTotalPriceAction::run(
-            $existingProduct ?? $product,
-            $quantity
-        )
+                $existingProduct ?? $product,
+                $quantity
+            )
             ->toArray();
 
         if ($existingProduct) {
             return $existingProduct->update($cartProductData);
         }
 
-        $cart->products()->attach(
-            $product,
+        return $cart->products()->create(
             array_merge(['variation_id' => $variation->id], $cartProductData)
         );
     }
