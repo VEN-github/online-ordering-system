@@ -13,18 +13,13 @@ use App\Models\Order\Order;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
- */
+/** @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model> */
 class OrderFactory extends Factory
 {
+    /** @property string $model*/
     protected $model = Order::class;
 
-    /**
-     * Define the model's default state.
-     *
-     * @return array<string, mixed>
-     */
+    /** @return array<string, mixed> */
     public function definition(): array
     {
         return [
@@ -49,5 +44,10 @@ class OrderFactory extends Factory
             'shipping_price' => fake()->numberBetween(1, 1000),
             'total_price' => fake()->numberBetween(1, 1000),
         ];
+    }
+
+    public function saveAddress(): self
+    {
+        return $this->state(['is_saved' => true]);
     }
 }

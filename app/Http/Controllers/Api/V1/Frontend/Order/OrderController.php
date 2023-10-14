@@ -54,7 +54,6 @@ class OrderController extends BaseController
             $order = Order::create($data);
 
             StoreAddress::run(
-                auth()->user(),
                 $order
             );
 
