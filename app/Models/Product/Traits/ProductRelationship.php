@@ -15,11 +15,6 @@ use Spatie\MediaLibrary\MediaCollections\Models\Media;
 
 trait ProductRelationship
 {
-    public function carts(): BelongsToMany
-    {
-        return $this->belongsToMany(Cart::class);
-    }
-
     public function category(): BelongsTo
     {
         return $this->belongsTo(Category::class);
