@@ -23,8 +23,8 @@ class GetItemQuantityAndTotalPriceAction
         }
 
         return new GetItemQuantityAndTotalPriceData(
-            quantity: $quantity,
-            total: $total
+            $quantity,
+            $total
         );
     }
 }
