@@ -21,6 +21,12 @@
     @on-close="showUpdateForm = false"
     @on-success="onSuccess"
   />
+  <OrderPreview
+    :is-show="showOrderPreview"
+    :order="models"
+    size="7xl"
+    @on-close="showOrderPreview = false"
+  />
 </template>
 
 <script setup>
@@ -29,11 +35,13 @@ import { useAuthStore } from '@/store/auth/auth'
 
 import DataTable from '@/components/UI/table/DataTable.vue'
 import UpdateForm from '@/components/orders/UpdateForm.vue'
+import OrderPreview from '@/components/orders/OrderPreview.vue'
 
 const authStore = useAuthStore()
 const table = ref(null)
 const models = ref(null)
 const showUpdateForm = ref(false)
+const showOrderPreview = ref(false)
 
 const token = computed(() => {
   return authStore.getAccessToken
@@ -106,6 +114,7 @@ const config = computed(() => {
           cell.onclick = (event) => {
             if (event.target.classList.contains('view')) {
               models.value = rowData
+              showOrderPreview.value = true
               return
             }
             if (event.target.classList.contains('update')) {
