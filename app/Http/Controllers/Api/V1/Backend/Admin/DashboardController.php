@@ -25,7 +25,6 @@ class DashboardController extends BaseController
             $orders = Order::query()
                 ->whereStatus(OrderStatus::COMPLETED)
                 ->whereYear('created_at', $year)
-                ->whereMonth('created_at', $month)
                 ->get()
                 ->map(function (Order $order) {
                     $order['date'] = now()->parse($order->created_at)
@@ -45,7 +44,7 @@ class DashboardController extends BaseController
             $items = [];
 
             foreach ($orders as $key => $value) {
-                array_unshift($items, $value);
+                array_push($items, $value);
             }
 
             $numberOfTotalIncomeCurrentMonth = Order::query()
@@ -96,13 +95,16 @@ class DashboardController extends BaseController
 
             $salesOverview = Order::query()
                 ->whereStatus(OrderStatus::COMPLETED)
-                ->select(
-                    DB::raw('COALESCE(SUM(total_price / 100), 0) as total_sales'),
-                    DB::raw('MONTH(created_at) as month')
-                )
                 ->whereYear('created_at', $year)
-                ->groupBy(DB::raw('MONTH(created_at)'))
-                ->pluck('total_sales', 'month')
+                ->get()
+                ->map(function (Order $order) {
+                    $order['date'] = now()->parse($order->created_at)
+                        ->format('m');
+
+                    return $order;
+                })
+                ->groupBy('date')
+                ->map(fn ($orders) => $orders->sum('total_price') / 100)
                 ->toArray();
 
             $salesOverview = array_map(function ($month) use ($salesOverview) {
