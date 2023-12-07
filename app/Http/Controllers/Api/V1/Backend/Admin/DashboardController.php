@@ -105,7 +105,7 @@ class DashboardController extends BaseController
                 ])
             );
         } catch (Exception $e) {
-            return $this->error($e);
+            return $this->error($e->getMessage());
         }
     }
 }
