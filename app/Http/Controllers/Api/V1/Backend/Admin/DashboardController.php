@@ -22,32 +22,30 @@ class DashboardController extends BaseController
         $year = now()->year;
 
         try {
-            $numberOfTotalSalesPerMonth = [];
+            $orders = Order::query()
+                ->whereStatus(OrderStatus::COMPLETED)
+                ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
+                ->get()
+                ->map(function (Order $order) {
+                    $order['date'] = now()->parse($order->created_at)
+                        ->format('Y-m');
 
-            if (config('database.default') === 'mysql') {
-                $numberOfTotalSalesPerMonth = Order::query()
-                    ->select(
-                        DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-                        DB::raw('CAST(SUM(total_price / 100) AS SIGNED) as total_sales')
-                    )
-                    ->whereStatus(OrderStatus::COMPLETED)
-                    ->whereYear('created_at', $year)
-                    ->groupBy('month')
-                    ->get()
-                    ->toArray();
-            }
+                    return $order;
+                })
+                ->groupBy('date')
+                ->map(function ($orders, $key) {
+                    $item['month'] = $key;
+                    $item['total_sales'] = $orders->sum('total_price') / 100;
 
-            if (config('database.default') === 'pgsql') {
-                $numberOfTotalSalesPerMonth = Order::query()
-                    ->select(
-                        DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as month'),
-                        DB::raw('SUM(total_price / 100) as total_sales')
-                    )
-                    ->whereStatus(OrderStatus::COMPLETED)
-                    ->whereYear('created_at', $year)
-                    ->groupBy('month')
-                    ->get()
-                    ->toArray();
+                    return $item;
+                })
+                ->toArray();
+
+            $items = [];
+
+            foreach ($orders as $key => $value) {
+                array_unshift($items, $value);
             }
 
             $numberOfTotalIncomeCurrentMonth = Order::query()
@@ -70,7 +68,8 @@ class DashboardController extends BaseController
 
                         return abs($totalPrice);
                     });
-                });
+                })
+                ->sum();
             $numberOfPendingOrders = Order::whereStatus(OrderStatus::PENDING)->count();
             $numberOfRegisteredUsers = User::count();
             $topSellingProducts = Item::query()
@@ -113,7 +112,7 @@ class DashboardController extends BaseController
             return $this->success(
                 config('general.messages.request.success'),
                 collect([
-                    'total_sales_per_month' => $numberOfTotalSalesPerMonth,
+                    'total_sales_per_month' => $items,
                     'total_income_current_month' => $numberOfTotalIncomeCurrentMonth,
                     'total_pending_orders' => $numberOfPendingOrders,
                     'total_registered_users' => $numberOfRegisteredUsers,
