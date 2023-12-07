@@ -29,7 +29,7 @@ class DashboardController extends BaseController
                 )
                 ->whereStatus(OrderStatus::COMPLETED)
                 ->whereYear('created_at', $year)
-                ->groupBy(DB::raw('DATE_FORMAT(created_at, "%Y-%m")'))
+                ->groupBy('month')
                 ->get()
                 ->toArray();
             $numberOfTotalIncomeCurrentMonth = Order::query()
