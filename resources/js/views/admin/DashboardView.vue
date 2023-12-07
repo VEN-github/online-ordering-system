@@ -150,6 +150,8 @@ const config = computed(() => {
     searching: false,
     serverSide: true,
     processing: true,
+    paging: false,
+    info: false,
     ajax: {
       url: '/api/admin/dashboard',
       headers: {
@@ -164,11 +166,7 @@ const config = computed(() => {
 
         return JSON.stringify(json)
       },
-      data: function (d) {
-        d.page = Math.ceil((d.start + 1) / d.length)
-        d.per_page = d.length
-      },
-      dataSrc: 'data.data.top_selling_products'
+      dataSrc: 'data.top_selling_products'
     },
     columns: [{ data: 'name' }, { data: 'price' }]
   }
