@@ -6,13 +6,7 @@ module.exports = {
   env: {
     node: true
   },
-  extends: [
-    'plugin:vue/vue3-essential',
-    'plugin:vue/vue3-strongly-recommended',
-    'plugin:vue/vue3-recommended',
-    'eslint:recommended',
-    '@vue/eslint-config-prettier'
-  ],
+  extends: ['plugin:vue/vue3-recommended', 'eslint:recommended', '@vue/eslint-config-prettier'],
   parserOptions: {
     ecmaVersion: 'latest'
   },
@@ -77,7 +71,7 @@ module.exports = {
           normal: 'never',
           component: 'always'
         },
-        svg: 'always',
+        svg: 'any',
         math: 'always'
       }
     ],
@@ -121,7 +115,7 @@ module.exports = {
       'PascalCase',
       {
         registeredComponentsOnly: false,
-        ignores: []
+        ignores: ['apexchart']
       }
     ],
     'vue/custom-event-name-casing': [

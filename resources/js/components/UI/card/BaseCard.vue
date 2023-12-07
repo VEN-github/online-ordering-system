@@ -13,7 +13,7 @@ defineProps({
     default() {
       return 'md'
     },
-    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '7xl'].includes(value)
+    validator: (value) => ['xs', 'sm', 'md', 'lg', 'xl', '2xl', '7xl', 'full'].includes(value)
   }
 })
 </script>
