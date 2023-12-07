@@ -261,7 +261,7 @@ class CountrySeeder extends Seeder
         ];
 
         foreach ($countries as $country) {
-            Country::firstOrCreate($country);
+            Country::query()->create($country);
         }
     }
 }
