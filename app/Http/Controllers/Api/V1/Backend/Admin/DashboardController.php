@@ -25,7 +25,7 @@ class DashboardController extends BaseController
             $numberOfTotalSalesPerMonth = Order::query()
                 ->select(
                     DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-                    DB::raw('CAST(SUM(total_price) AS SIGNED) as total_sales')
+                    DB::raw('CAST(SUM(total_price / 100) AS SIGNED) as total_sales')
                 )
                 ->whereStatus(OrderStatus::COMPLETED)
                 ->whereYear('created_at', $year)
@@ -81,7 +81,7 @@ class DashboardController extends BaseController
             $salesOverview = Order::query()
                 ->whereStatus(OrderStatus::COMPLETED)
                 ->select(
-                    DB::raw('COALESCE(SUM(total_price), 0) as total_sales'),
+                    DB::raw('COALESCE(SUM(total_price / 100), 0) as total_sales'),
                     DB::raw('MONTH(created_at) as month')
                 )
                 ->whereYear('created_at', $year)
