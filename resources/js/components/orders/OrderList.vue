@@ -51,7 +51,7 @@
 
 <script setup>
 import { computed } from 'vue'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 
 import OrderProduct from './OrderProduct.vue'
 import BaseButton from '@/components/UI/button/BaseButton.vue'

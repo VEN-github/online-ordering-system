@@ -36,7 +36,7 @@
 import { ref, computed, onMounted } from 'vue'
 import { useAuthStore } from '@/store/auth/auth'
 import { useInventoryStore } from '@/store/inventory/inventory'
-import * as dayjs from 'dayjs'
+import dayjs from 'dayjs'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
 
