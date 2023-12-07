@@ -8,6 +8,7 @@
         <tr>
           <th>Order No.</th>
           <th>Name</th>
+          <th>Total Price</th>
           <th>Payment Status</th>
           <th>Order Status</th>
           <th>Actions</th>
@@ -82,7 +83,7 @@ const config = computed(() => {
         }
       },
       {
-        target: 2,
+        target: 3,
         createdCell: function (cell, _, rowData) {
           cell.innerHTML = `
             <p class="capitalize w-fit rounded py-0.5 px-2" style="background-color: ${checkStatusColor(
@@ -92,7 +93,7 @@ const config = computed(() => {
         }
       },
       {
-        target: 3,
+        target: 4,
         createdCell: function (cell, _, rowData) {
           cell.innerHTML = `
             <p class="capitalize w-fit rounded py-0.5 px-2" style="background-color: ${checkStatusColor(
@@ -102,7 +103,7 @@ const config = computed(() => {
         }
       },
       {
-        target: 4,
+        target: 5,
         createdCell: function (cell, _, rowData) {
           cell.innerHTML = `
             <div class="flex">
@@ -129,6 +130,7 @@ const config = computed(() => {
     columns: [
       { data: 'ref_id' },
       { data: 'first_name' },
+      { data: 'total_price' },
       { data: 'payment_status' },
       { data: 'status' },
       { data: null }
