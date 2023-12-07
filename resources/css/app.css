@@ -3,3 +3,4 @@
 @import './components/components.css';
 @import 'tailwindcss/utilities';
 @import './transition.css';
+@import './scrollbar.css';

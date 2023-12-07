@@ -45,6 +45,13 @@ export const useOrderStore = defineStore('order', {
       } catch ({ response }) {
         handleError(response)
       }
+    },
+    async updateOrder({ ref_id, status }) {
+      try {
+        await api.patch(`/api/admin/orders/${ref_id}`, status)
+      } catch ({ response }) {
+        handleError(response)
+      }
     }
   },
   persist: {
