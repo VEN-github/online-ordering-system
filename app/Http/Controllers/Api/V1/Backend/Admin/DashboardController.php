@@ -22,16 +22,34 @@ class DashboardController extends BaseController
         $year = now()->year;
 
         try {
-            $numberOfTotalSalesPerMonth = Order::query()
-                ->select(
-                    DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
-                    DB::raw('CAST(SUM(total_price / 100) AS SIGNED) as total_sales')
-                )
-                ->whereStatus(OrderStatus::COMPLETED)
-                ->whereYear('created_at', $year)
-                ->groupBy('month')
-                ->get()
-                ->toArray();
+            $numberOfTotalSalesPerMonth = [];
+
+            if (config('database.default') === 'mysql') {
+                $numberOfTotalSalesPerMonth = Order::query()
+                    ->select(
+                        DB::raw('DATE_FORMAT(created_at, "%Y-%m") as month'),
+                        DB::raw('CAST(SUM(total_price / 100) AS SIGNED) as total_sales')
+                    )
+                    ->whereStatus(OrderStatus::COMPLETED)
+                    ->whereYear('created_at', $year)
+                    ->groupBy('month')
+                    ->get()
+                    ->toArray();
+            }
+
+            if (config('database.default') === 'pgsql') {
+                $numberOfTotalSalesPerMonth = Order::query()
+                    ->select(
+                        DB::raw('TO_CHAR(created_at, \'YYYY-MM\') as month'),
+                        DB::raw('CAST(SUM(total_price / 100) AS SIGNED) as total_sales')
+                    )
+                    ->whereStatus(OrderStatus::COMPLETED)
+                    ->whereYear('created_at', $year)
+                    ->groupBy(DB::raw('TO_CHAR(created_at, \'YYYY-MM\')'))
+                    ->get()
+                    ->toArray();
+            }
+
             $numberOfTotalIncomeCurrentMonth = Order::query()
                 ->whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
@@ -52,8 +70,7 @@ class DashboardController extends BaseController
 
                         return abs($totalPrice);
                     });
-                })
-                ->sum();
+                });
             $numberOfPendingOrders = Order::whereStatus(OrderStatus::PENDING)->count();
             $numberOfRegisteredUsers = User::count();
             $topSellingProducts = Item::query()
