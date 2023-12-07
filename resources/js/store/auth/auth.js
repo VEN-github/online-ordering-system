@@ -10,7 +10,7 @@ export const useAuthStore = defineStore('auth', {
       accessToken: null,
       loggedUser: null,
       userToken: null,
-      ENCRYPTION_KEY: import.meta.env.VITE_ENCRYPTION_KEY
+      ENCRYPTION_KEY: '12345678'
     }
   },
   getters: {
