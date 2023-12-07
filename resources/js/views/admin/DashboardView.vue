@@ -16,7 +16,10 @@
             <Icon :icon="getIcon(index)" class="h-6 w-6 text-emerald-500" />
           </div>
           <div>
-            <p class="text-sm font-medium text-gray-500">{{ data.title }}</p>
+            <p class="text-sm font-medium text-gray-500">
+              {{ data.title }}
+              <span v-if="index === 'sales' || index === 'income'">({{ currentMonth }})</span>
+            </p>
             <p class="text-3xl font-semibold text-slate-700">{{ data.value }}</p>
           </div>
         </div>
@@ -50,6 +53,7 @@ import { useAuthStore } from '@/store/auth/auth'
 import { useDashboardStore } from '@/store/dashboard/dashboard'
 import { toast } from 'vue3-toastify'
 import 'vue3-toastify/dist/index.css'
+import dayjs from 'dayjs'
 
 import BaseCard from '@/components/UI/card/BaseCard.vue'
 import DataTable from '@/components/UI/table/DataTable.vue'
@@ -57,8 +61,15 @@ import DataTable from '@/components/UI/table/DataTable.vue'
 const authStore = useAuthStore()
 const dashboardStore = useDashboardStore()
 const dashboardData = ref(null)
-const series = ref([{ data: [25, 30, 52, 58, 566, 78, 52] }])
 const table = ref(null)
+
+const currentYear = computed(() => {
+  return dayjs().format('YYYY')
+})
+
+const currentMonth = computed(() => {
+  return dayjs().format('MMM YYYY')
+})
 
 const loggedAdmin = computed(() => {
   return `${authStore.getLoggedAdmin?.first_name} ${authStore.getLoggedAdmin?.last_name}`
@@ -85,6 +96,12 @@ const formattedDashboardData = computed(() => {
   return newObj
 })
 
+const series = computed(() => {
+  if (!dashboardData.value) return []
+
+  return [{ data: dashboardData.value?.sales_overview }]
+})
+
 const token = computed(() => {
   return authStore.getAccessToken
 })
@@ -102,8 +119,24 @@ const chartOptions = computed(() => {
       curve: 'smooth'
     },
     title: {
-      text: 'Sales Overview',
+      text: `Sales Overview (${currentYear.value})`,
       align: 'left'
+    },
+    xaxis: {
+      categories: [
+        'Jan',
+        'Feb',
+        'Mar',
+        'Apr',
+        'May',
+        'Jun',
+        'Jul',
+        'Aug',
+        'Sept',
+        'Oct',
+        'Nov',
+        'Dec'
+      ]
     },
     tooltip: {
       enabled: false
@@ -117,7 +150,7 @@ const config = computed(() => {
     serverSide: true,
     processing: true,
     ajax: {
-      url: '/api/admin/categories',
+      url: '/api/admin/dashboard',
       headers: {
         Authorization: `Bearer ${token.value}`
       },
@@ -134,32 +167,9 @@ const config = computed(() => {
         d.page = Math.ceil((d.start + 1) / d.length)
         d.per_page = d.length
       },
-      dataSrc: 'data.data'
+      dataSrc: 'data.data.top_selling_products'
     },
-    columnDefs: [
-      {
-        target: 0,
-        createdCell: function (cell, _, rowData) {
-          const image = `
-            <img
-              src="${rowData.image}"
-              alt="product image"
-              class="w-20 h-20 object-cover rounded-md"
-            >
-          `
-          const placeholder = `
-            <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24"><path fill="currentColor" d="M21 17.2L6.8 3H19c1.1 0 2 .9 2 2v12.2m-.3 4.8l-1-1H5c-1.1 0-2-.9-2-2V4.3l-1-1L3.3 2L22 20.7L20.7 22m-3.9-4l-3.9-3.9l-1.9 2.4l-2.5-3L5 18h11.8Z"/></svg>
-          `
-          cell.innerHTML = `
-            <div class="flex items-center space-x-2">
-              ${rowData.image ? image : placeholder}
-              <p>${rowData.name}</p>
-            </div>
-          `
-        }
-      }
-    ],
-    columns: [{ data: 'name' }]
+    columns: [{ data: 'name' }, { data: 'price' }]
   }
 })
 

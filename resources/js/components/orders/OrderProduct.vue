@@ -43,7 +43,7 @@
     </td>
     <td class="hidden py-6 pr-8 text-center sm:table-cell">{{ item?.quantity }}</td>
     <td class="whitespace-nowrap py-6 text-right font-medium">
-      <RouterLink :to="`/product/${!item?.product?.slug}`" class="text-emerald-600">
+      <RouterLink :to="`/product/${item?.product?.slug}`" class="text-emerald-600">
         View<span class="hidden lg:inline"> Product</span>
       </RouterLink>
     </td>
