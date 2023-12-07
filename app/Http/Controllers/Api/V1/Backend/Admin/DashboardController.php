@@ -5,8 +5,11 @@ namespace App\Http\Controllers\Api\V1\Backend\Admin;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Backend\DashboardProductResource;
+use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Item\Item;
 use App\Models\Order\Order;
+use App\Models\Product\Product;
 use App\Models\User\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -70,8 +73,10 @@ class DashboardController extends BaseController
                 ->keys()
                 ->toArray();
 
-            $topSellingProducts = Item::query()
-                ->findMany($topSellingProducts);
+            $topSellingProducts = DashboardProductResource::collection(
+                Product::query()
+                    ->findMany($topSellingProducts) ?? []
+            );
 
             $salesOverview = Order::query()
                 ->whereStatus(OrderStatus::COMPLETED)
