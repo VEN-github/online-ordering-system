@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Backend\Admin;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Api\Backend\DashboardProductResource;
 use App\Http\Resources\Api\Backend\ProductResource;
 use App\Models\Item\Item;
 use App\Models\Order\Order;
@@ -72,7 +73,7 @@ class DashboardController extends BaseController
                 ->keys()
                 ->toArray();
 
-            $topSellingProducts = ProductResource::collection(
+            $topSellingProducts = DashboardProductResource::collection(
                 Product::query()
                     ->findMany($topSellingProducts) ?? []
             );
