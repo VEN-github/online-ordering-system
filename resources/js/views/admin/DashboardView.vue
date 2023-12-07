@@ -38,6 +38,7 @@
             <template #table-head>
               <tr>
                 <th>Name</th>
+                <th>Price</th>
               </tr>
             </template>
           </DataTable>
