@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\V1\Backend\Admin;
 use App\Enums\OrderStatus;
 use App\Http\Controllers\Api\BaseController;
 use App\Http\Controllers\Controller;
+use App\Models\Item\Item;
 use App\Models\Order\Order;
 use App\Models\User\User;
 use Illuminate\Http\Request;
@@ -52,6 +53,40 @@ class DashboardController extends BaseController
                 ->sum();
             $numberOfPendingOrders = Order::whereStatus(OrderStatus::PENDING)->count();
             $numberOfRegisteredUsers = User::count();
+            $topSellingProducts = Item::query()
+                ->with([
+                    'order',
+                    'product',
+                ])
+                ->whereHas('order', function ($query) {
+                    $query->whereStatus(OrderStatus::COMPLETED);
+                })
+                ->get()
+                ->map(fn (Item $item) => $item->product)
+                ->groupBy('id')
+                ->map(fn ($items) => $items->count())
+                ->sortDesc()
+                ->take(5)
+                ->keys()
+                ->toArray();
+
+            $topSellingProducts = Item::query()
+                ->findMany($topSellingProducts);
+
+            $salesOverview = Order::query()
+                ->whereStatus(OrderStatus::COMPLETED)
+                ->select(
+                    DB::raw('COALESCE(SUM(total_price), 0) as total_sales'),
+                    DB::raw('MONTH(created_at) as month')
+                )
+                ->whereYear('created_at', $year)
+                ->groupBy(DB::raw('MONTH(created_at)'))
+                ->pluck('total_sales', 'month')
+                ->toArray();
+
+            $salesOverview = array_map(function ($month) use ($salesOverview) {
+                return isset($salesOverview[$month]) ? (int) $salesOverview[$month] : 0;
+            }, range(1, 12));
 
             return $this->success(
                 config('general.messages.request.success'),
@@ -59,7 +94,9 @@ class DashboardController extends BaseController
                     'total_sales_per_month' => $numberOfTotalSalesPerMonth,
                     'total_income_current_month' => $numberOfTotalIncomeCurrentMonth,
                     'total_pending_orders' => $numberOfPendingOrders,
-                    'total_registered_users' => $numberOfRegisteredUsers
+                    'total_registered_users' => $numberOfRegisteredUsers,
+                    'sales_overview' => $salesOverview,
+                    'top_selling_products' => $topSellingProducts,
                 ])
             );
         } catch (\Exception $e) {
