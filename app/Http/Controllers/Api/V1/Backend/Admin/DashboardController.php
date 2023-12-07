@@ -25,6 +25,7 @@ class DashboardController extends BaseController
             $orders = Order::query()
                 ->whereStatus(OrderStatus::COMPLETED)
                 ->whereYear('created_at', $year)
+                ->whereMonth('created_at', $month)
                 ->get()
                 ->map(function (Order $order) {
                     $order['date'] = now()->parse($order->created_at)
@@ -44,7 +45,7 @@ class DashboardController extends BaseController
             $items = [];
 
             foreach ($orders as $key => $value) {
-                array_push($items, $value);
+                array_unshift($items, $value);
             }
 
             $numberOfTotalIncomeCurrentMonth = Order::query()
