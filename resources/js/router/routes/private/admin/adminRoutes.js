@@ -13,6 +13,13 @@ const routes = [
         }
       },
       {
+        path: '/admin/orders',
+        component: () => import('@/views/admin/OrdersView.vue'),
+        meta: {
+          title: 'Orders'
+        }
+      },
+      {
         path: '/profile',
         component: () => import('@/views/admin/ProfileView.vue'),
         meta: {

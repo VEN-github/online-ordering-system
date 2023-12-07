@@ -35,6 +35,11 @@ const lists = ref([
     icon: 'mdi:monitor-dashboard'
   },
   {
+    name: 'Orders',
+    link: '/admin/orders',
+    icon: 'material-symbols:shopping-bag-outline'
+  },
+  {
     name: 'Categories',
     link: '/categories',
     icon: 'fluent-mdl2:product-variant'
