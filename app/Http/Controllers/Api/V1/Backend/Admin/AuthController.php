@@ -62,7 +62,11 @@ class AuthController extends BaseController
     public function logout()
     {
         try {
-            auth()->user()->currentAccessToken()->delete();
+            if(method_exists(auth()->user()->currentAccessToken(), 'delete')) {
+                auth()->user()->currentAccessToken()->delete();
+            }
+
+            auth()->guard('web')->logout();
 
             return $this->success();
         } catch (Exception $e) {
