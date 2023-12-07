@@ -45,7 +45,7 @@ class DashboardController extends BaseController
                     )
                     ->whereStatus(OrderStatus::COMPLETED)
                     ->whereYear('created_at', $year)
-                    ->groupBy(DB::raw('TO_CHAR(created_at, \'YYYY-MM\')'))
+                    ->groupBy('month')
                     ->get()
                     ->toArray();
             }
