@@ -4,7 +4,7 @@
     accepted-file-types="image/jpeg, image/png"
     :allow-multiple="allowMultiple"
     :max-files="maxFiles"
-    max-file-size="2"
+    max-file-size="200000"
     :class="{ 'filepond--single': !allowMultiple }"
     @addfile="handleFilePondAddFile"
     @removefile="handleFilePondRemoveFile"
