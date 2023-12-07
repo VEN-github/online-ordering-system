@@ -6,6 +6,7 @@ namespace App\Actions\Order;
 
 use App\Models\Item\Item;
 use App\Models\Order\Order;
+use App\Models\Product\Product;
 use Lorisleiva\Actions\Concerns\AsAction;
 
 class StoreItems
