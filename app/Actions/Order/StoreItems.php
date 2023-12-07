@@ -18,9 +18,14 @@ class StoreItems
 
         if (count($items) > 0) {
             foreach ($items as $key => $item) {
+                $product = Product::query()->findOrFail($item['product_id']);
+
                 $model = new Item();
-                $model->product_id = $item['product_id'];
+                $model->product_id = $product->id;
                 $model->quantity = $item['quantity'];
+                $model->orig_price = $product->orig_price;
+                $model->selling_price = $product->selling_price;
+                $model->discounted_price = $product->discounted_price;
                 $model->total_price = $item['total_price'];
 
                 $collectedItems[] = $model;

@@ -15,6 +15,9 @@ class Item extends Model
         'order_id',
         'product_id',
         'quantity',
+        'orig_price',
+        'selling_price',
+        'discounted_price',
         'total_price'
     ];
 }

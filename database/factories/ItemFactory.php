@@ -27,6 +27,9 @@ class ItemFactory extends Factory
             'order_id' => fake()->randomElement($orders),
             'product_id' => fake()->unique()->numberBetween(1, Product::count()),
             'quantity' => fake()->numberBetween(1, 10),
+            'orig_price' => fake()->numberBetween(1, 1000),
+            'selling_price' => fake()->numberBetween(1, 1000),
+            'discounted_price' => fake()->numberBetween(1, 1000),
             'total_price' => fake()->numberBetween(1, 1000),
         ];
     }
