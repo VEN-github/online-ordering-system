@@ -32,13 +32,13 @@ class DashboardController extends BaseController
                 ->whereYear('created_at', $year)
                 ->whereMonth('created_at', $month)
                 ->whereStatus(OrderStatus::COMPLETED)
-                ->with('items')
+                ->with('items.product')
                 ->get()
                 ->flatMap(function ($order) {
                     return $order->items->map(function ($item) {
-                        $origPrice = $item->orig_price;
-                        $sellingPrice = $item->selling_price;
-                        $discountedPrice = $item->discounted_price;
+                        $origPrice = $item->product->orig_price;
+                        $sellingPrice = $item->product->selling_price;
+                        $discountedPrice = $item->product->discounted_price;
 
                         if (!is_null($discountedPrice)) {
                             $totalPrice = $origPrice - $discountedPrice;
