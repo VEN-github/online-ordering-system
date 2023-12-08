@@ -25,7 +25,7 @@ class StoreItems
                 $model->product_id = $product->id;
                 $model->quantity = $item['quantity'];
                 $model->orig_price = $product->orig_price;
-                $model->selling_price = $product->selling_price;
+                $model->selling_price = $product->discounted_price ?? $product->orig_price;
                 $model->discounted_price = $product->discounted_price;
                 $model->total_price = $item['total_price'];
 

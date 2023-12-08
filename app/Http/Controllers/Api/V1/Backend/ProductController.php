@@ -36,7 +36,15 @@ class ProductController extends BaseController
     public function store(ProductRequest $request)
     {
         try {
-            $product = Product::create($request->validated());
+            $data = $request->validated();
+            $product = Product::create(
+                array_merge(
+                    $data,
+                    [
+                        'selling_price' => $data['discounted_price'] ?? $data['orig_price'],
+                    ]
+                )
+            );
             $highlight = Product::getHighlightImageCollection();
             $collection = Product::getImageCollection();
 
@@ -102,7 +110,16 @@ class ProductController extends BaseController
                 return $this->error(config('general.messages.model.not_found'));
             }
 
-            $product->update($request->validated());
+            $data = $request->validated();
+
+            $product->update(
+                array_merge(
+                    $data,
+                    [
+                        'selling_price' => $data['discounted_price'] ?? $data['orig_price'],
+                    ]
+                )
+            );
 
             StoreImages::run(
                 $product,

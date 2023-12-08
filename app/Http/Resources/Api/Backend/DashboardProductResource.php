@@ -12,7 +12,7 @@ class DashboardProductResource extends JsonResource
     {
         return [
             'name' => $this->name,
-            'price' => money($this->selling_price, 'PHP')->format(),
+            'price' => money($this->selling_price * 100, 'PHP')->format(),
         ];
     }
 }
