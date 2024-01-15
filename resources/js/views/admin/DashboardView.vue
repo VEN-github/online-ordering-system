@@ -3,8 +3,8 @@
     <BaseCard size="full">
       <h1 class="text-2xl font-semibold text-emerald-500">Welcome, {{ loggedAdmin }}</h1>
       <p class="mt-2 pb-5">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Eum, quasi amet. Explicabo fugiat
-        quisquam impedit. Officiis aliquid voluptates odit voluptatum.
+        Discover the power of your personalized dashboard. Dive into insights, track progress, and
+        take control of your data-driven journey.
       </p>
       <div class="flex items-center justify-between border-t pt-5">
         <div

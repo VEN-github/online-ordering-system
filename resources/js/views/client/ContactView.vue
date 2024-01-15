@@ -6,7 +6,7 @@
           <div>
             <h2 class="text-3xl font-bold tracking-tight text-gray-900">Get in touch</h2>
             <p class="mt-4 leading-7 text-gray-600">
-              Quam nunc nunc eu sed. Sed rhoncus quis ultricies ac pellentesque.
+              Questions or feedback? Reach us easily – we're here to help!
             </p>
           </div>
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
@@ -16,31 +16,31 @@
                 <div>
                   <dt class="sr-only">Email</dt>
                   <dd>
-                    <a class="font-semibold text-emerald-600" href="mailto:collaborate@example.com">
-                      collaborate@example.com
+                    <a class="font-semibold text-emerald-600" href="mailto:furniture@example.com">
+                      furniture@example.com
                     </a>
                   </dd>
                 </div>
                 <div class="mt-1">
                   <dt class="sr-only">Phone number</dt>
-                  <dd>+1 (555) 905-2345</dd>
+                  <dd>+639 95-905-2345</dd>
                 </div>
               </dl>
             </div>
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">Press</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Customer Service</h3>
               <dl class="mt-3 space-y-1 text-sm leading-6 text-gray-600">
                 <div>
                   <dt class="sr-only">Email</dt>
                   <dd>
-                    <a class="font-semibold text-emerald-600" href="mailto:press@example.com">
-                      press@example.com
+                    <a class="font-semibold text-emerald-600" href="mailto:customer@example.com">
+                      customer@example.com
                     </a>
                   </dd>
                 </div>
                 <div class="mt-1">
                   <dt class="sr-only">Phone number</dt>
-                  <dd>+1 (555) 905-3456</dd>
+                  <dd>+639 65-605-2345</dd>
                 </div>
               </dl>
             </div>
@@ -57,24 +57,24 @@
                 </div>
                 <div class="mt-1">
                   <dt class="sr-only">Phone number</dt>
-                  <dd>+1 (555) 905-4567</dd>
+                  <dd>+639 85-805-2345</dd>
                 </div>
               </dl>
             </div>
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">Say hello</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Inquiries</h3>
               <dl class="mt-3 space-y-1 text-sm leading-6 text-gray-600">
                 <div>
                   <dt class="sr-only">Email</dt>
                   <dd>
-                    <a class="font-semibold text-emerald-600" href="mailto:hello@example.com">
-                      hello@example.com
+                    <a class="font-semibold text-emerald-600" href="mailto:inquiries@example.com">
+                      inquiries@example.com
                     </a>
                   </dd>
                 </div>
                 <div class="mt-1">
                   <dt class="sr-only">Phone number</dt>
-                  <dd>+1 (555) 905-5678</dd>
+                  <dd>+639 75-705-2345</dd>
                 </div>
               </dl>
             </div>
@@ -84,36 +84,36 @@
           <div>
             <h2 class="text-3xl font-bold tracking-tight text-gray-900">Locations</h2>
             <p class="mt-4 leading-7 text-gray-600">
-              Consequat sunt cillum cillum elit sint. Qui occaecat nisi in ipsum commodo.
+              Discover our locations and find us near you for a convenient experience.
             </p>
           </div>
           <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:col-span-2 lg:gap-8">
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">Los Angeles</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Pasig City</h3>
               <address class="mt-3 space-y-1 text-sm not-italic leading-6 text-gray-600">
-                <p>4556 Brendan Ferry</p>
-                <p>Los Angeles, CA 90210</p>
+                <p>1600 Alkalde St.</p>
+                <p>Kapasigan, Pasig City</p>
               </address>
             </div>
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">New York</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Quezon City</h3>
               <address class="mt-3 space-y-1 text-sm not-italic leading-6 text-gray-600">
-                <p>886 Walter Street</p>
-                <p>New York, NY 12345</p>
+                <p>Bagumbayan</p>
+                <p>Libis, Q.C. 12345</p>
               </address>
             </div>
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">Toronto</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Marikina City</h3>
               <address class="mt-3 space-y-1 text-sm not-italic leading-6 text-gray-600">
-                <p>7363 Cynthia Pass</p>
-                <p>Toronto, ON N3Y 4H8</p>
+                <p>San Rouque</p>
+                <p>Lilac, Marikina City</p>
               </address>
             </div>
             <div class="rounded-2xl bg-gray-50 p-10">
-              <h3 class="text-base font-semibold leading-7 text-gray-900">Chicago</h3>
+              <h3 class="text-base font-semibold leading-7 text-gray-900">Manila City</h3>
               <address class="mt-3 space-y-1 text-sm not-italic leading-6 text-gray-600">
-                <p>726 Mavis Island</p>
-                <p>Chicago, IL 60601</p>
+                <p>Mavis Island</p>
+                <p>Paco, Manila City</p>
               </address>
             </div>
           </div>
