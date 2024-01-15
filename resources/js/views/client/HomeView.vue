@@ -7,8 +7,7 @@
             Find your<br />furniture style
           </h1>
           <p class="mb-5 max-w-md leading-relaxed text-gray-500 xl:text-lg">
-            This is a section of some simple filler text, also known as placeholder text. It shares
-            characteristics of real text.
+            Discover the Perfect Furniture Aesthetic for Your Home.
           </p>
           <BaseButton mode="primary" size="lg" is-link link="/shop">
             <span>Shop Now</span><Icon icon="ion:cart" class="h-5 w-5" />
@@ -44,8 +43,7 @@
           Feature Products
         </h2>
         <p class="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">
-          This is a section of some simple filler text, also known as placeholder text. It shares
-          some characteristics of a real written text but is random or otherwise generated.
+          Explore our Stylish and Comfortable Furniture Selection
         </p>
       </div>
       <div class="grid gap-x-4 gap-y-8 sm:grid-cols-2 md:gap-x-6 lg:grid-cols-3 xl:grid-cols-4">
@@ -60,8 +58,7 @@
           Shop by Category
         </h2>
         <p class="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">
-          This is a section of some simple filler text, also known as placeholder text. It shares
-          some characteristics of a real written text but is random or otherwise generated.
+          Find the Perfect Furniture for Every Room
         </p>
       </div>
       <div class="grid gap-6 sm:grid-cols-2">
@@ -102,8 +99,7 @@
           Frequently asked questions
         </h2>
         <p class="mx-auto max-w-screen-md text-center text-gray-500 md:text-lg">
-          This is a section of some simple filler text, also known as placeholder text. It shares
-          some characteristics of a real written text but is random or otherwise generated.
+          Get Answers to Common Questions and Helpful Information
         </p>
       </div>
       <div class="grid gap-8 sm:grid-cols-2 sm:gap-y-10 xl:grid-cols-3">
