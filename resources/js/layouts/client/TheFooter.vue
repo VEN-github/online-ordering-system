@@ -10,9 +10,7 @@
               <img class="h-auto sm:w-14" src="../../../assets/images/logo/logo.svg" alt="logo" />
             </RouterLink>
           </div>
-          <p class="mb-6 text-gray-500 sm:pr-8">
-            Filler text is dummy text which has no meaning however looks very similar to real text.
-          </p>
+          <p class="mb-6 text-gray-500 sm:pr-8">Crafting Comfort and Style for Every Room</p>
         </div>
         <div>
           <div class="mb-4 font-bold uppercase tracking-widest text-gray-800">Products</div>

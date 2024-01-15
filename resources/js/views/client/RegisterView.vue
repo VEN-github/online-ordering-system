@@ -18,8 +18,7 @@
           </RouterLink>
           <h1 class="mt-6 text-2xl font-bold text-gray-900 sm:text-3xl md:text-4xl">Welcome!</h1>
           <p class="mt-4 leading-relaxed text-gray-500">
-            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Eligendi nam dolorum aliquam,
-            quibusdam aperiam voluptatum.
+            Create an Account and Begin Your Journey to a Cozier, Stylish Home
           </p>
           <Transition name="fade">
             <BaseAlert v-if="isError" mode="error" class="my-5 shadow">

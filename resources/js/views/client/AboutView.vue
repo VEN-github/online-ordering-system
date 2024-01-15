@@ -63,13 +63,13 @@
           <div class="mx-auto max-w-2xl gap-x-14 lg:mx-0 lg:flex lg:max-w-none lg:items-center">
             <div class="w-full max-w-xl lg:shrink-0 xl:max-w-2xl">
               <h1 class="text-4xl font-bold tracking-tight text-gray-900 sm:text-6xl">
-                We’re changing the way people connect.
+                Where Style Meets Comfort and Individuality
               </h1>
               <p class="relative mt-6 text-lg leading-8 text-gray-600 sm:max-w-md lg:max-w-none">
-                Cupidatat minim id magna ipsum sint dolor qui. Sunt sit in quis cupidatat mollit
-                aute velit. Et labore commodo nulla aliqua proident mollit ullamco exercitation
-                tempor. Sint aliqua anim nulla sunt mollit id pariatur in voluptate cillum. Eu
-                voluptate tempor esse minim amet fugiat veniam occaecat aliqua.
+                We believe that every piece of furniture has the power to transform a house into a
+                home. Established with a passion for creating spaces that resonate with comfort,
+                style, and individuality, our furniture store is more than just a shopping
+                destination – it's a celebration of personal expression and timeless design.
               </p>
             </div>
             <div
@@ -144,25 +144,11 @@
         <div class="mt-6 flex flex-col gap-x-8 gap-y-20 lg:flex-row">
           <div class="lg:w-full lg:max-w-2xl lg:flex-auto">
             <p class="text-xl leading-8 text-gray-600">
-              Aliquet nec orci mattis amet quisque ullamcorper neque, nibh sem. At arcu, sit dui mi,
-              nibh dui, diam eget aliquam. Quisque id at vitae feugiat egestas ac. Diam nulla orci
-              at in viverra scelerisque eget. Eleifend egestas fringilla sapien.
+              our mission is to curate a collection of furniture that not only meets your functional
+              needs but also speaks to your unique sense of style. We aspire to be more than just a
+              furniture retailer; we aim to be your trusted partner in creating living spaces that
+              reflect your personality and inspire a sense of joy and comfort.
             </p>
-            <div class="mt-10 max-w-xl text-base leading-7 text-gray-700">
-              <p>
-                Faucibus commodo massa rhoncus, volutpat. Dignissim sed eget risus enim. Mattis
-                mauris semper sed amet vitae sed turpis id. Id dolor praesent donec est. Odio
-                penatibus risus viverra tellus varius sit neque erat velit. Faucibus commodo massa
-                rhoncus, volutpat. Dignissim sed eget risus enim. Mattis mauris semper sed amet
-                vitae sed turpis id.
-              </p>
-              <p class="mt-10">
-                Et vitae blandit facilisi magna lacus commodo. Vitae sapien duis odio id et. Id
-                blandit molestie auctor fermentum dignissim. Lacus diam tincidunt ac cursus in vel.
-                Mauris varius vulputate et ultrices hac adipiscing egestas. Iaculis convallis ac
-                tempor et ut. Ac lorem vel integer orci.
-              </p>
-            </div>
           </div>
         </div>
       </div>
@@ -202,8 +188,8 @@
               <div class="mt-4 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">
                 <h3 class="text-sm font-medium text-gray-900">Free shipping</h3>
                 <p class="mt-2 text-sm text-gray-500">
-                  It&#039;s not actually free we just price it into the products. Someone&#039;s
-                  paying for it, and it&#039;s not us.
+                  No hidden fees – just straightforward, complimentary shipping for our valued
+                  customers.
                 </p>
               </div>
             </div>
@@ -216,10 +202,11 @@
                 />
               </div>
               <div class="mt-4 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">
-                <h3 class="text-sm font-medium text-gray-900">10-year warranty</h3>
+                <h3 class="text-sm font-medium text-gray-900">1-year warranty</h3>
                 <p class="mt-2 text-sm text-gray-500">
-                  If it breaks in the first 10 years we&#039;ll replace it. After that you&#039;re
-                  on your own though.
+                  Your satisfaction and confidence in our products are of utmost importance to us.
+                  That's why we stand behind the quality of our furniture with a comprehensive
+                  warranty.
                 </p>
               </div>
             </div>
@@ -232,10 +219,10 @@
                 />
               </div>
               <div class="mt-4 sm:ml-6 sm:mt-0 lg:ml-0 lg:mt-6">
-                <h3 class="text-sm font-medium text-gray-900">Exchanges</h3>
+                <h3 class="text-sm font-medium text-gray-900">Easy Returns</h3>
                 <p class="mt-2 text-sm text-gray-500">
-                  If you don&#039;t like it, trade it to one of your friends for something of
-                  theirs. Don&#039;t send it here though.
+                  While we strive to make every piece of furniture a perfect fit for your home, we
+                  understand that circumstances may change.
                 </p>
               </div>
             </div>
@@ -246,56 +233,61 @@
     <div class="mx-auto mt-20 max-w-7xl px-6 lg:px-8">
       <div class="mx-auto max-w-2xl lg:mx-0">
         <h2 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Our values</h2>
-        <p class="mt-6 text-lg leading-8 text-gray-600">
+        <!-- <p class="mt-6 text-lg leading-8 text-gray-600">
           Lorem ipsum dolor sit amet consect adipisicing elit. Possimus magnam voluptatum cupiditate
           veritatis in accusamus quisquam.
-        </p>
+        </p> -->
       </div>
       <dl
         class="mx-auto mt-16 grid max-w-2xl grid-cols-1 gap-x-8 gap-y-16 text-base leading-7 sm:grid-cols-2 lg:mx-0 lg:max-w-none lg:grid-cols-3"
       >
         <div>
-          <dt class="font-semibold text-gray-900">Be world-class</dt>
+          <dt class="font-semibold text-gray-900">Quality Craftsmanship</dt>
           <dd class="mt-1 text-gray-600">
-            Aut illo quae. Ut et harum ea animi natus. Culpa maiores et sed sint et magnam
-            exercitationem quia. Ullam voluptas nihil vitae dicta molestiae et. Aliquid velit porro
-            vero.
+            We are committed to providing furniture that stands the test of time. Each piece in our
+            collection is crafted with meticulous attention to detail and precision, ensuring
+            durability and longevity.
           </dd>
         </div>
         <div>
-          <dt class="font-semibold text-gray-900">Share everything you know</dt>
+          <dt class="font-semibold text-gray-900">Exceptional Design</dt>
           <dd class="mt-1 text-gray-600">
-            Mollitia delectus a omnis. Quae velit aliquid. Qui nulla maxime adipisci illo id
-            molestiae. Cumque cum ut minus rerum architecto magnam consequatur. Quia quaerat minima.
+            Our passion for design excellence is evident in every item we offer. We collaborate with
+            talented designers to bring you furniture that seamlessly blends aesthetics with
+            functionality, creating spaces that are both stunning and practical.
           </dd>
         </div>
         <div>
-          <dt class="font-semibold text-gray-900">Always learning</dt>
+          <dt class="font-semibold text-gray-900">Customer-Centric Approach</dt>
           <dd class="mt-1 text-gray-600">
-            Aut repellendus et officiis dolor possimus. Deserunt velit quasi sunt fuga error labore
-            quia ipsum. Commodi autem voluptatem nam. Quos voluptatem totam.
+            Your satisfaction is our top priority. We strive to exceed your expectations at every
+            step of your shopping journey – from browsing our website to the delivery of your chosen
+            pieces. Our dedicated customer service team is always ready to assist you.
           </dd>
         </div>
         <div>
-          <dt class="font-semibold text-gray-900">Be supportive</dt>
+          <dt class="font-semibold text-gray-900">Sustainability Matters</dt>
           <dd class="mt-1 text-gray-600">
-            Magnam provident veritatis odit. Vitae eligendi repellat non. Eum fugit impedit
-            veritatis ducimus. Non qui aspernatur laudantium modi. Praesentium rerum error deserunt
-            harum.
+            We recognize the responsibility we have towards the environment. That's why we are
+            committed to sourcing sustainable materials and implementing eco-friendly practices in
+            our business operations, ensuring that your choices contribute to a greener planet.
           </dd>
         </div>
         <div>
-          <dt class="font-semibold text-gray-900">Take responsibility</dt>
+          <dt class="font-semibold text-gray-900">Inclusivity and Diversity</dt>
           <dd class="mt-1 text-gray-600">
-            Sit minus expedita quam in ullam molestiae dignissimos in harum. Tenetur dolorem iure.
-            Non nesciunt dolorem veniam necessitatibus laboriosam voluptas perspiciatis error.
+            We celebrate the diversity of our customers and aim to offer a range of styles that
+            cater to different tastes and preferences. Our commitment to inclusivity is reflected
+            not only in our product selection but also in our dedication to creating an inclusive
+            shopping experience for everyone.
           </dd>
         </div>
         <div>
-          <dt class="font-semibold text-gray-900">Enjoy downtime</dt>
+          <dt class="font-semibold text-gray-900">Community Engagement</dt>
           <dd class="mt-1 text-gray-600">
-            Ipsa in earum deserunt aut. Quos minus aut animi et soluta. Ipsum dicta ut quia eius.
-            Possimus reprehenderit iste aspernatur ut est velit consequatur distinctio.
+            We believe in giving back to the communities that support us. Through various
+            initiatives and partnerships, we actively engage in projects that contribute to the
+            well-being and development of the communities we serve.
           </dd>
         </div>
       </dl>
