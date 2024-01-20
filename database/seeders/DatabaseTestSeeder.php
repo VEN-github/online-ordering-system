@@ -30,46 +30,86 @@ class DatabaseTestSeeder extends Seeder
             [
                 'name' => 'Sofas',
                 'slug' => Str::slug('Sofas'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Dining Tables',
                 'slug' => Str::slug('Dining Tables'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Beds',
                 'slug' => Str::slug('Beds'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Wardrobes',
                 'slug' => Str::slug('Wardrobes'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Desks',
                 'slug' => Str::slug('Desks'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Bookshelves',
                 'slug' => Str::slug('Bookshelves'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Coffee Tables',
                 'slug' => Str::slug('Coffee Tables'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Chairs',
                 'slug' => Str::slug('Chairs'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Outdoor Furniture',
                 'slug' => Str::slug('Outdoor Furniture'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
             [
                 'name' => 'Lighting',
                 'slug' => Str::slug('Lighting'),
+                'created_at' => now(),
+                'updated_at' => now(),
             ],
         ];
 
         DB::table('categories')->insert($categories);
+
+        $categories = Category::get();
+
+        $categoryImages = [
+            '/images/categories/sofa.jpeg',
+            '/images/categories/table.jpeg',
+            '/images/categories/bed.png',
+            '/images/categories/wardrobe.jpeg',
+            '/images/categories/desk.jpeg',
+            '/images/categories/bookshelve.png',
+            '/images/categories/coffee-table.jpeg',
+            '/images/categories/chair.jpg',
+            '/images/categories/outdoor.jpeg',
+            '/images/categories/lighting.jpeg',
+        ];
+
+        foreach ($categories as $key => $category) {
+            $category->addMediaFromUrl(asset($categoryImages[$key]))
+                ->toMediaCollection('image');
+        }
 
         $this->command->info('Category Seeded Successfully.' . "\n");
 
@@ -258,11 +298,33 @@ class DatabaseTestSeeder extends Seeder
             $product['is_active'] = 1;
             $product['category_id'] = $category->id;
             $product['stocks'] = rand(10, 100);
+            $product['created_at'] = now();
+            $product['updated_at'] = now();
 
             unset($product['category']);
         }
 
         DB::table('products')->insert($products);
+
+        $products = Product::get();
+
+        $productImages = [
+            '/images/products/elegant-sofa.jpg',
+            '/images/products/modern-dining-table.jpg',
+            '/images/products/comfort-bed.png',
+            '/images/products/spacious-wardrobe.png',
+            '/images/products/stylish-desk.png',
+            '/images/products/bookshelf.png',
+            '/images/products/coffee-table.png',
+            '/images/products/cozy-chair.png',
+            '/images/products/outdoor.png',
+            '/images/products/light.png',
+        ];
+
+        foreach ($products as $key => $product) {
+            $product->addMediaFromUrl(asset($productImages[$key]))
+                ->toMediaCollection('highlight_image');
+        }
 
         $this->command->info('Product Seeded Successfully.');
 
