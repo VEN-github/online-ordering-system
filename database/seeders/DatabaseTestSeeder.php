@@ -107,7 +107,7 @@ class DatabaseTestSeeder extends Seeder
         ];
 
         foreach ($categories as $key => $category) {
-            $category->addMediaFromUrl(asset($categoryImages[$key]))
+            $category->addMediaFromUrl('https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png')
                 ->toMediaCollection('image');
         }
 
@@ -322,7 +322,7 @@ class DatabaseTestSeeder extends Seeder
         ];
 
         foreach ($products as $key => $product) {
-            $product->addMediaFromUrl(asset($productImages[$key]))
+            $product->addMediaFromUrl('https://redthread.uoregon.edu/files/original/affd16fd5264cab9197da4cd1a996f820e601ee4.png')
                 ->toMediaCollection('highlight_image');
         }
 
